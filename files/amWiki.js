@@ -67,6 +67,7 @@ $(function() {
 	}, 'text');
 
 	//根据hash设置页面内容
+	var uriEncode = true;
 	var setView = function() {
 		var path = location.hash.split('file=')[1];
 		if (!path) {
@@ -88,16 +89,30 @@ $(function() {
 				}
 			});
 		}
-		path = 'library/' + encodeURIComponent(path);
-		path += '.md?t=' + (new Date()).getTime();
-		$.get(path, function(data) {
+		var url;
+		if (uriEncode) {
+			url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
+		} else {
+			url = 'library/' + path + '.md?t=' + (new Date()).getTime();
+		}
+		$.get(url, function(data) {
 			$('#view').html(marked(data)).find('pre code').each(function(i, block) {
-				try {
-					hljs.highlightBlock(block);
-				} catch (e) {}
+				hljs.highlightBlock(block);
 			});
 		}, 'text').fail(function() {
-			location.hash = '#';
+			if (uriEncode) {
+				url = 'library/' + path + '.md?t=' + (new Date()).getTime();
+			} else {
+				url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
+			}
+			$.get(url, function(data) {
+				uriEncode = false;
+				$('#view').html(marked(data)).find('pre code').each(function(i, block) {
+					hljs.highlightBlock(block);
+				});
+			}, 'text').fail(function() {
+				location.hash = '#';
+			});
 		});
 	};
 	$(window).on('hashchange', function() {
