@@ -41,6 +41,6 @@ aWiki是一套非常单简基于atom编辑器的轻量级wiki文库系统。
 		}
 
 3. atom菜单 Packages -> aWiki文库 -> 通过“config.json”文件创建新aWiki文库
-4. 开始编辑您的文档系统
+4. 开始编辑您的文档系统  
 5. 如果需要插入图片，请先截图，然后在.md文档对应位置使用 `Ctrl+Shift+V`
 
