@@ -1,0 +1,5 @@
+
+# Default Keymaps for aWiki
+#
+"atom-workspace atom-text-editor:not([mini])":
+  "shift-ctrl-v": "aWiki:pasteImg"

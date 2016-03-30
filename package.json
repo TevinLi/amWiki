@@ -1,0 +1,15 @@
+{
+  "name": "aWiki",
+  "main": "./lib/main",
+  "version": "0.0.1",
+  "description": "aWiki是一套非常单简基于atom编辑器的轻量级wiki文库系统，仅仅需要您使用Atom编辑markdown文档和拥有http纯静态访问空间！使用aWiki，您无需服务端开发、不用数据库、一键创建新文库、一键更新文库目录、支持截图直接粘帖为本地png并插入当前markdown...",
+  "keywords": [
+    "mWiki",
+    "markdown"
+  ],
+  "repository": "",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  }
+}

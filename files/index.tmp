@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta name="renderer" content="webkit">
+		<title>{{name}}</title>
+		<link rel="stylesheet" type="text/css" href="aWiki/css/primercss.github.css" />
+		<link rel="stylesheet" type="text/css" href="aWiki/css/lhjs.github-gist.css" />
+		<link rel="stylesheet" type="text/css" href="aWiki/css/aWiki.css" />
+
+	</head>
+
+	<body>
+		
+		<!--header-->
+		<div class="header">
+			<div class="header-inner">
+				<a class="logo" href="#">
+					<img src="aWiki/images/logo.png" />
+					<b>{{name}}</b>
+					<span>{{version}}</span>
+				</a>
+				<div class="menu_icon"><span class="menu_icon_start"></span><span class="close_icon"></span></div>
+			</div>
+		</div>
+		<!--container-->
+		<div class="container">
+			<div class="nav">
+				<div class="menu-filter on">
+					<input type="text" id="menuFilter" value="" title="请输入筛选条件" />
+					<i class="off" title="清空筛选">&times;</i>
+				</div>
+				<div class="menubar" id="menuBar"></div>
+			</div>
+			<div class="main">
+				<div class="markdown-body" id="view"></div>
+			</div>
+		</div>
+		<script type="text/javascript" src="aWiki/js/forEach.js"></script>
+		<script type="text/javascript" src="aWiki/js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="aWiki/js/marked.min.js"></script>
+		<script type="text/javascript" src="aWiki/js/highlight.min.js"></script>
+		<script type="text/javascript" src="aWiki/js/aWiki.js"></script>
+	</body>
+
+</html>

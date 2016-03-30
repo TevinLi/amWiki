@@ -1,0 +1,15 @@
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [{ 
+           'label': 'aWiki 文库', 
+           'submenu': [{
+                'label': '刷新 “_navigation_.md”',
+                'command': 'aWiki:updateNav'
+           },{
+                'label': '通过 “config.json” 文件创建新aWiki文库',
+                'command': 'aWiki:create'
+           }]
+    }]
+  }
+]
