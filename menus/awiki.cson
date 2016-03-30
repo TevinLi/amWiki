@@ -2,13 +2,13 @@
   {
     'label': 'Packages'
     'submenu': [{ 
-           'label': 'aWiki 文库', 
+           'label': 'amWiki 文库', 
            'submenu': [{
                 'label': '刷新 “_navigation_.md”',
-                'command': 'aWiki:updateNav'
+                'command': 'amWiki:updateNav'
            },{
-                'label': '通过 “config.json” 文件创建新aWiki文库',
-                'command': 'aWiki:create'
+                'label': '通过 “config.json” 文件创建新amWiki文库',
+                'command': 'amWiki:create'
            }]
     }]
   }

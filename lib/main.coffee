@@ -10,12 +10,12 @@ module.exports =
         @subscriptions = new CompositeDisposable()
 
         @subscriptions.add atom.commands.add 'atom-workspace',
-            'aWiki:updateNav': => @updateNav()
+            'amWiki:updateNav': => @updateNav()
         @subscriptions.add atom.commands.add 'atom-workspace',
-            'aWiki:create': => @createWiki()
+            'amWiki:create': => @createWiki()
 
         @subscriptions.add atom.commands.add 'atom-workspace',
-            'aWiki:pasteImg': => @pasterImg()
+            'amWiki:pasteImg': => @pasterImg()
 
     destroy: ->
         @subscriptions.dispose()
@@ -32,7 +32,7 @@ module.exports =
         editor = atom.workspace.getActiveTextEditor()
         return unless editor
         # console.log(atom);
-        createLibrary.buildAt(editor.getPath(), atom.configDirPath+'\\packages\\atom-wiki\\')
+        createLibrary.buildAt(editor.getPath(), atom.configDirPath)
 
     pasterImg: ->
         # console.log('pasterImg')

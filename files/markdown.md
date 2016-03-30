@@ -5,10 +5,10 @@ markdown是为那些需要经常码字或者进行文字排版的、对码字手
 
 不多说了，先上图
 
-![](https://raw.githubusercontent.com/TevinLi/aWiki/master/files/figure/d1.png)
-![](https://raw.githubusercontent.com/TevinLi/aWiki/master/files/figure/d2.png)
-![](https://raw.githubusercontent.com/TevinLi/aWiki/master/files/figure/d3.png)
+![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/figure/d1.png)
+![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/figure/d2.png)
+![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/figure/d3.png)
 
 ## 适合新手入门的Macdown基本语法
-![](https://raw.githubusercontent.com/TevinLi/aWiki/master/files/figure/a1.png)
+![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/figure/a1.png)
 

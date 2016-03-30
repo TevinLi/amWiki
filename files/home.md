@@ -1,3 +1,3 @@
 ## {{name}}
 
-欢迎使用aWiki！
+欢迎使用amWiki！

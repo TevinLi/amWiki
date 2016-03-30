@@ -7,9 +7,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta name="renderer" content="webkit">
 		<title>{{name}}</title>
-		<link rel="stylesheet" type="text/css" href="aWiki/css/primercss.github.css" />
-		<link rel="stylesheet" type="text/css" href="aWiki/css/lhjs.github-gist.css" />
-		<link rel="stylesheet" type="text/css" href="aWiki/css/aWiki.css" />
+		<link rel="stylesheet" type="text/css" href="AMWiki/css/primercss.github.css" />
+		<link rel="stylesheet" type="text/css" href="AMWiki/css/lhjs.github-gist.css" />
+		<link rel="stylesheet" type="text/css" href="AMWiki/css/AMWiki.css" />
 
 	</head>
 
@@ -19,7 +19,7 @@
 		<div class="header">
 			<div class="header-inner">
 				<a class="logo" href="#">
-					<img src="aWiki/images/logo.png" />
+					<img src="AMWiki/images/logo.png" />
 					<b>{{name}}</b>
 					<span>{{version}}</span>
 				</a>
@@ -39,11 +39,11 @@
 				<div class="markdown-body" id="view"></div>
 			</div>
 		</div>
-		<script type="text/javascript" src="aWiki/js/forEach.js"></script>
-		<script type="text/javascript" src="aWiki/js/jquery-1.11.3.min.js"></script>
-		<script type="text/javascript" src="aWiki/js/marked.min.js"></script>
-		<script type="text/javascript" src="aWiki/js/highlight.min.js"></script>
-		<script type="text/javascript" src="aWiki/js/aWiki.js"></script>
+		<script type="text/javascript" src="AMWiki/js/forEach.js"></script>
+		<script type="text/javascript" src="AMWiki/js/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="AMWiki/js/marked.min.js"></script>
+		<script type="text/javascript" src="AMWiki/js/highlight.min.js"></script>
+		<script type="text/javascript" src="AMWiki/js/AMWiki.js"></script>
 	</body>
 
 </html>
