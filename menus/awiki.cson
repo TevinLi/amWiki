@@ -4,7 +4,7 @@
     'submenu': [{ 
            'label': 'amWiki 文库', 
            'submenu': [{
-                'label': '手动刷新 “_navigation_.md”',
+                'label': '刷新 “_navigation_.md”',
                 'command': 'amWiki:updateNav'
            },{
                 'label': '通过 “config.json” 文件创建新amWiki文库',
