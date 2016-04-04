@@ -4,11 +4,14 @@
     'submenu': [{ 
            'label': 'amWiki 文库', 
            'submenu': [{
-                'label': '刷新 “_navigation_.md”',
-                'command': 'amWiki:updateNav'
-           },{
-                'label': '通过 “config.json” 文件创建新amWiki文库',
+                'label': '通过 “config.json” 创建新amWiki文库',
                 'command': 'amWiki:create'
+           },{ 
+                'label': '提取h1-h3标题为页内目录',
+                'command': 'amWiki:contents'
+           },{
+                'label': '手动刷新 “_navigation_.md”',
+                'command': 'amWiki:updateNav'
            }]
     }]
   }
