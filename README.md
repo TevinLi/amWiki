@@ -1,6 +1,6 @@
 # amWiki 文库
 
-amWiki是一套非常简单基于atom编辑器的轻量级wiki文库系统。  
+amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文库系统。  
 使用amWiki文库，仅需要您使用atom编辑markdown文档和拥有http纯静态访问空间！  
 
 ### amWiki优势
