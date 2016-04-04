@@ -1,6 +1,7 @@
 {CompositeDisposable,File,Directory} = require 'atom'
 navUpdate = require './navUpdate'
-createLibrary = require './creator'
+creator = require './creator'
+contents = require './contents'
 
 module.exports =
 
@@ -13,7 +14,8 @@ module.exports =
             'amWiki:updateNav': => @updateNav()
         @subscriptions.add atom.commands.add 'atom-workspace',
             'amWiki:create': => @createWiki()
-
+        @subscriptions.add atom.commands.add 'atom-workspace',
+            'amWiki:contents': => @makeContents()
         @subscriptions.add atom.commands.add 'atom-workspace',
             'amWiki:pasteImg': => @pasterImg()
 
@@ -32,7 +34,16 @@ module.exports =
         editor = atom.workspace.getActiveTextEditor()
         return unless editor
         # console.log(atom);
-        createLibrary.buildAt(editor.getPath(), atom.configDirPath)
+        creator.buildAt(editor.getPath(), atom.configDirPath)
+
+    makeContents: ->
+        editor = atom.workspace.getActiveTextEditor()
+        return unless editor
+        grammar = editor.getGrammar()
+        return unless grammar
+        return unless grammar.scopeName is 'source.gfm'
+        ct = contents.make(editor.getPath()) or ''
+        @insertText ct, editor
 
     pasterImg: ->
         # console.log('pasterImg')
@@ -70,7 +81,7 @@ module.exports =
                 # ascClip = "assets/#{filename}"
                 # clipboard.writeText(ascClip)
 
-                @insertUrl "![](library/assets/#{thefile.getParent().getBaseName()}/#{filename})",editor
+                @insertText "![](library/assets/#{thefile.getParent().getBaseName()}/#{filename})", editor
 
         return false
 
@@ -92,7 +103,7 @@ module.exports =
             # console.log('finish clip image')
             callback()
 
-    insertUrl: (url,editor) ->
+    insertText: (url, editor) ->
         editor.insertText(url)
 
     deactivate: ->

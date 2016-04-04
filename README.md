@@ -66,4 +66,4 @@ amWiki是一套非常简单基于atom编辑器的轻量级wiki文库系统。
 ## 如何使用
 1. 使用http访问项目的index.html
 2. PC端使用左侧导航栏、移动端使用右上角导航弹出菜单切换页面
-3. 在导航栏或导航菜单顶部，可以使用![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/icon_filter.png)栏位对导航目录进行**包含筛选**
+3. 在导航栏或导航菜单顶部，可以使用 ![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/icon_filter.png) 栏位对导航目录进行**包含筛选**

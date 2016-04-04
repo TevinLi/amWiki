@@ -19,14 +19,14 @@ $(function () {
     //菜单折叠
     var $menuBar = $('#menuBar');
     $menuBar.on('click', 'i', function () {
-    	var $this = $(this);
-    	if ($this.hasClass('on')) {
-    		$this.removeClass('on');
-        	$menuBar.find('h5').removeClass('on').next('ul').hide();
-    	} else {
-    		$this.addClass('on');
-        	$menuBar.find('h5').addClass('on').next('ul').show();
-    	}
+        var $this = $(this);
+        if ($this.hasClass('on')) {
+            $this.removeClass('on');
+            $menuBar.find('h5').removeClass('on').next('ul').hide();
+        } else {
+            $this.addClass('on');
+            $menuBar.find('h5').addClass('on').next('ul').show();
+        }
     });
     $menuBar.on('click', 'h5', function () {
         var $this = $(this),
@@ -83,7 +83,7 @@ $(function () {
     //读取导航目录
     $.get('library/_navigation_.md', function (data) {
         $menuBar.html(marked(data));
-    	$menuBar.prepend('<i title="展开/折叠导航栏所有菜单"></i>');
+        $menuBar.prepend('<i title="展开/折叠导航栏所有菜单"></i>');
         setView();
     }, 'text');
 

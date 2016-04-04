@@ -5,8 +5,12 @@
 .markdown-body{font-size:14px;}
 .markdown-body code{padding-top:0.15em;padding-bottom:0.15em;margin:0 1px;font-size:90%;color:#000;background-color:rgba(0,0,0,0.05);}
 .markdown-body code.hljs{color:#333;}
-.hljs-string{color:#183691;}
-.hljs-built_in{color:#0086b3;}
+.markdown-body .hljs-string{color:#183691;}
+.markdown-body .hljs-built_in{color:#0086b3;}
+.markdown-body .anchor{margin-right:2px;margin-left:-20px;}
+.markdown-body blockquote{padding:8px 15px;background-color:#fafafa;}
+.markdown-body .anchor img{visibility:hidden;}
+.markdown-body h1:hover .anchor img,.markdown-body h2:hover .anchor img,.markdown-body h3:hover .anchor img{visibility:visible;}
 
 /* ---------- base ---------- */
 body{background:#e7e8eb !important;min-width:720px;}
@@ -58,9 +62,6 @@ body{background:#e7e8eb !important;min-width:720px;}
 .menubar ul li a.on{color:#007ed9;background:#f4f5f9;}
 
 .main{padding:45px;margin-left:250px;}
-.main .markdown-body .anchor{margin-right:2px;margin-left:-20px;}
-.main .anchor img{visibility:hidden;}
-.main h1:hover .anchor img,.main h2:hover .anchor img,.main h3:hover .anchor img{visibility:visible;}
 
 /* ---------- response ---------- */
 @media screen and (max-width:720px){
