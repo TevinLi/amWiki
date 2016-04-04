@@ -19,9 +19,9 @@ amWiki是一套非常简单基于atom编辑器的轻量级wiki文库系统。
 
 1. 下载Github开源文本编辑器[Atom](https://atom.io/ "atom官网")，并安装
 2. 安装Atom插件amWiki，并重启Atom
-	- 从Github的[amWiki项目托管](https://github.com/TevinLi/amWiki)下载zip，解压到`C:\Users\Administrator\.atom\packages`，将文件夹名`amWiki-master`改为`amWiki`
-	- 或者，在Atom中，File -> Setting -> Install -> 搜索`amWiki`
+	- Atom菜单，File -> Setting -> Install -> 搜索`amWiki`
 	- 或者，运行cmd：`apm install amWiki`
+	- 或者，从Github的[amWiki项目托管](https://github.com/TevinLi/amWiki)下载zip，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
 3. (在本地服务器静态目录)创建一个文件夹
 4. 在Atom中添加项目文件夹`Ctrl+Alt+O`，并指向刚创建的文件夹
 5. 在Atom刚创建的项目下新建`config.json`文件，并输入一下内容：
@@ -29,7 +29,7 @@ amWiki是一套非常简单基于atom编辑器的轻量级wiki文库系统。
 		{
 		    "name": "(您的文库名称，为空显示默认名)",
 		    "version": "(文本版本号或作者，为空不显示)",
-			"logo": "(logo的url，为空显示默认logo)"
+		    "logo": "(logo的url，为空显示默认logo)"
 		}
 6. 点击Atom菜单 Packages -> amWiki文库 -> 通过“config.json”文件创建新amWiki文库
 7. 此时项目中自动创建了许多内容，其中library目录即为您的文档库

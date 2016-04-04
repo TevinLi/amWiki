@@ -30,7 +30,7 @@
 		<div class="container">
 			<div class="nav">
 				<div class="menu-filter on">
-					<input type="text" id="menuFilter" value="" title="请输入筛选条件" />
+					<input type="text" id="menuFilter" value="" palceholder="请输入筛选条件" title="请输入筛选条件" />
 					<i class="off" title="清空筛选">&times;</i>
 				</div>
 				<div class="menubar" id="menuBar"></div>
