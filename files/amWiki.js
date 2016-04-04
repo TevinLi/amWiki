@@ -6,6 +6,16 @@ $(function () {
 
     'use strict';
 
+	function getURLParameter(name) {
+	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+	    var r = window.location.search.substr(1).match(reg);
+	    if(r != null){
+	          return encodeURIComponent(r[2]);
+	     } else {
+	         return null;
+	     }
+	}
+
     //菜单折叠
     var $menuBar = $('#menuBar');
     $menuBar.on('click', 'h5', function () {
@@ -65,8 +75,80 @@ $(function () {
         $menuBar.html(marked(data));
         setView();
     }, 'text');
+	
+    //urlEcode默认模式
+    if (!localStorage.urlEcode) { 
+    	localStorage.urlEcode = 'encode';
+    }
+
+    //解析地址参数
+    var path = getURLParameter('file');
+    if (path == '') { 
+    	path = '首页';
+    }
+    if (path == '首页') { 
+    	$menuBar.find('h4').addClass('on');
+    } else { 
+        $menuBar.find('a').each(function () {
+            var $this = $(this);
+            var hsLink = false;
+            if ($(this).attr('href').split('file=')[1] == path) {
+                hsLink = true;
+                $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
+            } else {
+                $this.removeClass('on');
+            }
+            if (hsLink) {
+                $menuBar.find('h4').removeClass('on');
+            }
+        });
+    }
+
+    //设置标题hash
+    var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><img src="amWiki/images/icon_link.png"/></a>'
+    var setTitleAnchor = function(element){ 
+    	var $title = $(element);
+    	$title.prepend(anchorHtml.replace(/\{title\}/g, $title.text().replace(/\s+/g,'')));
+    }
+
+    //加载页面
+    var url;
+    if (localStorage.urlEcode == 'encode') {
+        url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
+    } else if (localStorage.urlEcode == 'decode') {
+        url = 'library/' + path + '.md?t=' + (new Date()).getTime();
+    }
+    $.get(url, function (data) {
+        $('#view').html(marked(data))
+	        .find('pre code').each(function (i, block) {
+	            hljs.highlightBlock(block);
+	        })
+	        .end().find('h1', 'h2', 'h3').each(function (index, element) {
+	        	setTitleAnchor(element);
+	        });
+    }, 'text').fail(function () {
+        if (localStorage.urlEcode == 'encode') {
+            url = 'library/' + path + '.md?t=' + (new Date()).getTime();
+        } else if (localStorage.urlEcode == 'decode') {
+            url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
+        }
+        $.get(url, function (data) {
+            localStorage.urlEcode = 'decode';
+            $('#view').html(marked(data))
+	            .find('pre code').each(function (i, block) {
+	                hljs.highlightBlock(block);
+	            })
+		        .end().find('h1', 'h2', 'h3').each(function (index, element) {
+		        	setTitleAnchor(element);
+		        });
+        }, 'text').fail(function () {
+            location.search = '';
+        });
+    });
+
 
     //根据hash设置页面内容
+    /*
     var uriEncode = true;
     var setView = function () {
         var path = location.hash.split('file=')[1];
@@ -118,6 +200,7 @@ $(function () {
     $(window).on('hashchange', function () {
         setView();
     });
+	*/
 
     //页面筛选
     var $filter = $('#menuFilter');
@@ -146,6 +229,7 @@ $(function () {
 
 });
 
+/*
 $(function () {
     //修补IE下缺失的onhashchange事件
     if (('onhashchange' in window) && ((typeof document.documentMode === 'undefined') || document.documentMode == 8)) {
@@ -163,3 +247,4 @@ $(function () {
         }, 150);
     }
 });
+*/
