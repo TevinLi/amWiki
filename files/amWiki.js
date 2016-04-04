@@ -18,6 +18,7 @@ $(function () {
 
     //菜单折叠
     var $menuBar = $('#menuBar');
+    /*
     $menuBar.on('click', 'h5', function () {
         var $this = $(this),
             $next = $this.next('ul');
@@ -37,6 +38,7 @@ $(function () {
         }
         $menuBar.find('h5').removeClass('on').next('ul').hide();
     });
+	*/
 
     //响应式菜单
     var $nav = $('.nav'),
@@ -83,32 +85,51 @@ $(function () {
 
     //解析地址参数
     var path = getURLParameter('file');
-    if (path == '') { 
-    	path = '首页';
-    }
-    if (path == '首页') { 
-    	$menuBar.find('h4').addClass('on');
+    if (!path) { 
+    	path = encodeURI('首页');
     } else { 
-        $menuBar.find('a').each(function () {
-            var $this = $(this);
-            var hsLink = false;
-            if ($(this).attr('href').split('file=')[1] == path) {
-                hsLink = true;
-                $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
-            } else {
-                $this.removeClass('on');
-            }
-            if (hsLink) {
-                $menuBar.find('h4').removeClass('on');
-            }
-        });
+    	path = decodeURIComponent(path);
+    }
+    var setView = function() { 
+	    //console.log(path);
+	    if (path == encodeURI('首页')) { 
+	    	//console.log('at home', $menuBar.find('h4'));
+	    	$menuBar.find('h4').addClass('on');
+	    } else {  
+	    	//console.log('not home', $menuBar.find('a'));
+	        $menuBar.find('a').each(function () {
+	            var $this = $(this);
+	            var hsLink = false;
+	            console.log(encodeURI($(this).attr('href').split('file=')[1]), path)
+	            if (encodeURI($(this).attr('href').split('file=')[1]) == path) {
+	                hsLink = true;
+	                $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
+	            } else {
+	                $this.removeClass('on');
+	            }
+	            if (hsLink) {
+	                $menuBar.find('h4').removeClass('on');
+	            }
+	        });
+	    }
     }
 
     //设置标题hash
-    var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><img src="amWiki/images/icon_link.png"/></a>'
+    var $view = $('#view');
     var setTitleAnchor = function(element){ 
-    	var $title = $(element);
-    	$title.prepend(anchorHtml.replace(/\{title\}/g, $title.text().replace(/\s+/g,'')));
+    	var hash = '';
+    	if (location.hash && location.hash.length > 1) { 
+    		hash = location.hash.split('#')[1];
+    	}
+    	var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><img src="amWiki/images/icon_link.png"/></a>';
+    	$view.find('h1,h2,h3').each(function (index, element) {
+	    	var $title = $(element);
+	    	var text = $title.text().replace(/\s+/g,'');
+	    	if (hash == text) { 
+	    		$(window).scrollTop($title.offset().top);
+	    	}
+	    	$title.prepend(anchorHtml.replace(/\{title\}/g, text));
+    	});
     }
 
     //加载页面
@@ -119,13 +140,10 @@ $(function () {
         url = 'library/' + path + '.md?t=' + (new Date()).getTime();
     }
     $.get(url, function (data) {
-        $('#view').html(marked(data))
-	        .find('pre code').each(function (i, block) {
-	            hljs.highlightBlock(block);
-	        })
-	        .end().find('h1', 'h2', 'h3').each(function (index, element) {
-	        	setTitleAnchor(element);
-	        });
+        $view.html(marked(data)).find('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
+        });
+        setTitleAnchor();
     }, 'text').fail(function () {
         if (localStorage.urlEcode == 'encode') {
             url = 'library/' + path + '.md?t=' + (new Date()).getTime();
@@ -134,73 +152,14 @@ $(function () {
         }
         $.get(url, function (data) {
             localStorage.urlEcode = 'decode';
-            $('#view').html(marked(data))
-	            .find('pre code').each(function (i, block) {
-	                hljs.highlightBlock(block);
-	            })
-		        .end().find('h1', 'h2', 'h3').each(function (index, element) {
-		        	setTitleAnchor(element);
-		        });
-        }, 'text').fail(function () {
-            location.search = '';
-        });
-    });
-
-
-    //根据hash设置页面内容
-    /*
-    var uriEncode = true;
-    var setView = function () {
-        var path = location.hash.split('file=')[1];
-        if (!path) {
-            path = '首页';
-            $menuBar.find('h4').addClass('on');
-        } else {
-            path = decodeURIComponent(path);
-            $menuBar.find('a').each(function () {
-                var $this = $(this);
-                var hsLink = false;
-                if ($(this).attr('href').split('file=')[1] == path) {
-                    hsLink = true;
-                    $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
-                } else {
-                    $this.removeClass('on');
-                }
-                if (hsLink) {
-                    $menuBar.find('h4').removeClass('on');
-                }
-            });
-        }
-        var url;
-        if (uriEncode) {
-            url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
-        } else {
-            url = 'library/' + path + '.md?t=' + (new Date()).getTime();
-        }
-        $.get(url, function (data) {
-            $('#view').html(marked(data)).find('pre code').each(function (i, block) {
+            $view.html(marked(data)).find('pre code').each(function (i, block) {
                 hljs.highlightBlock(block);
             });
+	        setTitleAnchor();
         }, 'text').fail(function () {
-            if (uriEncode) {
-                url = 'library/' + path + '.md?t=' + (new Date()).getTime();
-            } else {
-                url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
-            }
-            $.get(url, function (data) {
-                uriEncode = false;
-                $('#view').html(marked(data)).find('pre code').each(function (i, block) {
-                    hljs.highlightBlock(block);
-                });
-            }, 'text').fail(function () {
-                location.hash = '#';
-            });
+            location.search = '?file=首页';
         });
-    };
-    $(window).on('hashchange', function () {
-        setView();
     });
-	*/
 
     //页面筛选
     var $filter = $('#menuFilter');
