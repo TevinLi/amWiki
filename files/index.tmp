@@ -23,14 +23,14 @@
 					<b>{{name}}</b>
 					<span>{{version}}</span>
 				</a>
-				<div class="menu_icon"><span class="menu_icon_start"></span><span class="close_icon"></span></div>
+				<div class="menu_icon"><span class="menu_icon_start" style="display:none"></span><span class="close_icon" style="display:none"></span></div>
 			</div>
 		</div>
 		<!--container-->
 		<div class="container">
 			<div class="nav">
-				<div class="menu-filter on">
-					<input type="text" id="menuFilter" value="" palceholder="请输入筛选条件" title="请输入筛选条件" />
+				<div class="menu-filter">
+					<input type="text" id="menuFilter" value="" placeholder="请输入筛选条件" title="请输入筛选条件" />
 					<i class="off" title="清空筛选">&times;</i>
 				</div>
 				<div class="menubar" id="menuBar"></div>
