@@ -40,7 +40,7 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 
 		Packages -> amWiki文库 -> 通过“config.json”文件创建新amWiki文库
 
-7. 此时项目中自动创建了许多内容，其中library目录即为您的文档库
+7. 此时项目中自动创建了许多内容，其中library文件夹即为您的文档库
 
 8. 使用http访问刚刚自动创建的index.html
 
@@ -53,10 +53,10 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 	  ├ _navigation_.md      //amWiki文库目录导航文件，可自动/手动更新
 	  ├ 首页.md              //内容区默认显示内容
 	  ├ 01-关于amWiki文库/    //markdown文件夹01
-      │   ├ 001-关于amWiki   //一些markdown文档，不支持更深的目录
+      │   ├ 001-关于amWiki   //一些markdown文档，不支持更深的文件夹
       │   └ 002-...
       ├ 02-学习markdown/     //markdown文件夹02
-      │   ├ 001-md入门       //一些markdown文档，不支持更深的目录
+      │   ├ 001-md入门       //一些markdown文档，不支持更深的文件夹
       │   └ 002-...
       └ 03-...               //更多markdown文件夹
 	(assetes/)               //如果您粘帖截图，图片文件将自动创建在此处
@@ -71,13 +71,13 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 
 4. library文件夹下`首页.md`为打开时默认的或url hash错误时的显示内容
 
-5. `_navigation_.md`目录导航文件无需人工维护，创建新文件夹或文件时将自动更新，也可以在菜单栏
+5. `_navigation_.md`导航文件无需人工维护，创建新文件夹或文件时将自动更新，也可以在菜单栏
 
 		Packages -> amWiki文库 -> 手动刷新“\_navigation\_.md”
 6. 如果需要在markdown文档中插入图片，请先截图，然后在.md文档对应位置使用
 
 		Ctrl + Shift + V
-6. 对于较长文章，你可以使用
+6. 对于较长文章，可以使用页内目录
 
 		Packages -> amWiki文库 -> 提取h2、h3标题为页内目录
 即可在光标处插入。  
