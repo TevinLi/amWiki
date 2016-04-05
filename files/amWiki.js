@@ -18,16 +18,6 @@ $(function () {
 
     //菜单折叠
     var $menuBar = $('#menuBar');
-    $menuBar.on('click', 'i', function () {
-        var $this = $(this);
-        if ($this.hasClass('on')) {
-            $this.removeClass('on');
-            $menuBar.find('h5').removeClass('on').next('ul').hide();
-        } else {
-            $this.addClass('on');
-            $menuBar.find('h5').addClass('on').next('ul').show();
-        }
-    });
     $menuBar.on('click', 'h5', function () {
         var $this = $(this),
             $next = $this.next('ul');
@@ -47,6 +37,16 @@ $(function () {
         }
         $menuBar.find('h5').removeClass('on').next('ul').hide();
     });
+    var setMenuFolding = function () {
+        var $this = $(this);
+        if ($this.hasClass('on')) {
+            $this.removeClass('on');
+            $menuBar.find('h5').removeClass('on').next('ul').hide();
+        } else {
+            $this.addClass('on');
+            $menuBar.find('h5').addClass('on').next('ul').show();
+        }
+    };
 
     //响应式菜单
     var $nav = $('.nav'),
@@ -78,12 +78,41 @@ $(function () {
     });
     $win.on('resize', function () {
         pageWidth = $win.width();
+        if (pageWidth > 720 && $nav.is(':hidden')) {
+        	 $nav.show();
+        }
+    });
+
+    //页面筛选
+    var $filter = $('#menuFilter');
+    var $filterClean = $filter.next('i');
+    $filter.on('blur change input propertychange', function () {
+        var value = $filter.val();
+        if (value != '') {
+            $filterClean.removeClass('off');
+            $menuBar.find('h5').removeClass('on').next('ul').hide();
+            $menuBar.find('a').each(function () {
+                var $this = $(this);
+                if ($this.text().indexOf(value) >= 0) {
+                    $this.parent().removeClass('off').parent().show().prev('h5').addClass('on');
+                } else {
+                    $this.parent().addClass('off');
+                }
+            });
+        } else {
+            $filterClean.addClass('off');
+            $menuBar.find('a').parent().removeClass('off');
+        }
+    });
+    $filterClean.on('click', function () {
+        $filter.val('').trigger('change');
     });
 
     //读取导航目录
     $.get('library/_navigation_.md', function (data) {
         $menuBar.html(marked(data));
-        $menuBar.prepend('<i title="展开/折叠导航栏所有菜单"></i>');
+        $filter.parent().after('<div class="menu-fold" title="展开/折叠导航栏所有菜单"></div>');
+        $('.menu-fold').on('click', setMenuFolding);
         setView();
     }, 'text');
 
@@ -165,31 +194,6 @@ $(function () {
         }, 'text').fail(function () {
             location.search = '?file=首页';
         });
-    });
-
-    //页面筛选
-    var $filter = $('#menuFilter');
-    var $filterClean = $filter.next('i');
-    $filter.on('blur change input propertychange', function () {
-        var value = $filter.val();
-        if (value != '') {
-            $filterClean.removeClass('off');
-            $menuBar.find('h5').removeClass('on').next('ul').hide();
-            $menuBar.find('a').each(function () {
-                var $this = $(this);
-                if ($this.text().indexOf(value) >= 0) {
-                    $this.parent().removeClass('off').parent().show().prev('h5').addClass('on');
-                } else {
-                    $this.parent().addClass('off');
-                }
-            });
-        } else {
-            $filterClean.addClass('off');
-            $menuBar.find('a').parent().removeClass('off');
-        }
-    });
-    $filterClean.on('click', function () {
-        $filter.val('').trigger('change');
     });
 
 });
