@@ -165,6 +165,8 @@ $(function () {
             if (hash == text) {
                 if (pageWidth <= 720) {
                     $win.scrollTop($title.offset().top - 55);
+                } else { 
+                    $win.scrollTop($title.offset().top);
                 }
             }
             $title.prepend(anchorHtml.replace(/\{title\}/g, text));
