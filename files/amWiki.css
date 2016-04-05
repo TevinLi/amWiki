@@ -9,6 +9,7 @@
 .markdown-body .hljs-built_in{color:#0086b3;}
 .markdown-body .anchor{margin-right:2px;margin-left:-20px;}
 .markdown-body blockquote{padding:8px 15px;background-color:#fafafa;}
+.markdown-body .anchor{padding-top:10px;margin-top:-10px;}
 .markdown-body .anchor img{visibility:hidden;}
 .markdown-body h1:hover .anchor img,.markdown-body h2:hover .anchor img,.markdown-body h3:hover .anchor img{visibility:visible;}
 
@@ -68,12 +69,17 @@ body{background:#e7e8eb !important;min-width:720px;}
 @media screen and (max-width:720px){
 	body{min-width:100%;}
 
+	/* ---------- custom markdown ---------- */
+	.markdown-body code.hljs{word-wrap:break-word;white-space:pre-wrap;}
+	.markdown-body h1:hover .anchor img,.markdown-body h2:hover .anchor img,.markdown-body h3:hover .anchor img{visibility:hidden;}
+	.markdown-body h1:active .anchor img,.markdown-body h2:active .anchor img,.markdown-body h3:active .anchor img{visibility:visible;}
+
 	/* ---------- header ---------- */
 	.header{position:fixed;left:0;top:0;z-index:9999;height:50px;border-top:#007ed9 3px solid;}
 	.header .header-inner{height:50px;}
 	.header .logo{width:100%;padding-top:13px;}
 	.header .logo img{height:18px;}
-	.header .logo b{max-width:40%;padding-left:8px;font-size:14px;background-size:4px 4px;}
+	.header .logo b{max-width:40%;height:auto;padding-left:8px;font-size:14px;background-size:4px 4px;}
 	.header .logo span{margin:-5px 0 0 0;-moz-transform:scale(0.8);-webkit-transform:scale(0.8);-o-transform:scale(0.8);transform:scale(0.8);}
 	.header .menu_icon{display:block;position:absolute;right:0;top:0;z-index:1;width:40px;height:47px;}
 	.header .menu_icon span{display:block;width:40px;height:47px;}
@@ -103,6 +109,5 @@ body{background:#e7e8eb !important;min-width:720px;}
 	.menubar ul li a:hover{color:#fff;background:#8c8888;}
 
 	.main{width:100%;padding:25px;margin-left:0;box-sizing:border-box;}
-	.markdown-body code.hljs{word-wrap:break-word;white-space:pre-wrap;}
 
 }

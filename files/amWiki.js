@@ -151,21 +151,39 @@ $(function () {
 
     //设置标题hash
     var $view = $('#view');
+    var $titles = null;
+    var hash = '';
     var setTitleAnchor = function (element) {
-        var hash = '';
         if (location.hash && location.hash.length > 1) {
             hash = location.hash.split('#')[1];
         }
         var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><img src="amWiki/images/icon_link.png"/></a>';
-        $view.find('h1,h2,h3').each(function (index, element) {
+        $titles = $view.find('h1,h2,h3');
+        $titles.each(function (index, element) {
             var $title = $(element);
             var text = $title.text().replace(/\s+/g, '');
             if (hash == text) {
-                $(window).scrollTop($title.offset().top);
+            	if (pageWidth <= 720) {
+                	$win.scrollTop($title.offset().top - 55);
+            	}
             }
             $title.prepend(anchorHtml.replace(/\{title\}/g, text));
         });
     };
+    $(window).on('hashchange', function (e) {
+        hash = location.hash.split('#')[1];
+    	if ($titles) { 
+	        $titles.each(function (index, element) {
+	            var $title = $(element);
+	            var text = $title.text().replace(/\s+/g, '');
+	            if (hash == text) {
+	            	if (pageWidth <= 720) {
+	                	$win.scrollTop($title.offset().top - 55);
+	            	}
+	            }
+	        });
+    	}
+    });
 
     //加载页面
     var url;
