@@ -95,7 +95,7 @@ module.exports =
                 # ascClip = "assets/#{filename}"
                 # clipboard.writeText(ascClip)
 
-                @insertUrl "![](assets/#{insertPath}#{filename})", editor
+                @insertText "![](assets/#{insertPath}#{filename})", editor
 
         return false
 
