@@ -17,26 +17,26 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 
 ## 如何开始
 
-1. 下载Github开源文本编辑器[Atom](https://atom.io/ "atom官网")，并安装
+1. 下载Github开源文本编辑器 [Atom](https://atom.io/ "atom官网") ，并安装
 
 2. 安装Atom插件amWiki，并重启Atom
 	- Atom菜单，File -> Setting -> Install -> 搜索`amWiki`
 	- 或者，运行cmd：`apm install amWiki`
-	- 或者，从Github的[amWiki项目托管](https://github.com/TevinLi/amWiki)下载zip，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
+	- 或者，从Github的 [amWiki项目托管](https://github.com/TevinLi/amWiki) 下载zip，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
 
 3. (在本地服务器静态目录)创建一个文件夹
 
 4. 在Atom中添加项目文件夹`Ctrl+Alt+O`，并指向刚创建的文件夹
 
 5. 在Atom刚创建的项目下新建`config.json`文件，并输入一下内容：
-
-		{
-		    "name": "(您的文库名称，为空显示默认名)",
-		    "version": "(文本版本号或作者，为空不显示)",
-		    "logo": "(logo的url，为空显示默认logo)"
-		}
-
-6. 点击Atom菜单 
+```json
+{
+    "name": "(您的文库名称，为空显示默认名)",
+    "version": "(文本版本号或作者，为空不显示)",
+    "logo": "(logo的url，为空显示默认logo)"
+}
+```
+6. 点击Atom菜单：
 
 		Packages -> amWiki文库 -> 通过“config.json”文件创建新amWiki文库
 

@@ -79,7 +79,7 @@ $(function () {
     $win.on('resize', function () {
         pageWidth = $win.width();
         if (pageWidth > 720 && $nav.is(':hidden')) {
-        	 $nav.show();
+            $nav.show();
         }
     });
 
@@ -163,26 +163,26 @@ $(function () {
             var $title = $(element);
             var text = $title.text().replace(/\s+/g, '');
             if (hash == text) {
-            	if (pageWidth <= 720) {
-                	$win.scrollTop($title.offset().top - 55);
-            	}
+                if (pageWidth <= 720) {
+                    $win.scrollTop($title.offset().top - 55);
+                }
             }
             $title.prepend(anchorHtml.replace(/\{title\}/g, text));
         });
     };
     $(window).on('hashchange', function (e) {
         hash = location.hash.split('#')[1];
-    	if ($titles) { 
-	        $titles.each(function (index, element) {
-	            var $title = $(element);
-	            var text = $title.text().replace(/\s+/g, '');
-	            if (hash == text) {
-	            	if (pageWidth <= 720) {
-	                	$win.scrollTop($title.offset().top - 55);
-	            	}
-	            }
-	        });
-    	}
+        if ($titles) {
+            $titles.each(function (index, element) {
+                var $title = $(element);
+                var text = $title.text().replace(/\s+/g, '');
+                if (hash == text) {
+                    if (pageWidth <= 720) {
+                        $win.scrollTop($title.offset().top - 55);
+                    }
+                }
+            });
+        }
     });
 
     //加载页面
@@ -194,7 +194,10 @@ $(function () {
     }
     $.get(url, function (data) {
         $view.html(marked(data)).find('pre code').each(function (i, block) {
-            hljs.highlightBlock(block);
+            var className = $(block).attr('class') || '';
+            if (className.indexOf('lang') >= 0) {
+                hljs.highlightBlock(block);
+            }
         });
         setTitleAnchor();
     }, 'text').fail(function () {
@@ -206,7 +209,10 @@ $(function () {
         $.get(url, function (data) {
             localStorage.urlEcode = 'decode';
             $view.html(marked(data)).find('pre code').each(function (i, block) {
-                hljs.highlightBlock(block);
+                var className = $(block).attr('class') || '';
+                if (className.indexOf('lang') >= 0) {
+                    hljs.highlightBlock(block);
+                }
             });
             setTitleAnchor();
         }, 'text').fail(function () {
