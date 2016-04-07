@@ -29,7 +29,7 @@ module.exports =
       'amWiki:pasteImg': => @pasterImg()
 
   deactivate: ->
-    autoNav.destroy @state.libraryList
+    autoNav.destroy()
     @subscriptions.dispose()
 
   serialize: ->

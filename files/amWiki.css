@@ -4,7 +4,7 @@
 /* ---------- custom markdown ---------- */
 .markdown-body{font-size:14px;}
 .markdown-body code{padding-top:0.15em;padding-bottom:0.15em;margin:0 1px;font-size:90%;color:#000;background-color:rgba(0,0,0,0.05);}
-.markdown-body code.hljs{color:#333;}
+.markdown-body code.hljs{color:#333;word-wrap:break-word;white-space:pre-wrap;}
 .markdown-body .hljs-string{color:#183691;}
 .markdown-body .hljs-built_in{color:#0086b3;}
 .markdown-body .anchor{margin-right:2px;margin-left:-20px;}
@@ -70,7 +70,6 @@ body{background:#e7e8eb !important;min-width:720px;}
 	body{min-width:100%;}
 
 	/* ---------- custom markdown ---------- */
-	.markdown-body code.hljs{word-wrap:break-word;white-space:pre-wrap;}
 	.markdown-body h1:hover .anchor img,.markdown-body h2:hover .anchor img,.markdown-body h3:hover .anchor img{visibility:hidden;}
 	.markdown-body h1:active .anchor img,.markdown-body h2:active .anchor img,.markdown-body h3:active .anchor img{visibility:visible;}
 
