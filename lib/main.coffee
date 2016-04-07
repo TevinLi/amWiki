@@ -12,12 +12,15 @@ module.exports =
   activate: (state) ->
     console.log('amWiki-watchers: \n\r', state.libraryList);
     @state = state
+    @state.libraryList = @state.libraryList || [];
 
     @subscriptions = new CompositeDisposable()
     @autoNav()
 
     @subscriptions.add atom.commands.add 'atom-workspace',
       'amWiki:updateNav': => @updateNav()
+    @subscriptions.add atom.commands.add 'atom-workspace',
+      'amWiki:pauseNav': => @pauseNav()
     @subscriptions.add atom.commands.add 'atom-workspace',
       'amWiki:create': => @createWiki()
     @subscriptions.add atom.commands.add 'atom-workspace',
@@ -42,7 +45,6 @@ module.exports =
     updateNav.refresh editor.getPath(), (path) ->
       i = 0
       hs = false
-      console.log(path)
       while i < state.libraryList.length
         if state.libraryList[i] == path
           hs = true
@@ -54,6 +56,11 @@ module.exports =
     state = @state
     autoNav.watchLibrary @state.libraryList, (list) ->
       state.libraryList = list
+
+  pauseNav: ->
+    editor = atom.workspace.getActiveTextEditor()
+    return unless editor
+    autoNav.pause editor.getPath(), @state.libraryList
 
   createWiki: ->
     editor = atom.workspace.getActiveTextEditor()

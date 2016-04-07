@@ -30,11 +30,11 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 
 5. 在Atom刚创建的项目下新建`config.json`文件，并输入一下内容：
 ```json
-{
-    "name": "(您的文库名称，为空显示默认名)",
-    "version": "(文本版本号或作者，为空不显示)",
-    "logo": "(logo的url，为空显示默认logo)"
-}
+	{
+	    "name": "(您的文库名称，为空显示默认名)",
+	    "version": "(文本版本号或作者，为空不显示)",
+	    "logo": "(logo的url，为空显示默认logo)"
+	}
 ```
 6. 点击Atom菜单：
 
