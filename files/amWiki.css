@@ -3,6 +3,8 @@
 
 /* ---------- custom markdown ---------- */
 .markdown-body{font-size:14px;}
+.markdown-body h1{border-bottom:1px solid #ddd;}
+.markdown-body pre{position:relative;}
 .markdown-body code{padding-top:0.15em;padding-bottom:0.15em;margin:0 1px;font-size:90%;color:#000;background-color:rgba(0,0,0,0.05);}
 .markdown-body code.hljs{color:#333;word-wrap:break-word;white-space:pre-wrap;}
 .markdown-body .hljs-string{color:#183691;}
@@ -12,6 +14,13 @@
 .markdown-body .anchor{padding-top:10px;margin-top:-10px;}
 .markdown-body .anchor img{visibility:hidden;}
 .markdown-body h1:hover .anchor img,.markdown-body h2:hover .anchor img,.markdown-body h3:hover .anchor img{visibility:visible;}
+.markdown-body :not(.anchor)>img:hover{outline:rgba(0,0,0,.05) 1px solid;box-shadow:1px 1px 1px rgba(0,0,0,.1);}
+.markdown-body .lang-off-js-comment{position:absolute;top:0;right:0;width:27px;height:27px;color:#ccc;text-align:center;line-height:27px;background:#f0f0f0;cursor:pointer}
+.markdown-body .lang-off-js-comment i{position:absolute;top:0;left:0;width:27px;height:27px;font-size:22px;color:#ddd;text-align:center;line-height:27px;}
+.markdown-body .lang-off-js-comment:hover{color:#999;background:#ddd;}
+.markdown-body .lang-off-js-comment:hover i{color:#999;}
+.markdown-body .lang-off-js-comment.on{color:#333;background:#ccc;}
+.markdown-body .lang-off-js-comment.on i{color:#f00;}
 
 /* ---------- base ---------- */
 body{background:#e7e8eb !important;min-width:720px;}

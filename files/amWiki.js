@@ -187,6 +187,22 @@ $(function () {
         }
     });
 
+    //设置js注释隐藏
+    var setJSCommentDisable = function($elm) {
+        var $disBtn = $('<div class="lang-off-js-comment">注<i>/</i></div>');
+        $disBtn.on('click',function(){
+            var $this = $(this);
+            if ($this.hasClass('on')) {
+                $this.removeClass('on');
+                $elm.find('.hljs-comment').show();
+            } else {
+                $this.addClass('on');
+                $elm.find('.hljs-comment').hide();
+            }
+        });
+        $elm.prepend($disBtn);
+    };
+
     //加载页面
     var url;
     if (localStorage.urlEcode == 'encode') {
@@ -196,9 +212,13 @@ $(function () {
     }
     $.get(url, function (data) {
         $view.html(marked(data)).find('pre code').each(function (i, block) {
-            var className = $(block).attr('class') || '';
+            var $elm = $(block);
+            var className = $elm.attr('class') || '';
             if (className.indexOf('lang') >= 0) {
                 hljs.highlightBlock(block);
+            }
+            if (className.indexOf('javascript') >= 0) {
+                setJSCommentDisable($elm);
             }
         });
         setTitleAnchor();
@@ -211,9 +231,13 @@ $(function () {
         $.get(url, function (data) {
             localStorage.urlEcode = 'decode';
             $view.html(marked(data)).find('pre code').each(function (i, block) {
-                var className = $(block).attr('class') || '';
+                var $elm = $(block);
+                var className = $elm.attr('class') || '';
                 if (className.indexOf('lang') >= 0) {
                     hljs.highlightBlock(block);
+                }
+                if (className.indexOf('javascript') >= 0) {
+                    setJSCommentDisable($elm);
                 }
             });
             setTitleAnchor();
