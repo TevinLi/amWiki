@@ -10,7 +10,6 @@ module.exports =
   state: null
 
   activate: (state) ->
-    console.log('amWiki-watchers: \n\r', state.libraryList);
     @state = state
     @state.libraryList = @state.libraryList || [];
 
