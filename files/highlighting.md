@@ -1,43 +1,54 @@
 # markdown 语法高亮
 
-github markdown 增强了markdown语法，新增了比如代码段的语法高亮  
-使用三个`符号包围起来并写上语言类型即可使用语法高亮：
+增强型markdown语法，比如代码段可以语法高亮  
+使用三个“\`” 符号包围起来并写上语言类型即可使用语法高亮：
 
 
-### json
+## json
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-json.png)
-```json
+
+效果：
+```javascript
 {
-    "state": { 
-        "code": 10200,
-        "msg": "ok"
+    "state": {
+        "code": 10200,                   //code状态码
+        "msg": "ok"                      //状态描述
     },
     "data": {
-        "team_num": 13,
-        "position": "海珠区新港中路"
+        "team_num": 13,                  //队伍数
+        "position": "海珠区新港中路"      //位置
     }
 }
 ```
+amWiki对javascript代码片段做了再次增强，可以点击代码块右上角隐藏/显示注释  
+当注释处于隐藏状态时不会被复制，比较适合模拟返回json数据的接口时直接拷贝（json不允许注释）
 
-### javascript
+## javascript
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-js.png)
+
+效果：
 ```javascript
 //发送验证码
 function cd(num) {
-    $('#reservation-code').val(num + '秒后可重发');
+    $('#code').val(num + '秒后可重发');
     setTimeout(function() {
         if (num - 1 >= 0) {
             cd(num - 1);
         } else {
-            $('#reservation-code').removeClass('bg-gray').prop('disabled', false).val('重新发送验证码');
+            $('#code').removeClass('bg-gray').prop('disabled', false).val('重新发送验证码');
         }
     },
     1000);
 }
 ```
 
-### Html
+## Html
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-html.png)
+
+效果：
 ```html
 <body>
     <div class="loading"><img src="/assets/images/loading.gif"></div>
@@ -46,16 +57,22 @@ function cd(num) {
 <script type="text/javascript" src="/assets/js/jquery-2.1.4.min.js"></script>
 ```
 
-### css
+## css
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-css.png)
+
+效果：
 ```css
 html,body{display:block;width:100%;height:100%;min-width:320px;}
 a,img{-webkit-touch-callout:none;}
 input[type="button"],input[type="submit"],input[type="reset"],textarea{-webkit-appearance:none;}
 ```
 
-### php
+## php
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-php.png)
+
+效果：
 ```php
 private function addQuestData($data, $filing_id)
   {
@@ -69,14 +86,20 @@ private function addQuestData($data, $filing_id)
   }
 ```
 
-### sql
+## sql
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-sql.png)
+
+效果：
 ```sql
 SELECT Company, OrderNumber FROM Orders ORDER BY Company, OrderNumber
 ```
 
-### java
+## java
+代码：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-java.png)
+
+效果：
 ```java
 public class Test {
    public static void main(String args[]) {
