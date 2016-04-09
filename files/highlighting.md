@@ -5,7 +5,7 @@
 
 
 ## json
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-json.png)
 
 效果：
@@ -25,7 +25,7 @@ amWiki对javascript代码片段做了再次增强，可以点击代码块右上�
 当注释处于隐藏状态时不会被复制，比较适合模拟返回json数据的接口时直接拷贝（json不允许注释）
 
 ## javascript
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-js.png)
 
 效果：
@@ -45,7 +45,7 @@ function cd(num) {
 ```
 
 ## Html
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-html.png)
 
 效果：
@@ -58,7 +58,7 @@ function cd(num) {
 ```
 
 ## css
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-css.png)
 
 效果：
@@ -69,7 +69,7 @@ input[type="button"],input[type="submit"],input[type="reset"],textarea{-webkit-a
 ```
 
 ## php
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-php.png)
 
 效果：
@@ -87,7 +87,7 @@ private function addQuestData($data, $filing_id)
 ```
 
 ## sql
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-sql.png)
 
 效果：
@@ -96,7 +96,7 @@ SELECT Company, OrderNumber FROM Orders ORDER BY Company, OrderNumber
 ```
 
 ## java
-代码：  
+代码截图：  
 ![](http://tevinli.github.io/illustration/amWiki/highlight-java.png)
 
 效果：
