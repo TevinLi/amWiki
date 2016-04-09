@@ -9,7 +9,7 @@
             'label': '提取h2、h3标题为页内目录',
             'command': 'amWiki:contents'
         }, {
-            'label': '手动刷新当前 “_navigation_.md”',
+            'label': '手动刷新当前 “$navigation.md”',
             'command': 'amWiki:updateNav'
         }]
     }]

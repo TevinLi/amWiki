@@ -109,7 +109,7 @@ $(function () {
     });
 
     //读取导航目录
-    $.get('library/_navigation_.md', function (data) {
+    $.get('library/$navigation.md', function (data) {
         $menuBar.html(marked(data));
         $filter.parent().after('<div class="menu-fold" title="展开/折叠导航栏所有菜单"></div>');
         $('.menu-fold').on('click', setMenuFolding);
