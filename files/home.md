@@ -7,4 +7,4 @@
 作者：[Tevin](https://github.com/TevinLi/)
 
 项目地址：[https://github.com/TevinLi/amWiki](https://github.com/TevinLi/amWiki)  
-([防墙内地镜像](http://git.oschina.net/TevinLi/amWiki))
+([墙内镜像](http://git.oschina.net/TevinLi/amWiki))
