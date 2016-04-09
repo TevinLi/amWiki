@@ -4,7 +4,6 @@
 /* ---------- custom markdown ---------- */
 .markdown-body{font-size:14px;}
 .markdown-body h1{border-bottom:1px solid #ddd;}
-.markdown-body pre{position:relative;}
 .markdown-body code{padding-top:0.15em;padding-bottom:0.15em;margin:0 1px;font-size:90%;color:#000;background-color:rgba(0,0,0,0.05);}
 .markdown-body code.hljs{color:#333;word-wrap:break-word;white-space:pre-wrap;}
 .markdown-body .hljs-string{color:#183691;}
@@ -15,11 +14,13 @@
 .markdown-body .anchor img{visibility:hidden;}
 .markdown-body h1:hover .anchor img,.markdown-body h2:hover .anchor img,.markdown-body h3:hover .anchor img{visibility:visible;}
 .markdown-body :not(.anchor)>img:hover{outline:rgba(0,0,0,.05) 1px solid;box-shadow:1px 1px 1px rgba(0,0,0,.1);}
-.markdown-body .lang-off-js-comment{position:absolute;top:0;right:0;width:27px;height:27px;color:#ccc;text-align:center;line-height:27px;background:#f0f0f0;cursor:pointer}
+.markdown-body pre{position:relative;}
+.markdown-body .lang-off-js-comment{display:none;position:absolute;top:0;right:0;width:27px;height:27px;color:#ccc;text-align:center;line-height:27px;background:#f0f0f0;cursor:pointer}
+.markdown-body pre:hover .lang-off-js-comment{display:block;}
 .markdown-body .lang-off-js-comment i{position:absolute;top:0;left:0;width:27px;height:27px;font-size:22px;color:#ddd;text-align:center;line-height:27px;}
 .markdown-body .lang-off-js-comment:hover{color:#999;background:#ddd;}
 .markdown-body .lang-off-js-comment:hover i{color:#999;}
-.markdown-body .lang-off-js-comment.on{color:#333;background:#ccc;}
+.markdown-body .lang-off-js-comment.on{display:block;color:#333;background:#ccc;}
 .markdown-body .lang-off-js-comment.on i{color:#f00;}
 
 /* ---------- base ---------- */
@@ -29,7 +30,7 @@ body{background:#e7e8eb !important;min-width:720px;}
 .header{width:100%;height:80px;font-family:'微软雅黑';background:#fff;border-top:#007ed9 6px solid;border-bottom:#c3c4c6 1px solid;}
 .header .header-inner{max-width:1200px;width:100%;height:80px;margin:0 auto;}
 .header .logo{float:left;padding-top:20px;}
-.header .logo img{float:left;margin-left:5px;}
+.header .logo img{float:left;margin-left:5px;max-height:33px;}
 .header .logo b{float:left;max-width:470px;height:33px;margin:0 0 0 3px;padding-left:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:24px;font-weight:normal;color:#666;background:url(../images/point.png) no-repeat left;}
 .header .logo span{float:left;padding:0 3px;margin:1px 0 0 2px;font-size:xx-small;color:#fff;background:#bbbbbb;}
 .header .icon_menu{display:none;}
