@@ -1,5 +1,9 @@
 /**
- * Created by Tevin on 2016/3/22.
+ * amWiki
+ * https://github.com/TevinLi/amWiki
+ * by Tevin
+ *
+ * Released under the MIT license.
  */
 
 $(function () {
@@ -10,7 +14,7 @@ $(function () {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
         var r = window.location.search.substr(1).match(reg);
         if (r != null) {
-            return encodeURIComponent(r[2]);
+            return r[2];
         } else {
             return null;
         }
@@ -124,32 +128,32 @@ $(function () {
     //解析地址参数
     var path = getURLParameter('file');
     if (!path) {
-        path = encodeURI('首页');
+        path = '首页';
     } else {
-        path = decodeURIComponent(path);
+        path = decodeURI(path);
     }
     var setView = function () {
         //console.log(path);
-        if (path == encodeURI('首页')) {
+        if (path == '首页') {
             $menuBar.find('h4').addClass('on');
         } else {
+            var hsLink = false;
             $menuBar.find('a').each(function () {
                 var $this = $(this);
-                var hsLink = false;
-                if (encodeURI($(this).attr('href').split('file=')[1]) == path) {
+                if ($(this).attr('href').split('file=')[1] == path) {
                     hsLink = true;
                     $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
                 } else {
                     $this.removeClass('on');
                 }
-                if (hsLink) {
-                    $menuBar.find('h4').removeClass('on');
-                }
             });
+            if (hsLink) {
+                $menuBar.find('h4').removeClass('on');
+            }
         }
     };
 
-    //设置标题hash
+    //设置文章标题hash
     var $view = $('#view');
     var $titles = null;
     var hash = '';
@@ -165,7 +169,7 @@ $(function () {
             if (hash == text) {
                 if (pageWidth <= 720) {
                     $win.scrollTop($title.offset().top - 55);
-                } else { 
+                } else {
                     $win.scrollTop($title.offset().top);
                 }
             }
@@ -188,9 +192,9 @@ $(function () {
     });
 
     //设置js注释隐藏
-    var setJSCommentDisable = function($elm) {
+    var setJSCommentDisable = function ($elm) {
         var $disBtn = $('<div class="lang-off-js-comment">注<i>/</i></div>');
-        $disBtn.on('click',function(){
+        $disBtn.on('click', function () {
             var $this = $(this);
             if ($this.hasClass('on')) {
                 $this.removeClass('on');
@@ -206,7 +210,7 @@ $(function () {
     //加载页面
     var url;
     if (localStorage.urlEcode == 'encode') {
-        url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
+        url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
     } else if (localStorage.urlEcode == 'decode') {
         url = 'library/' + path + '.md?t=' + (new Date()).getTime();
     }
@@ -226,7 +230,7 @@ $(function () {
         if (localStorage.urlEcode == 'encode') {
             url = 'library/' + path + '.md?t=' + (new Date()).getTime();
         } else if (localStorage.urlEcode == 'decode') {
-            url = 'library/' + encodeURIComponent(path) + '.md?t=' + (new Date()).getTime();
+            url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
         }
         $.get(url, function (data) {
             localStorage.urlEcode = 'decode';

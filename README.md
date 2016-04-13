@@ -99,7 +99,7 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 
 2. PC端使用左侧导航栏、移动端使用右上角导航弹出菜单切换页面。
 
-3. 在导航栏或导航菜单顶部，可以使用 ![](https://raw.githubusercontent.com/TevinLi/amWiki/master/files/icon_filter.png) 栏位对导航目录进行筛选。
+3. 在导航栏或导航菜单顶部，可以使用 ![](http://tevinli.github.io/illustration/amWiki/icon_filter.png) 栏位对导航目录进行筛选。
 
 4. 如果存在页内目录，直接点击，页内目录使用hash滚动；同时您可以直接带hash分享，以方便他人快速浏览指定内容。
 
