@@ -10,11 +10,9 @@
 		<link rel="stylesheet" type="text/css" href="amWiki/css/markdownbody.github.css" />
 		<link rel="stylesheet" type="text/css" href="amWiki/css/lhjs.github-gist.css" />
 		<link rel="stylesheet" type="text/css" href="amWiki/css/amWiki.css" />
-
 	</head>
 
 	<body>
-		
 		<!--header-->
 		<div class="header">
 			<div class="header-inner">
