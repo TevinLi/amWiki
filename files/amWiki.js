@@ -112,47 +112,6 @@ $(function () {
         $filter.val('').trigger('change');
     });
 
-    //读取导航目录
-    $.get('library/$navigation.md', function (data) {
-        $menuBar.html(marked(data));
-        $filter.parent().after('<div class="menu-fold" title="展开/折叠导航栏所有菜单"></div>');
-        $('.menu-fold').on('click', setMenuFolding);
-        setView();
-    }, 'text');
-
-    //urlEcode默认模式
-    if (!localStorage.urlEcode) {
-        localStorage.urlEcode = 'encode';
-    }
-
-    //解析地址参数
-    var path = getURLParameter('file');
-    if (!path) {
-        path = '首页';
-    } else {
-        path = decodeURI(path);
-    }
-    var setView = function () {
-        //console.log(path);
-        if (path == '首页') {
-            $menuBar.find('h4').addClass('on');
-        } else {
-            var hsLink = false;
-            $menuBar.find('a').each(function () {
-                var $this = $(this);
-                if ($(this).attr('href').split('file=')[1] == path) {
-                    hsLink = true;
-                    $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
-                } else {
-                    $this.removeClass('on');
-                }
-            });
-            if (hsLink) {
-                $menuBar.find('h4').removeClass('on');
-            }
-        }
-    };
-
     //设置文章标题hash
     var $view = $('#view');
     var $titles = null;
@@ -207,33 +166,82 @@ $(function () {
         $elm.prepend($disBtn);
     };
 
+    //读取导航目录
+    $.get('library/$navigation.md', function (data) {
+        $menuBar.html(marked(data));
+        $filter.parent().after('<div class="menu-fold" title="展开/折叠导航栏所有菜单"></div>');
+        $('.menu-fold').on('click', setMenuFolding);
+        setView();
+    }, 'text');
+
+    //urlEcode模式
+    if (!localStorage.urlEcode) {
+        localStorage.urlEcode = 'utf8';
+    } else if (localStorage.urlEcode != 'utf8' && localStorage.urlEcode != 'gbk') {
+        localStorage.urlEcode = 'utf8';
+    }
+
+    //解析地址参数
+    var path = getURLParameter('file');
+    if (!path) {
+        path = '首页';
+    } else {
+        path = decodeURI(path);
+    }
+    var setView = function () {
+        //console.log(path);
+        if (path == '首页') {
+            $menuBar.find('h4').addClass('on');
+        } else {
+            var hsLink = false;
+            $menuBar.find('a').each(function () {
+                var $this = $(this);
+                if ($(this).attr('href').split('file=')[1] == path) {
+                    hsLink = true;
+                    $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
+                } else {
+                    $this.removeClass('on');
+                }
+            });
+            if (hsLink) {
+                $menuBar.find('h4').removeClass('on');
+            }
+        }
+    };
+
     //加载页面
     var url;
-    if (localStorage.urlEcode == 'encode') {
+    if (localStorage.urlEcode == 'utf8') {
         url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
-    } else if (localStorage.urlEcode == 'decode') {
-        url = 'library/' + path + '.md?t=' + (new Date()).getTime();
+    } else if (localStorage.urlEcode == 'gbk') {
+        url = 'library/' + GBK.encode(path.split('/')[0]);
+        if (path.split('/').length > 1) {
+            url += '/' + GBK.encode(path.split('/')[1]);
+        }
+        url += '.md?t=' + (new Date()).getTime();
     }
-    $.get(url, function (data) {
-        $view.html(marked(data)).find('pre code').each(function (i, block) {
-            var $elm = $(block);
-            var className = $elm.attr('class') || '';
-            if (className.indexOf('lang') >= 0) {
-                hljs.highlightBlock(block);
+    var loadPage = function (count) {
+        if (count == 2) {
+            if (localStorage.urlEcode == 'utf8') {
+                url = 'library/' + GBK.encode(path.split('/')[0]);
+                if (path.split('/').length > 1) {
+                    url += '/' + GBK.encode(path.split('/')[1]);
+                }
+                url += '.md?t=' + (new Date()).getTime();
+            } else if (localStorage.urlEcode == 'gbk') {
+                url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
             }
-            if (className.indexOf('javascript') >= 0) {
-                setJSCommentDisable($elm);
-            }
-        });
-        setTitleAnchor();
-    }, 'text').fail(function () {
-        if (localStorage.urlEcode == 'encode') {
-            url = 'library/' + path + '.md?t=' + (new Date()).getTime();
-        } else if (localStorage.urlEcode == 'decode') {
-            url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
+        } else if (count == 3) {
+            location.search = '?file=首页';
+            return;
         }
         $.get(url, function (data) {
-            localStorage.urlEcode = 'decode';
+            if (/^\s*<!(DOCTYPE|doctype)/.test(data)) {
+                return loadPage(++count);
+            }
+            if (count == 2) {
+                localStorage.urlEcode = localStorage.urlEcode == 'utf8' ? 'gbk' : 'utf8';
+            }
             $view.html(marked(data)).find('pre code').each(function (i, block) {
                 var $elm = $(block);
                 var className = $elm.attr('class') || '';
@@ -246,8 +254,9 @@ $(function () {
             });
             setTitleAnchor();
         }, 'text').fail(function () {
-            location.search = '?file=首页';
+            return loadPage(++count);
         });
-    });
+    };
+    loadPage(1);
 
 });
