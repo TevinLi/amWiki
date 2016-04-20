@@ -166,6 +166,33 @@ $(function () {
         $elm.prepend($disBtn);
     };
 
+    //解析流程图
+    var createFlowChart = function ($elm) {
+        var code = $elm.text();
+        $elm.text('');
+        var id = 'flowChart' + parseInt(Math.random() * 500);
+        $elm.attr('id', id);
+        var chart = flowchart.parse(code);
+        chart.drawSVG(id, {
+            'line-width': 1.3,
+            'line-length': 30,
+            'line-color': '#666',
+            'text-margin': 10,
+            'font-size': 14,
+            'font': 'normal',
+            'font-family': 'Helvetica',
+            'font-weight': 'normal',
+            'font-color': 'black',
+            'element-color': '#888',
+            'fill': '#fff',
+            'yes-text': '是',
+            'no-text': '否',
+            'arrow-end': 'block-wide-long',
+            'symbols': {},
+            'flowstate': {}
+        });
+    };
+
     //读取导航目录
     $.get('library/$navigation.md', function (data) {
         $menuBar.html(marked(data));
@@ -232,7 +259,11 @@ $(function () {
                 url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
             }
         } else if (count == 3) {
-            location.search = '?file=首页';
+            if (getURLParameter('count') == 2) {
+                return
+            } else {
+                location.search = '?file=首页&count=2';
+            }
             return;
         }
         $.get(url, function (data) {
@@ -242,12 +273,18 @@ $(function () {
             if (count == 2) {
                 localStorage.urlEcode = localStorage.urlEcode == 'utf8' ? 'gbk' : 'utf8';
             }
-            $view.html(marked(data)).find('pre code').each(function (i, block) {
-                var $elm = $(block);
+            $view.html(marked(data)).find('pre code').each(function (i, element) {
+                var $elm = $(element);
                 var className = $elm.attr('class') || '';
-                if (className.indexOf('lang') >= 0) {
-                    hljs.highlightBlock(block);
+                //流程图
+                if (className.indexOf('lang-flow') >= 0) {
+                    createFlowChart($elm)
                 }
+                //语法高亮
+                else if (className.indexOf('lang') >= 0) {
+                    hljs.highlightBlock(element);
+                }
+                //js注释开关
                 if (className.indexOf('javascript') >= 0) {
                     setJSCommentDisable($elm);
                 }

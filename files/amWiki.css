@@ -8,6 +8,7 @@
 .markdown-body code.hljs{color:#333;word-wrap:break-word;white-space:pre-wrap;}
 .markdown-body .hljs-string{color:#183691;}
 .markdown-body .hljs-built_in{color:#0086b3;}
+.markdown-body code.lang-flow svg{max-width:100%;margin-top:-10px;}
 .markdown-body .anchor{margin-right:2px;margin-left:-20px;}
 .markdown-body blockquote{padding:8px 15px;background-color:#fafafa;}
 .markdown-body .anchor{padding-top:10px;margin-top:-10px;}
