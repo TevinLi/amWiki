@@ -216,7 +216,6 @@ $(function () {
         path = decodeURI(path);
     }
     var setView = function () {
-        //console.log(path);
         if (path == '首页') {
             $menuBar.find('h4').addClass('on');
         } else {
@@ -259,12 +258,13 @@ $(function () {
                 url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
             }
         } else if (count == 3) {
-            if (getURLParameter('count') == 2) {
+            //防止意外跳转循环
+            if (getURLParameter('jump') == 2) {
                 return
             } else {
-                location.search = '?file=首页&count=2';
+                location.search = '?file=首页&jump=2';
+                return;
             }
-            return;
         }
         $.get(url, function (data) {
             if (/^\s*<!(DOCTYPE|doctype)/.test(data)) {
@@ -290,6 +290,8 @@ $(function () {
                 }
             });
             setTitleAnchor();
+            //接口ajax测试
+            window.createTesting && createTesting();
         }, 'text').fail(function () {
             return loadPage(++count);
         });

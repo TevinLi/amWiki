@@ -33,9 +33,43 @@
 				</div>
 				<div class="menubar" id="menuBar"></div>
 			</div>
-			<div class="main">
+			<div class="main" id="main">
 				<div class="markdown-body" id="view"></div>
+				<div class="testing-box" id="testingBox">
+					<h2 class="testing-title">请求内容</h2>
+					<div class="testing-send">
+						<input class="testing-send-url" id="testingSendUrl" type="text" />
+						<select class="testing-send-type" id="testingSendType">
+							<option value="GET">GET</option>
+							<option value="POST">POST</option>
+						</select>
+						<h3>参数列表：</h3>
+						<ul class="testing-params" id="testingParam"></ul>
+						<script id="templateFormList" type="text/html">
+							<li>
+								<span>{{describe}}</span>
+								<input class="testing-param-key" type="text" value="{{keyName}}" placeholder="参数名" />&nbsp;&nbsp;
+								<input class="testing-param-val" type="text" value="{{default}}" placeholder="请输入参数值 ({{valueType}})" {{required}}/>
+								<big>*</big>
+							</li>
+						</script>
+						<div class="testing-btn">
+							<button id="testingBtnSend">发送Ajax</button> &nbsp;|&nbsp;
+							<button id="testingBtnAdd">增加参数</button>
+							<button id="testingBtnReset">重置参数值</button>
+						</div>
+					</div>
+					<h2 class="testing-title">响应内容</h2>
+					<div class="testing-response">
+						<div id="testingResponse"></div>
+					</div>
+				</div>
 			</div>
+		</div>
+		<!-- backTop -->
+		<div class="back-top">
+			<a href="#" class="back-icon"></a>
+			<a href="#" class="back-text">返回顶部</a>
 		</div>
 		<script type="text/javascript" src="amWiki/js/forEach.js"></script>
 		<script type="text/javascript" src="amWiki/js/gbk.js"></script>
@@ -44,6 +78,7 @@
 		<script type="text/javascript" src="amWiki/js/highlight.min.js"></script>
 		<script type="text/javascript" src="amWiki/js/raphael-min.js"></script>
 		<script type="text/javascript" src="amWiki/js/flowchart.min.js"></script>
+		{{amWiki-testing.js}}
 		<script type="text/javascript" src="amWiki/js/amWiki.js"></script>
 	</body>
 
