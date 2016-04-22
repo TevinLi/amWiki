@@ -97,8 +97,8 @@ body{background:#e7e8eb;}
 .testing-params li em{display:none;width:20%;margin-top:0;padding:0 3px;font-style:normal;line-height:28px;color:red;}
 .testing-btn{height:30px;padding:20px 0 40px;}
 .testing-btn button{height:30px;padding:0 10px;margin:0 2px;line-height:30px;}
-#testingBtnSend{margin-left:0px;padding:0 20px;}
-#testingResponse{margin-top:10px;padding:10px;}
+.testing-btn-send{margin-left:0px;padding:0 20px;}
+.testing-response{padding:20px 10px 10px;}
 
 /* ---------- backTop ---------- */
 .back-top{height:40px;width:40px;position:fixed;bottom:100px;right:7px;background:#f4f5f9;border:1px solid #ccc;}

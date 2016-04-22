@@ -54,14 +54,14 @@
 							</li>
 						</script>
 						<div class="testing-btn">
-							<button id="testingBtnSend">发送Ajax</button> &nbsp;|&nbsp;
+							<button id="testingBtnSend" class="testing-btn-send">发送Ajax</button> &nbsp;|&nbsp;
 							<button id="testingBtnAdd">增加参数</button>
 							<button id="testingBtnReset">重置参数值</button>
 						</div>
 					</div>
 					<h2 class="testing-title">响应内容</h2>
 					<div class="testing-response">
-						<div id="testingResponse"></div>
+						<iframe id="testingResponse" width="100%" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" framespacing="0"></iframe>
 					</div>
 				</div>
 			</div>
