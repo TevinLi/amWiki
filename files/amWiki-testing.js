@@ -1,9 +1,4 @@
 /**
- * Created by Tevin on 2016/4/21.
- */
-
-
-/**
  * amWiki-testing
  * by Tevin
  *
@@ -113,6 +108,7 @@ var createTesting = function () {
     });
 
     //提交
+    var $frame = $('#testingResponse');
     $('#testingBtnSend').on('click', function () {
         var param = null;
         if ($testingParam.find('input').length > 0) {
@@ -121,17 +117,25 @@ var createTesting = function () {
                 param[$(this).find('.testing-param-key').val()] = $(this).find('.testing-param-val').val();
             });
         }
+        $frame[0].contentWindow.location.reload();
         $.ajax({
             type: $('#testingSendType').val(),
             url: $('#testingSendUrl').val(),
             data: param,
             dataType: 'text',
             success: function (data) {
-                console.log(data)
-                $('#testingResponse').html(data);
+                var $frameBody = $($frame[0].contentWindow.document).find('body');
+                $frameBody[0].innerHTML = data;
+                setTimeout(function () {
+                    $frame.height($frameBody.height());
+                }, 100);
             },
             error: function (err) {
-                $('#testingResponse').html(err.responseText);
+                var $frameBody = $($frame[0].contentWindow.document).find('body');
+                $frameBody[0].innerHTML = err.responseText;
+                setTimeout(function () {
+                    $frame.height($frameBody.height());
+                }, 100);
             }
         });
     });
