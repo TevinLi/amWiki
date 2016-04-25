@@ -54,9 +54,29 @@
 							</li>
 						</script>
 						<div class="testing-btn">
-							<button id="testingBtnSend" class="testing-btn-send">发送Ajax</button> &nbsp;|&nbsp;
+							<button class="testing-btn-send" id="testingBtnSend">发送Ajax</button> &nbsp;|&nbsp;
 							<button id="testingBtnAdd">增加参数</button>
 							<button id="testingBtnReset">重置参数值</button>
+						</div>
+						<div class="testing-btn2">
+							<hr>
+							<div class="testing-btn-param" id="testingBtnGParam">[<span>设置全局参数</span>]</div>
+							<div class="testing-global">
+								<div class="testing-global-param"><i class="close">&times;</i>
+									<h4>全局参数列表</h4>
+									<ul id="testingGlobalParam"></ul>
+									<script id="templateGlobalParam" type="text/html">
+										<li><i>&times;</i>
+											描述：<input type="text" placeholder="describe" value="{{describe}}"><br>
+											参数名：<input type="text" placeholder="key-name" value="{{keyName}}"><br>
+											参数值：<input type="text" placeholder="value" value="{{value}}">
+										</li>
+									</script>
+									<div class="btn">
+										<button class="add">增加</button>&#12288;|&#12288;<button class="save">保 存</button>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<h2 class="testing-title">响应内容</h2>

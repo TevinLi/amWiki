@@ -60,7 +60,7 @@ var createTesting = function () {
         }
     }
 
-    //显示隐藏测试面板
+    //显示隐藏面板
     var $testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');
     $('#main').append($testingShow);
     var $testingBox = $('#testingBox');
@@ -78,13 +78,13 @@ var createTesting = function () {
         }
     });
 
-    //测试面板基本
+    //面板基本
     var $testingParam = $('#testingParam');
     $('#testingBtnReset').on('click', function () {
         $testingParam.find('.testing-param-val').val('');
     });
 
-    //填充数据
+    //填充参数列表数据
     $('#testingSendUrl').val(request.url);
     $('#testingSendType').find('option[value="' + request.method + '"]').prop('selected', true);
     var template = $('#templateFormList').text();
@@ -107,7 +107,7 @@ var createTesting = function () {
             .replace('{{required}}', ''));
     });
 
-    //提交
+    //提交请求
     var $frame = $('#testingResponse');
     $('#testingBtnSend').on('click', function () {
         var param = null;
@@ -116,6 +116,11 @@ var createTesting = function () {
             $testingParam.find('li').each(function () {
                 param[$(this).find('.testing-param-key').val()] = $(this).find('.testing-param-val').val();
             });
+        }
+        if (gParams.length > 0) {
+            for (var i = 0; i < gParams.length; i++) {
+                param[gParams[i].keyName] = gParams[i].value;
+            }
         }
         $frame[0].contentWindow.location.reload();
         $.ajax({
@@ -138,6 +143,56 @@ var createTesting = function () {
                 }, 100);
             }
         });
+    });
+
+    //全局参数
+    var gParams = [];
+    var gParamTmpl = $('#templateGlobalParam').text();
+    var $testingGlobalParam = $('#testingGlobalParam');
+    var $testingGlobal = $('#testingGlobal');
+    $('#testingBtnGParam').on('click', function () {
+        $testingGlobalParam.html('');
+        gParams = JSON.parse(localStorage['amWikiGlobalParam'] || '[]');
+        if (gParams.length == 0) {
+            $testingGlobalParam.append('<li data-type="empty">无</li>');
+        } else {
+            for (var p = 0; p < gParams.length; p++) {
+                $testingGlobalParam.append(gParamTmpl.replace('{{describe}}', gParams[p].describe)
+                    .replace('{{keyName}}', gParams[p].keyName)
+                    .replace('{{value}}', gParams[p].value));
+            }
+        }
+        $testingGlobal.show();
+    });
+    $testingGlobal.find('.close').on('click', function () {
+        $testingGlobal.hide();
+    });
+    $testingGlobal.find('.add').on('click', function () {
+        $testingGlobalParam.find('[data-type="empty"]').remove();
+        $testingGlobalParam.append(gParamTmpl.replace('{{describe}}', '')
+            .replace('{{keyName}}', '')
+            .replace('{{value}}', ''));
+    });
+    $testingGlobal.find('.save').on('click', function () {
+        gParams.length = 0;
+        $testingGlobalParam.find('li').each(function (i, elment) {
+            var $inputs = $(this).find('input');
+            if ($inputs.eq(1).val()) {
+                gParams.push({
+                    describe: $inputs.eq(0).val(),
+                    keyName: $inputs.eq(1).val(),
+                    value: $inputs.eq(2).val()
+                });
+            }
+        });
+        localStorage['amWikiGlobalParam'] = JSON.stringify(gParams);
+        $testingGlobal.hide();
+    });
+    $testingGlobalParam.on('click', 'i', function () {
+        $(this).parent().remove();
+        if ($testingGlobalParam.find('li').length == 0) {
+            $testingGlobalParam.append('<li data-type="empty">无</li>');
+        }
     });
 
 
