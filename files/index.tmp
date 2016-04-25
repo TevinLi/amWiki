@@ -61,7 +61,7 @@
 						<div class="testing-btn2">
 							<hr>
 							<div class="testing-btn-param" id="testingBtnGParam">[<span>设置全局参数</span>]</div>
-							<div class="testing-global">
+							<div class="testing-global" id="testingGlobal">
 								<div class="testing-global-param"><i class="close">&times;</i>
 									<h4>全局参数列表</h4>
 									<ul id="testingGlobalParam"></ul>
