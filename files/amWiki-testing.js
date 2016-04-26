@@ -130,14 +130,24 @@ var createTesting = function () {
             dataType: 'text',
             success: function (data) {
                 var $frameBody = $($frame[0].contentWindow.document).find('body');
+                $frameBody.css('wordBreak', 'break-all');
                 $frameBody[0].innerHTML = data;
                 setTimeout(function () {
                     $frame.height($frameBody.height());
                 }, 100);
             },
-            error: function (err) {
+            error: function (xhr, textStatus) {
                 var $frameBody = $($frame[0].contentWindow.document).find('body');
-                $frameBody[0].innerHTML = err.responseText;
+                $frameBody.css('wordBreak', 'break-all');
+                if (xhr.readyState == 0) {
+                    $frameBody[0].innerHTML = '错误，请求未发送！<br><br><div style="font-size:13px;">可能是因为：<ul>' +
+                        '<li>请求了跨域地址</li>' +
+                        '<li>接口被302重定向到跨域地址</li>' +
+                        '<li>其他原因</li>' +
+                        '</ul></div>'
+                } else {
+                    $frameBody[0].innerHTML = xhr.responseText;
+                }
                 setTimeout(function () {
                     $frame.height($frameBody.height());
                 }, 100);
@@ -146,7 +156,7 @@ var createTesting = function () {
     });
 
     //全局参数
-    var gParams = [];
+    var gParams = JSON.parse(localStorage['amWikiGlobalParam'] || '[]');
     var gParamTmpl = $('#templateGlobalParam').text();
     var $testingGlobalParam = $('#testingGlobalParam');
     var $testingGlobal = $('#testingGlobal');
