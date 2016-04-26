@@ -8,6 +8,7 @@
 var createTesting = function () {
 
     var request = {};
+
     //抓取请求地址
     var $urlAnchor = $('[name="请求地址"]');
     if ($urlAnchor.length == 0) {
@@ -20,6 +21,7 @@ var createTesting = function () {
             request.url = 'http://' + location.host + '/' + request.url;
         }
     }
+
     //抓取请求类型
     var $metAnchor = $('[name="请求类型"]');
     if ($metAnchor.length == 0) {
@@ -30,6 +32,7 @@ var createTesting = function () {
             request.method = 'POST';
         }
     }
+
     //抓取请求参数
     var $parAnchor = $('[name="请求参数"]');
     if ($parAnchor.length == 0) {
@@ -107,7 +110,7 @@ var createTesting = function () {
             .replace('{{required}}', ''));
     });
 
-    //提交请求
+    //发送请求
     var $frame = $('#testingResponse');
     $('#testingBtnSend').on('click', function () {
         var param = null;
@@ -131,7 +134,12 @@ var createTesting = function () {
             success: function (data) {
                 var $frameBody = $($frame[0].contentWindow.document).find('body');
                 $frameBody.css('wordBreak', 'break-all');
-                $frameBody[0].innerHTML = data;
+                if (/^\s*\{[\s\S]*\}\s*$/.test(data)) {
+                    //json则格式化
+                    $frameBody[0].innerHTML = '<pre>' + formatJson(data) + '<pre>';
+                } else {
+                    $frameBody[0].innerHTML = data;
+                }
                 setTimeout(function () {
                     $frame.height($frameBody.height());
                 }, 100);
@@ -155,7 +163,7 @@ var createTesting = function () {
         });
     });
 
-    //全局参数
+    //全局参数模块
     var gParams = JSON.parse(localStorage['amWikiGlobalParam'] || '[]');
     var gParamTmpl = $('#templateGlobalParam').text();
     var $testingGlobalParam = $('#testingGlobalParam');
@@ -205,5 +213,74 @@ var createTesting = function () {
         }
     });
 
+    //json格式化
+    var formatJson = function (str) {
+        var json = decodeURI(str);
+        var reg = null,
+            formatted = '',
+            pad = 0,
+            PADDING = '    ';
+        // optional settings
+        var options = {};
+        // remove newline where '{' or '[' follows ':'
+        options.newlineAfterColonIfBeforeBraceOrBracket = (options.newlineAfterColonIfBeforeBraceOrBracket === true) ? true : false;
+        // use a space after a colon
+        options.spaceAfterColon = (options.spaceAfterColon === false) ? false : true;
+        // begin formatting...
+        if (typeof json !== 'string') {
+            // make sure we start with the JSON as a string
+            json = JSON.stringify(json);
+        } else {
+            // is already a string, so parse and re-stringify in order to remove extra whitespace
+            json = JSON.parse(json);
+            json = JSON.stringify(json);
+        }
+        // add newline before and after curly braces
+        reg = /([\{\}])/g;
+        json = json.replace(reg, '\r\n$1\r\n');
+        // add newline before and after square brackets
+        reg = /([\[\]])/g;
+        json = json.replace(reg, '\r\n$1\r\n');
+        // add newline after comma
+        reg = /(\,)/g;
+        json = json.replace(reg, '$1\r\n');
+        // remove multiple newlines
+        reg = /(\r\n\r\n)/g;
+        json = json.replace(reg, '\r\n');
+        // remove newlines before commas
+        reg = /\r\n\,/g;
+        json = json.replace(reg, ',');
+        // optional formatting...
+        if (!options.newlineAfterColonIfBeforeBraceOrBracket) {
+            reg = /\:\r\n\{/g;
+            json = json.replace(reg, ':{');
+            reg = /\:\r\n\[/g;
+            json = json.replace(reg, ':[');
+        }
+        if (options.spaceAfterColon) {
+            reg = /\:/g;
+            json = json.replace(reg, ': ');
+        }
+        $.each(json.split('\r\n'), function (index, node) {
+            var i = 0,
+                indent = 0,
+                padding = '';
+            if (node.match(/\{$/) || node.match(/\[$/)) {
+                indent = 1;
+            } else if (node.match(/\}/) || node.match(/\]/)) {
+                if (pad !== 0) {
+                    pad -= 1;
+                }
+            } else {
+                indent = 0;
+            }
+            for (i = 0; i < pad; i++) {
+                padding += PADDING;
+            }
+            formatted += padding + node + '\r\n';
+            pad += indent;
+        });
+        return formatted;
+    }
 
 };
