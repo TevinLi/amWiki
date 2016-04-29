@@ -223,9 +223,9 @@ var createTesting = function () {
         // optional settings
         var options = {};
         // remove newline where '{' or '[' follows ':'
-        options.newlineAfterColonIfBeforeBraceOrBracket = (options.newlineAfterColonIfBeforeBraceOrBracket === true) ? true : false;
+        options.newlineAfterColonIfBeforeBraceOrBracket = options.newlineAfterColonIfBeforeBraceOrBracket === true;
         // use a space after a colon
-        options.spaceAfterColon = (options.spaceAfterColon === false) ? false : true;
+        options.spaceAfterColon = options.spaceAfterColon !== false;
         // begin formatting...
         if (typeof json !== 'string') {
             // make sure we start with the JSON as a string
@@ -258,8 +258,8 @@ var createTesting = function () {
             json = json.replace(reg, ':[');
         }
         if (options.spaceAfterColon) {
-            reg = /\:/g;
-            json = json.replace(reg, ': ');
+            reg = /"\s*\:/g;
+            json = json.replace(reg, '": ');
         }
         $.each(json.split('\r\n'), function (index, node) {
             var i = 0,
