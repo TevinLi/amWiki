@@ -136,7 +136,7 @@ var createTesting = function () {
                 $frameBody.css('wordBreak', 'break-all');
                 if (/^\s*\{[\s\S]*\}\s*$/.test(data)) {
                     //json则格式化
-                    $frameBody[0].innerHTML = '<pre>' + formatJson(data) + '<pre>';
+                    $frameBody[0].innerHTML = '<pre style="white-space:pre-wrap;word-break:break-all;">' + formatJson(data) + '<pre>';
                 } else {
                     $frameBody[0].innerHTML = data;
                 }
