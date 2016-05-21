@@ -38,8 +38,8 @@
 				<div class="testing-box" id="testingBox">
 					<h2 class="testing-title">请求内容</h2>
 					<div class="testing-send">
-						<input class="testing-send-url" id="testingSendUrl" type="text" />
-						<select class="testing-send-type" id="testingSendType">
+						<input class="testing-send-url" id="testingSendUrl" type="text" title="请求地址" />
+						<select class="testing-send-type" id="testingSendType" title="请求类型">
 							<option value="GET">GET</option>
 							<option value="POST">POST</option>
 						</select>
@@ -48,7 +48,7 @@
 						<script id="templateFormList" type="text/html">
 							<li>
 								<span>{{describe}}</span>
-								<input class="testing-param-key" type="text" value="{{keyName}}" placeholder="参数名" />&nbsp;&nbsp;
+								<input class="testing-param-key" type="text" value="{{keyName}}" placeholder="参数名" title="参数名" />&nbsp;&nbsp;
 								<input class="testing-param-val" type="text" value="{{default}}" placeholder="请输入参数值 ({{valueType}})" {{required}}/>
 								<big>*</big>
 							</li>
