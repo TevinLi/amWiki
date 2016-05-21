@@ -93,24 +93,24 @@ module.exports =
     thefile = new File(editor.getPath())
 
     if thefile.getParent().getParent().getBaseName() is 'library'
-      assetsDirPath = thefile.getParent().getParent().getParent().getPath() + "/assets"
-      creatDirPath = assetsDirPath + '/' + thefile.getParent().getBaseName()
-      writePath = assetsDirPath + '/' + thefile.getParent().getBaseName() + '/'
-      insertPath = thefile.getParent().getBaseName() + '/'
+      parentDir = thefile.getParent()
+      assetsDirPath = parentDir.getParent().getParent().getPath() + "/assets"
+      creatDirPath = assetsDirPath + '/' + parentDir.getBaseName().split('-')[0]
+      writePath = assetsDirPath + '/' + parentDir.getBaseName().split('-')[0] + '/'
+      insertPath = parentDir.getBaseName().split('-')[0] + '/'
+    else if thefile.getParent().getBaseName() is 'library'
+      assetsDirPath = thefile.getParent().getParent().getPath() + "/assets"
+      creatDirPath = assetsDirPath + '/'
+      writePath = assetsDirPath + '/'
+      insertPath = ''
     else
-      if thefile.getParent().getBaseName() is 'library'
-        assetsDirPath = thefile.getParent().getParent().getPath() + "/assets"
-        creatDirPath = assetsDirPath + '/'
-        writePath = assetsDirPath + '/'
-        insertPath = ''
-      else
-        return
+      return
 
     crypto = require "crypto"
     md5 = crypto.createHash 'md5'
     md5.update(imgbuffer)
 
-    filename = "#{thefile.getBaseName().replace(/\.\w+$/, '').replace(/\s+/g, '')}-#{md5.digest('hex').slice(0, 5)}.png"
+    filename = "#{thefile.getBaseName().replace(/\.\w+$/, '').replace(/\s+/g, '').split('-')[0]}-#{md5.digest('hex').slice(0, 8)}.png"
 
     @createDirectory creatDirPath, ()=>
       @writePng writePath, filename, imgbuffer, ()=>
