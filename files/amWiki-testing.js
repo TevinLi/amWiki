@@ -44,26 +44,29 @@ var createTesting = function () {
             request.param = [];
             $parAnchor.parent().next('table').find('tbody').find('tr').each(function (i, element) {
                 var $tds = $(this).find('td');
-                request.param[i] = {
+                var param = {
                     keyName: $tds.eq(0).text().replace(/^\s+|\s+$/g, ''),
                     valueType: $tds.eq(1).text().replace(/^\s+|\s+$/g, ''),
                     required: $tds.eq(2).text().replace(/^\s+|\s+$/g, ''),
                     describe: $tds.eq(3).text().replace(/^\s+|\s+$/g, ''),
                     default: $tds.eq(4).text().replace(/^\s+|\s+$/g, '')
                 };
-                if (request.param[i].required == '是' || request.param[i].required == 'yes' || request.param[i].required == 'true') {
-                    request.param[i].required = 'required';
-                } else {
-                    request.param[i].required = '';
-                }
-                if (request.param[i].default == '-' || request.param[i].default == '无' || request.param[i].default == 'Null') {
-                    request.param[i].default = '';
+                if (param.keyName != '无' && param.keyName != '-'&& param.keyName != '') {
+                    if (param.required == '是' || param.required == 'yes' || param.required == 'true') {
+                        param.required = 'required';
+                    } else {
+                        param.required = '';
+                    }
+                    if (param.default == '-' || param.default == '无' || param.default == 'Null') {
+                        param.default = '';
+                    }
+                    request.param.push(param);
                 }
             });
         }
     }
 
-    //显示隐藏面板
+    //显示隐藏测试面板
     var $testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');
     $('#main').append($testingShow);
     var $testingBox = $('#testingBox');
@@ -112,7 +115,9 @@ var createTesting = function () {
 
     //发送请求
     var $frame = $('#testingResponse');
+    var $duration = $('#testingDuration');
     $('#testingBtnSend').on('click', function () {
+        $duration.text('');
         var param = null;
         if ($testingParam.find('input').length > 0) {
             param = {};
@@ -126,12 +131,14 @@ var createTesting = function () {
             }
         }
         $frame[0].contentWindow.location.reload();
+        var startTime = Date.now();
         $.ajax({
             type: $('#testingSendType').val(),
             url: $('#testingSendUrl').val(),
             data: param,
             dataType: 'text',
             success: function (data) {
+                $duration.text('耗时：' + (Date.now() - startTime) + ' ms');
                 var $frameBody = $($frame[0].contentWindow.document).find('body');
                 $frameBody.css('wordBreak', 'break-all');
                 if (/^\s*\{[\s\S]*\}\s*$/.test(data)) {
@@ -145,6 +152,7 @@ var createTesting = function () {
                 }, 100);
             },
             error: function (xhr, textStatus) {
+                $duration.text('耗时：' + (Date.now() - startTime) + ' ms');
                 var $frameBody = $($frame[0].contentWindow.document).find('body');
                 $frameBody.css('wordBreak', 'break-all');
                 if (xhr.readyState == 0) {

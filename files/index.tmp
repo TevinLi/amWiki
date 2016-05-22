@@ -60,7 +60,7 @@
 						</div>
 						<div class="testing-btn2">
 							<hr>
-							<div class="testing-btn-param" id="testingBtnGParam">[<span>设置全局参数</span>]</div>
+							<div class="testing-btn-param" id="testingBtnGParam" title="全局参数将影响所有接口">[<span>设置全局参数</span>]</div>
 							<div class="testing-global" id="testingGlobal">
 								<div class="testing-global-param"><i class="close">&times;</i>
 									<h4>全局参数列表</h4>
@@ -79,7 +79,7 @@
 							</div>
 						</div>
 					</div>
-					<h2 class="testing-title">响应内容</h2>
+					<h2 class="testing-title">响应内容<small id="testingDuration"></small></h2>
 					<div class="testing-response">
 						<iframe id="testingResponse" width="100%" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" framespacing="0"></iframe>
 					</div>
