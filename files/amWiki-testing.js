@@ -125,7 +125,7 @@ var createTesting = function () {
                 param[$(this).find('.testing-param-key').val()] = $(this).find('.testing-param-val').val();
             });
         }
-        if (gParams.length > 0) {
+        if (gParams.length > 0 && gParamsWorking) {
             for (var i = 0; i < gParams.length; i++) {
                 param[gParams[i].keyName] = gParams[i].value;
             }
@@ -179,6 +179,7 @@ var createTesting = function () {
     var gParamTmpl = $('#templateGlobalParam').text();  //全局参数模板
     var $testingGlobalParam = $('#testingGlobalParam');  //全局参数显示容器
     var $testingGlobal = $('#testingGlobal');  //全局参数弹窗
+    var gParamsWorking = (localStorage['amWikiGParamWorking'] || 'on') == 'on';  //全局参数是否工作
     //显示弹窗
     $('#testingBtnGParam').on('click', function () {
         $testingGlobalParam.html('');
@@ -232,6 +233,17 @@ var createTesting = function () {
             $testingGlobalParam.append('<li data-type="empty">无</li>');
         }
     });
+    $('#testingGlobalWorking').on('click', function(){
+        if (gParamsWorking) {
+            gParamsWorking = false;
+            localStorage['amWikiGParamWorking'] = 'off';
+            $(this).addClass('off');
+        } else {
+            gParamsWorking = true;
+            localStorage['amWikiGParamWorking'] = 'on';
+            $(this).removeClass('off');
+        }
+    }).addClass(gParamsWorking ? '' : 'off');
 
     //json格式化
     var formatJson = function (str) {
