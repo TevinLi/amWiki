@@ -84,7 +84,7 @@ var createTesting = function () {
         }
     });
 
-    //面板基本
+    //面板重置
     var $testingParam = $('#testingParam');
     $('#testingBtnReset').on('click', function () {
         $testingParam.find('.testing-param-val').val('');
@@ -155,6 +155,7 @@ var createTesting = function () {
                 $duration.text('耗时：' + (Date.now() - startTime) + ' ms');
                 var $frameBody = $($frame[0].contentWindow.document).find('body');
                 $frameBody.css('wordBreak', 'break-all');
+                //根据readyState简单判断跨域
                 if (xhr.readyState == 0) {
                     $frameBody[0].innerHTML = '错误，请求未发送！<br><br><div style="font-size:13px;">可能是因为：<ul>' +
                         '<li>请求了跨域地址</li>' +
@@ -171,11 +172,14 @@ var createTesting = function () {
         });
     });
 
-    //全局参数模块
-    var gParams = JSON.parse(localStorage['amWikiGlobalParam'] || '[]');
-    var gParamTmpl = $('#templateGlobalParam').text();
-    var $testingGlobalParam = $('#testingGlobalParam');
-    var $testingGlobal = $('#testingGlobal');
+    /**
+     * 全局参数模块
+     */
+    var gParams = JSON.parse(localStorage['amWikiGlobalParam'] || '[]');  //全局参数
+    var gParamTmpl = $('#templateGlobalParam').text();  //全局参数模板
+    var $testingGlobalParam = $('#testingGlobalParam');  //全局参数显示容器
+    var $testingGlobal = $('#testingGlobal');  //全局参数弹窗
+    //显示弹窗
     $('#testingBtnGParam').on('click', function () {
         $testingGlobalParam.html('');
         gParams = JSON.parse(localStorage['amWikiGlobalParam'] || '[]');
@@ -190,30 +194,38 @@ var createTesting = function () {
         }
         $testingGlobal.show();
     });
-    $testingGlobal.find('.close').on('click', function () {
-        $testingGlobal.hide();
+    //基本操作
+    $testingGlobal.on('click', function (e) {
+        var $elm = $(e.target);
+        //关闭
+        if ($elm.hasClass('close') || $elm.hasClass('testing-global')) {
+            $testingGlobal.hide();
+        }
+        //新增
+        else if ($elm.hasClass('add')) {
+            $testingGlobalParam.find('[data-type="empty"]').remove();
+            $testingGlobalParam.append(gParamTmpl.replace('{{describe}}', '')
+                .replace('{{keyName}}', '')
+                .replace('{{value}}', ''));
+        }
+        //保存
+        else if ($elm.hasClass('save')) {
+            gParams.length = 0;
+            $testingGlobalParam.find('li').each(function (i, elment) {
+                var $inputs = $(this).find('input');
+                if ($inputs.eq(1).val()) {
+                    gParams.push({
+                        describe: $inputs.eq(0).val(),
+                        keyName: $inputs.eq(1).val(),
+                        value: $inputs.eq(2).val()
+                    });
+                }
+            });
+            localStorage['amWikiGlobalParam'] = JSON.stringify(gParams);
+            $testingGlobal.hide();
+        }
     });
-    $testingGlobal.find('.add').on('click', function () {
-        $testingGlobalParam.find('[data-type="empty"]').remove();
-        $testingGlobalParam.append(gParamTmpl.replace('{{describe}}', '')
-            .replace('{{keyName}}', '')
-            .replace('{{value}}', ''));
-    });
-    $testingGlobal.find('.save').on('click', function () {
-        gParams.length = 0;
-        $testingGlobalParam.find('li').each(function (i, elment) {
-            var $inputs = $(this).find('input');
-            if ($inputs.eq(1).val()) {
-                gParams.push({
-                    describe: $inputs.eq(0).val(),
-                    keyName: $inputs.eq(1).val(),
-                    value: $inputs.eq(2).val()
-                });
-            }
-        });
-        localStorage['amWikiGlobalParam'] = JSON.stringify(gParams);
-        $testingGlobal.hide();
-    });
+    //删除参数
     $testingGlobalParam.on('click', 'i', function () {
         $(this).parent().remove();
         if ($testingGlobalParam.find('li').length == 0) {
