@@ -7,7 +7,15 @@
  */
 var createTesting = function () {
 
-    var request = {};
+    //请求数据
+    var request = {
+        //请求地址
+        url: '',
+        //请求类型
+        method: '',
+        //请求参数
+        param: []
+    };
 
     //抓取请求地址
     var $urlAnchor = $('[name="请求地址"]');
@@ -38,10 +46,7 @@ var createTesting = function () {
     if ($parAnchor.length == 0) {
         return;
     } else {
-        if ($parAnchor.parent().next('table').length == 0) {
-            request.param = null;
-        } else {
-            request.param = [];
+        if ($parAnchor.parent().next('table').length > 0) {
             $parAnchor.parent().next('table').find('tbody').find('tr').each(function (i, element) {
                 var $tds = $(this).find('td');
                 var param = {
@@ -51,6 +56,7 @@ var createTesting = function () {
                     describe: $tds.eq(3).text().replace(/^\s+|\s+$/g, ''),
                     default: $tds.eq(4).text().replace(/^\s+|\s+$/g, '')
                 };
+                //修正请求参数
                 if (param.keyName != '无' && param.keyName != '-'&& param.keyName != '') {
                     if (param.required == '是' || param.required == 'yes' || param.required == 'true') {
                         param.required = 'required';
@@ -94,7 +100,7 @@ var createTesting = function () {
     $('#testingSendUrl').val(request.url);
     $('#testingSendType').find('option[value="' + request.method + '"]').prop('selected', true);
     var template = $('#templateFormList').text();
-    if (request.param) {
+    if (request.param.length > 0) {
         for (var i = 0; i < request.param.length; i++) {
             $testingParam.append(template.replace('{{describe}}', request.param[i].describe)
                 .replace('{{keyName}}', request.param[i].keyName)
@@ -118,9 +124,8 @@ var createTesting = function () {
     var $duration = $('#testingDuration');
     $('#testingBtnSend').on('click', function () {
         $duration.text('');
-        var param = null;
+        var param = {};
         if ($testingParam.find('input').length > 0) {
-            param = {};
             $testingParam.find('li').each(function () {
                 param[$(this).find('.testing-param-key').val()] = $(this).find('.testing-param-val').val();
             });
