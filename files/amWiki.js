@@ -291,7 +291,7 @@ $(function () {
             });
             setTitleAnchor();
             //接口ajax测试
-            window.createTesting && createTesting();
+            window.Testing && new Testing();
         }, 'text').fail(function () {
             return loadPage(++count);
         });
