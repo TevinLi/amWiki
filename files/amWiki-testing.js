@@ -232,6 +232,7 @@
             //从面板获取最新(可能已修改)接口参数
             if ($testingParam.find('input').length > 0) {
                 $testingParam.find('li').each(function () {
+                    var $this = $(this);
                     realParam[$this.find('.testing-param-key').val()] = $this.find('.testing-param-val').val();
                 });
             }
@@ -254,8 +255,8 @@
                     $frameBody.css('wordBreak', 'break-all');
                     if (/^\s*\{[\s\S]*\}\s*$/.test(data)) {
                         //json格式化输出
-                        $frameBody[0].innerHTML = '<pre style="white-space:pre-wrap;word-break:break-all;">' +
-                            that.formatJson(data) + '<pre>';
+                        $frameBody.append('<pre style="white-space:pre-wrap;word-break:break-all;"><pre>');
+                        $frameBody.find('pre').text(that.formatJson(data));
                     } else {
                         $frameBody[0].innerHTML = data;
                     }
@@ -278,8 +279,8 @@
                     //不跨域且为json
                     else if (/^\s*\{[\s\S]*\}\s*$/.test(xhr.responseText)) {
                         //json格式化输出
-                        $frameBody[0].innerHTML = '<pre style="white-space:pre-wrap;word-break:break-all;">' +
-                            that.formatJson(xhr.responseText) + '<pre>';
+                        $frameBody.append('<pre style="white-space:pre-wrap;word-break:break-all;"><pre>');
+                        $frameBody.find('pre').text(that.formatJson(data));
                     }
                     //其他不跨域
                     else {
