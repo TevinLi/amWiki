@@ -275,7 +275,13 @@
                             '<li>其他原因</li>' +
                             '</ul></div>'
                     }
-                    //不跨域则输出错误信息
+                    //不跨域且为json
+                    else if (/^\s*\{[\s\S]*\}\s*$/.test(xhr.responseText)) {
+                        //json格式化输出
+                        $frameBody[0].innerHTML = '<pre style="white-space:pre-wrap;word-break:break-all;">' +
+                            that.formatJson(xhr.responseText) + '<pre>';
+                    }
+                    //其他不跨域
                     else {
                         $frameBody[0].innerHTML = xhr.responseText;
                     }
