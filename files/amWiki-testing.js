@@ -280,7 +280,7 @@
                     else if (/^\s*\{[\s\S]*\}\s*$/.test(xhr.responseText)) {
                         //json格式化输出
                         $frameBody.append('<pre style="white-space:pre-wrap;word-break:break-all;"><pre>');
-                        $frameBody.find('pre').text(that.formatJson(data));
+                        $frameBody.find('pre').text(that.formatJson(xhr.responseText));
                     }
                     //其他不跨域
                     else {
