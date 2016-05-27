@@ -254,11 +254,11 @@
                     var $frameBody = $(frame.contentWindow.document).find('body');
                     $frameBody.css('wordBreak', 'break-all');
                     if (/^\s*\{[\s\S]*\}\s*$/.test(data)) {
+                        $frameBody[0].innerHTML = '<pre style="white-space:pre-wrap;word-break:break-all;"><pre>';
                         //json格式化输出
-                        $frameBody.append('<pre style="white-space:pre-wrap;word-break:break-all;"><pre>');
                         $frameBody.find('pre').text(that.formatJson(data));
                     } else {
-                        $frameBody[0].innerHTML = data;
+                        $frameBody[0].innerHTML = data.replace(/<!(doctype|DOCTYPE)\s+(html|HTML)>/, '');
                     }
                     setTimeout(function () {
                         $(frame).height($frameBody.height());
@@ -268,23 +268,28 @@
                     $duration.text('耗时：' + parseFloat(Date.now() - startTime).toLocaleString() + ' ms');
                     var $frameBody = $(frame.contentWindow.document).find('body');
                     $frameBody.css('wordBreak', 'break-all');
+                    var html = '<div style="margin-bottom:20px;padding:10px;background:#ffebe5;">HTTP Status: <b>' +
+                        xhr.status + '</b> ' + xhr.statusText + '</div>';
                     //根据readyState简单判断跨域
                     if (xhr.readyState == 0) {
-                        $frameBody[0].innerHTML = '错误，请求未发送！<br><br><div style="font-size:13px;">可能是因为：<ul>' +
+                        html += '<div style="font-size:13px;">请求未发送！可能是因为：<ul>' +
                             '<li>请求了跨域地址</li>' +
                             '<li>接口被302重定向到跨域地址</li>' +
                             '<li>其他原因</li>' +
-                            '</ul></div>'
+                            '</ul></div>';
+                        $frameBody[0].innerHTML = html;
                     }
                     //不跨域且为json
                     else if (/^\s*\{[\s\S]*\}\s*$/.test(xhr.responseText)) {
+                        html += '<pre style="white-space:pre-wrap;word-break:break-all;"><pre>';
+                        $frameBody[0].innerHTML = html;
                         //json格式化输出
-                        $frameBody.append('<pre style="white-space:pre-wrap;word-break:break-all;"><pre>');
                         $frameBody.find('pre').text(that.formatJson(xhr.responseText));
                     }
                     //其他不跨域
                     else {
-                        $frameBody[0].innerHTML = xhr.responseText;
+                        html += xhr.responseText.replace(/<!(doctype|DOCTYPE)\s+(html|HTML)>/, '');
+                        $frameBody[0].innerHTML = html;
                     }
                     setTimeout(function () {
                         $(frame).height($frameBody.height());
@@ -301,7 +306,6 @@
             formatted = '',
             pad = 0,
             PADDING = '    ';
-        // optional settings
         var options = {};
         // remove newline where '{' or '[' follows ':'
         options.newlineAfterColonIfBeforeBraceOrBracket = options.newlineAfterColonIfBeforeBraceOrBracket === true;
@@ -309,10 +313,8 @@
         options.spaceAfterColon = options.spaceAfterColon !== false;
         // begin formatting...
         if (typeof json !== 'string') {
-            // make sure we start with the JSON as a string
             json = JSON.stringify(json);
         } else {
-            // is already a string, so parse and re-stringify in order to remove extra whitespace
             json = JSON.parse(json);
             json = JSON.stringify(json);
         }
