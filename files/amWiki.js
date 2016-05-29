@@ -41,50 +41,39 @@ $(function () {
         }
         $menuBar.find('h5').removeClass('on').next('ul').hide();
     });
+    //展开折叠所有导航栏位
     var setMenuFolding = function () {
         var $this = $(this);
         if ($this.hasClass('on')) {
-            $this.removeClass('on');
+            $this.removeClass('on').find('use').attr('xlink:href', '#navFolder1');
             $menuBar.find('h5').removeClass('on').next('ul').hide();
         } else {
-            $this.addClass('on');
+            $this.addClass('on').find('use').attr('xlink:href', '#navFolder2');
             $menuBar.find('h5').addClass('on').next('ul').show();
         }
     };
 
     //响应式菜单
     var $nav = $('.nav'),
-        $menuStart = $('.menu_icon_start'),
-        $menuClose = $('.close_icon'),
+        $menuIcon = $('.menu_icon'),
         $win = $(window);
-    $menuClose.hide();
-    var pageWidth = $win.width();
-    var hideMenu = function () {
-        if (pageWidth <= 720) {
-            $menuClose.hide();
-            $menuStart.show();
-            $nav.hide();
+    $menuIcon.on('click', function () {
+        var $this = $(this);
+        if ($this.hasClass('close')) {
+            $this.removeClass('close');
+            $menuIcon.find('use').attr('xlink:href', '#navStart');
+            $nav.removeClass('on');
+        } else {
+            $this.addClass('close');
+            $menuIcon.find('use').attr('xlink:href', '#navClose');
+            $nav.addClass('on');
         }
-    };
-    $menuStart.on('click', function () {
-        $menuStart.hide();
-        $menuClose.show();
-        $nav.show();
-    }).show();
-    $menuClose.on('click', function () {
-        hideMenu();
     });
     $menuBar.on('click', 'li a', function () {
-        hideMenu();
+        $nav.removeClass('on');
     });
     $menuBar.on('click', 'h4', function () {
-        hideMenu();
-    });
-    $win.on('resize', function () {
-        pageWidth = $win.width();
-        if (pageWidth > 720 && $nav.is(':hidden')) {
-            $nav.show();
-        }
+        $nav.removeClass('on');
     });
 
     //页面筛选
@@ -112,15 +101,29 @@ $(function () {
         $filter.val('').trigger('change');
     });
 
+    //显示svg
+    if (sessionStorage['amWikiIconsSvg']) {
+        $('#svgSymbols').append(sessionStorage['amWikiIconsSvg']);
+    } else {
+        $.get('amWiki/images/icons.svg', function (svg) {
+            sessionStorage['amWikiIconsSvg'] = svg;
+            $('#svgSymbols').append(svg);
+        }, 'text');
+    }
+
     //设置文章标题hash
     var $view = $('#view');
     var $titles = null;
     var hash = '';
+    var pageWidth = $win.width();
+    $win.on('resize', function () {
+        pageWidth = $win.width();
+    });
     var setTitleAnchor = function (element) {
         if (location.hash && location.hash.length > 1) {
             hash = location.hash.split('#')[1];
         }
-        var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><img src="amWiki/images/icon_link.png"/></a>';
+        var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><svg><use xlink:href="#linkAnchor"></use></svg></a>';
         $titles = $view.find('h1,h2,h3');
         $titles.each(function (index, element) {
             var $title = $(element);
@@ -196,8 +199,10 @@ $(function () {
     //读取导航目录
     $.get('library/$navigation.md', function (data) {
         $menuBar.html(marked(data));
-        $filter.parent().after('<div class="menu-fold" title="展开/折叠导航栏所有菜单"></div>');
         $('.menu-fold').on('click', setMenuFolding);
+        $menuBar
+            .find('h4').prepend('<svg><use xlink:href="#navHome"></use></svg>').end()
+            .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
         setView();
     }, 'text');
 
