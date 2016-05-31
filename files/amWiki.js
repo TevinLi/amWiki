@@ -278,24 +278,28 @@ $(function () {
             if (count == 2) {
                 localStorage.urlEcode = localStorage.urlEcode == 'utf8' ? 'gbk' : 'utf8';
             }
-            $view.html(marked(data)).find('pre code').each(function (i, element) {
-                var $elm = $(element);
-                var className = $elm.attr('class') || '';
-                //流程图
-                if (className.indexOf('lang-flow') >= 0) {
-                    createFlowChart($elm)
-                }
-                //语法高亮
-                else if (className.indexOf('lang') >= 0) {
-                    hljs.highlightBlock(element);
-                }
-                //js注释开关
-                if (className.indexOf('javascript') >= 0) {
-                    setJSCommentDisable($elm);
-                }
-            });
+            $view.html(marked(data))
+                .find('pre code').each(function (i, element) {
+                    var $elm = $(element);
+                    var className = $elm.attr('class') || '';
+                    //流程图
+                    if (className.indexOf('lang-flow') >= 0) {
+                        createFlowChart($elm)
+                    }
+                    //语法高亮
+                    else if (className.indexOf('lang') >= 0) {
+                        hljs.highlightBlock(element);
+                    }
+                    //js注释开关
+                    if (className.indexOf('javascript') >= 0) {
+                        setJSCommentDisable($elm);
+                    }
+                });
+            //设置页面titl
+            $('title').text($view.find('h1').text());
+            //设置描点
             setTitleAnchor();
-            //接口ajax测试
+            //启用接口ajax测试
             window.Testing && new Testing();
         }, 'text').fail(function () {
             return loadPage(++count);

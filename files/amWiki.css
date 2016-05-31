@@ -210,3 +210,35 @@ body{background:#e7e8eb;}
 	.back-top:hover .back-text{display: none;}
 
 }
+
+
+/* ---------- print ---------- */
+@media print {
+    body{color:black;background:#fff;}
+    .header{display:none;}
+    .container{max-width:750px;margin:0 auto;background:none;border:none;}
+    .container .nav{display:none;}
+    .main{margin-left:0;padding:60px 45px;font-size:15px;}
+    .main .markdown-body{font-family:Microsoft YaHei,Tahoma;}
+    .main h1{padding-top:300px;text-align:center;border:none;page-break-after:always;}
+    .main h2{border-bottom:#ccc 1px solid;}
+    .main h1:hover .anchor svg,.main h2:hover .anchor svg,.main h3:hover .anchor svg{visibility:hidden;}
+    .main .testing-show{display:none;}
+    .main .testing-box{display:none;}
+    .main .markdown-body h2:first-of-type{page-break-before:always;}
+    .main .markdown-body h1 + h2{page-break-before:auto !important;}
+    .back-top{display:none;border:dashed;}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
