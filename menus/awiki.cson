@@ -11,6 +11,15 @@
         }, {
             'label': '手动刷新当前 “$navigation.md”',
             'command': 'amWiki:updateNav'
+        }, {
+            'label': '- 本地web服务器 -',
+            'submenu': [{
+                'label': '启动本地静态web服务器',
+                'command': 'amWiki:runServer'
+            }, {
+                'label': '在浏览器打开当前文档',
+                'command': 'amWiki:browser'
+            }]
         }]
     }]
 }]

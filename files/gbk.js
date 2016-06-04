@@ -80,3 +80,7 @@ GBK = function () {
         }
     };
 }();
+
+if (typeof(exports) == 'object') {
+    exports.GBK = GBK;
+}
