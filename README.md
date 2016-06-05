@@ -34,10 +34,11 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 5. 在Atom刚创建的项目下新建`config.json`文件，并输入一下内容：
 ```javascript
 	{
-	    "name": "",    //您的文库名称，设置但为空或不设置将显示默认名
-	    "ver": "",     //文本版本号或维护者名号，设置但为空将不显示，注意诺不设置此属性将显示amWiki作者
-	    "logo": "",     //logo的url，设置但为空或不设置将显示默认logo
-	    "testing": true //是否启用接口测试，默认值false
+	    "name": "",      //您的文库名称，设置但为空或不设置将显示默认名
+	    "ver": "",       //文本版本号或维护者名号，设置但为空将不显示，注意诺不设置此属性将显示amWiki作者
+	    "logo": "",      //logo的url，设置但为空或不设置将显示默认logo
+	    "testing": true, //是否启用接口测试，默认值false
+        "colour": ""     //自定义颜色，默认为蓝色
 	}
 ```
 6. 点击Atom菜单：
