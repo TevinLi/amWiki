@@ -47,7 +47,7 @@
             </div>
             <div class="main" id="main">
                 <div class="markdown-body" id="view"></div>
-                {{amWiki-testing.tpl}}
+                {{amWiki.testing.tpl}}
             </div>
         </div>
         <!-- 返回顶部 -->
@@ -68,7 +68,7 @@
             <script type="text/javascript" src="amWiki/js/highlight.min.js"></script>
             <script type="text/javascript" src="amWiki/js/raphael-min.js"></script>
             <script type="text/javascript" src="amWiki/js/flowchart.min.js"></script>
-            {{amWiki-testing.js}}
+            {{amWiki.testing.js}}
             <script type="text/javascript" src="amWiki/js/amWiki.js"></script>
         </div>
         <!-- svg -->
