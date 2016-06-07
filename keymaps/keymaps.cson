@@ -2,5 +2,5 @@
 #
 "atom-workspace atom-text-editor:not([mini])":
   "shift-ctrl-v": "amWiki:pasteImg"
-  "ctrl-h": "amWiki:contents"
+  "ctrl-d": "amWiki:contents"
   "f12": "amWiki:browser"
