@@ -118,3 +118,6 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 ## 后记
 这个项目的灵感来自 [MDwiki](http://www.mdwiki.net/)，一开始，我也准备使用 MDwiki 来写一些文档，但是我很快发现，如果我新增一篇文档，需要我手动去编辑导航栏文件增加一条导航，这个挺不友好的。然后想写一套类似 [微信公众平台开发者文档](http://mp.weixin.qq.com/wiki/home/index.html) 的文档库，发现 MDwiki 由于其容量所限，并不能很好的胜任。  
 于是经过一番折腾，就有了amWiki。
+
+## 更新日志
+[amWiki 版本更新日志](https://github.com/TevinLi/amWiki/blob/master/CHANGELOG.md "amWiki版本更新日志")
