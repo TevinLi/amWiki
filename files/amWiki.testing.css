@@ -1,7 +1,9 @@
 
-/* ---------- testing ---------- */
+/* ---------- to show ---------- */
 .testing-show{position:absolute;top:0;right:0;padding:15px;cursor:pointer;}
 .testing-show span{color:@colour-dark;}
+
+/* ---------- testing ---------- */
 .testing-box{display:none;width:100%;background-color:#fff;}
 .testing-box h2{position:relative;padding:2px 10px;margin:5px 0;color:#fff;background-color:@colour-light;}
 .testing-box h2:after{position:absolute;top:0;right:-45px;width:45px;height:100%;content:" ";background-color:@colour-light;}

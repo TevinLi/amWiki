@@ -12,14 +12,15 @@
     .container{margin:0 auto;background:none;border:none;}
     .container .nav{display:none;}
     .main{margin-left:0;padding:0;font-size:14px;}
-    .main .markdown-body{display:block !important;font-family:Microsoft YaHei,Tahoma;}
-    .main h1{padding-top:300px;font-size:32px;text-align:center;border:none;page-break-after:always;}
+    .main .markdown-body{display:block !important;font-family:Microsoft YaHei,Tahoma;font-weight:300;;}
+    .main h1{padding-top:300px;font-size:32px;text-align:center;font-weight:600;border:none;page-break-after:always;}
     .main h1 .anchor{display:none;}
-    .main h2{font-size:24px;border-bottom:#ccc 1px solid;page-break-after:avoid;}
-    .main h3{font-size:18px;page-break-after:avoid;}
-    .main h4{font-size:16px;}
+    .main h2{font-size:24px;font-weight:500;border-bottom:#ccc 1px solid;page-break-after:avoid;}
+    .main h3{font-size:18px;font-weight:500;page-break-after:avoid;}
+    .main h4{font-size:16px;font-weight:400;}
     .main h1:hover .anchor svg,.main h2:hover .anchor svg,.main h3:hover .anchor svg{visibility:hidden;}
     .main img{max-width:100% !important;page-break-inside:avoid;}
+    .main table th{font-weight:500;}
     .main .testing-show{display:none;}
     .main .testing-box{display:none !important;}
     .main .markdown-body h2:first-of-type{page-break-before:always;}
