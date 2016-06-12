@@ -85,6 +85,7 @@ body{background:#e7e8eb;}
 .menubar ul li a.on:after{display:block;position:absolute;top:0px;right:0px;width:2px;height:30px;content:" ";background:@colour-base;}
 .menubar ul li:nth-child(1) a.on:after{height:32px;}
 .menubar ul li:last-child a.on:after{height:32px;}
+.menubar ul li strong{display:none;}
 
 .main{position: relative;padding:45px;margin-left:250px;}
 
