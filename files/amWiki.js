@@ -41,7 +41,18 @@ $(function () {
         }
         $menuBar.find('h5').removeClass('on').next('ul').hide();
     });
-    //展开折叠所有导航栏位
+    $menuBar.on('click', 'strong', function () {
+        var $this = $(this),
+            $next = $this.next('ul');
+        if ($this.hasClass('on')) {
+            $this.removeClass('on');
+            $next.hide();
+        } else {
+            $this.addClass('on');
+            $next.show();
+        }
+    });
+    //展开折叠所有导航栏位按钮
     var setMenuFolding = function () {
         var $this = $(this);
         if ($this.hasClass('on')) {
@@ -229,7 +240,12 @@ $(function () {
                 var $this = $(this);
                 if ($(this).attr('href').split('file=')[1] == path) {
                     hsLink = true;
-                    $this.addClass('on').parent().parent().show().prev('h5').addClass('on');
+                    //第一层
+                    var $prev = $this.addClass('on').parent().parent().show().prev().addClass('on');
+                    //第二层
+                    if ($prev[0].tagName.toLowerCase() == 'strong') {
+                        $prev.parent().parent().show().prev().addClass('on');
+                    }
                 } else {
                     $this.removeClass('on');
                 }
@@ -246,18 +262,16 @@ $(function () {
         url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
     } else if (localStorage.urlEcode == 'gbk') {
         url = 'library/' + GBK.encode(path.split('/')[0]);
-        if (path.split('/').length > 1) {
-            url += '/' + GBK.encode(path.split('/')[1]);
-        }
+        url += path.split('/')[1] ? '/' + GBK.encode(path.split('/')[1]) : '';
+        url += path.split('/')[2] ? '/' + GBK.encode(path.split('/')[2]) : '';
         url += '.md?t=' + (new Date()).getTime();
     }
     var loadPage = function (count) {
         if (count == 2) {
             if (localStorage.urlEcode == 'utf8') {
                 url = 'library/' + GBK.encode(path.split('/')[0]);
-                if (path.split('/').length > 1) {
-                    url += '/' + GBK.encode(path.split('/')[1]);
-                }
+                url += path.split('/')[1] ? '/' + GBK.encode(path.split('/')[1]) : '';
+                url += path.split('/')[2] ? '/' + GBK.encode(path.split('/')[2]) : '';
                 url += '.md?t=' + (new Date()).getTime();
             } else if (localStorage.urlEcode == 'gbk') {
                 url = 'library/' + encodeURI(path) + '.md?t=' + (new Date()).getTime();
