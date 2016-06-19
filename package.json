@@ -1,37 +1,37 @@
 {
-    "name": "amWiki",
-    "main": "./lib/main",
-    "version": "0.4.3",
-    "description": "amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文库系统，仅仅需要您使用Atom编辑markdown文档和拥有http纯静态访问空间！使用amWiki，您无需服务端开发、不用数据库、一键创建新文库、自动更新文库目录、支持截图直接粘帖为本地png并插入当前markdown...",
-    "keywords": [
-        "amWiki",
-        "markdown",
-        "wiki"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/TevinLi/amWiki.git"
+  "name": "amWiki",
+  "main": "./lib/main",
+  "version": "0.5.0",
+  "description": "amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文库系统，仅仅需要您使用Atom编辑markdown文档和拥有http纯静态访问空间！使用amWiki，您无需服务端开发、不用数据库、一键创建新文库、自动更新文库目录、支持截图直接粘帖为本地png并插入当前markdown...",
+  "keywords": [
+    "amWiki",
+    "markdown",
+    "wiki"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TevinLi/amWiki.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/TevinLi/amWiki/issues"
+  },
+  "homepage": "https://github.com/TevinLi/amWiki",
+  "configSchema": {
+    "checkLibraryOnWindowFocus": {
+      "type": "boolean",
+      "default": true,
+      "title": "Atom得到焦点时检查文库变化",
+      "description": "当用户切换窗口至atom之外，并在超过30秒后再切换回atom时，检查当前文库目录树，如果有变化则重新输出导航文件。  \n（如果您仅在atom中通过增删改等操作来组织文库目录树，而不是通过操作系统，您可以关闭此选项以节约一部分性能开销）"
     },
-    "license": "MIT",
-    "engines": {
-        "atom": ">=1.0.0 <2.0.0"
-    },
-    "bugs": {
-        "url": "https://github.com/TevinLi/amWiki/issues"
-    },
-    "homepage": "https://github.com/TevinLi/amWiki",
-    "configSchema": {
-        "checkLibraryOnWindowFocus": {
-            "type": "boolean",
-            "default": true,
-            "title": "Atom得到焦点时检查文库变化",
-            "description": "当用户切换窗口至atom之外，并在超过30秒后再切换回atom时，检查当前文库目录树，如果有变化则重新输出导航文件。  \n（如果您仅在atom中通过增删改等操作来组织文库目录树，而不是通过操作系统，您可以关闭此选项以节约一部分性能开销）"
-        },
-        "checkAllLibraryOnAtomStart": {
-            "type": "boolean",
-            "default": true,
-            "title": "Atom启动时全量检查文库变化",
-            "description": "当Atom启动时，全量检查所有文库目录树，如果有变化则重新输出导航文件，amWiki仅在此时做全量检查。  \n（如果您仅在atom中通过增删改等操作来组织文库目录树，而不是通过操作系统，您可以关闭此选项以节约一部分性能开销）"
-        }
+    "checkAllLibraryOnAtomStart": {
+      "type": "boolean",
+      "default": true,
+      "title": "Atom启动时全量检查文库变化",
+      "description": "当Atom启动时，全量检查所有文库目录树，如果有变化则重新输出导航文件，amWiki仅在此时做全量检查。  \n（如果您仅在atom中通过增删改等操作来组织文库目录树，而不是通过操作系统，您可以关闭此选项以节约一部分性能开销）"
     }
+  }
 }
