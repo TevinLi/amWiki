@@ -98,6 +98,7 @@
 
     //测试面板初始化
     Testing.prototype.initPanel = function () {
+        var that = this;
         var $testingBox = $('#testingBox');  //测试面板
         var $view = $('#view');  //视图，md文档渲染处
         $testingBox.css('min-height', $view.height());
@@ -129,8 +130,12 @@
                 .replace('{{required}}', ''));
         });
         //填充参数列表数据
-        $('#testingSendUrl').val(this.request.url);
-        $('#testingSendType').find('option[value="' + this.request.method + '"]').prop('selected', true);
+        $('#testingSendUrl').val(this.request.url).on('change', function () {
+            that.request.url = $(this).val();
+        });
+        $('#testingSendType').on('change', function () {
+            that.request.method = $(this).find("option:selected").text();
+        }).find('option[value="' + this.request.method + '"]').prop('selected', true);
         var template = $('#templateFormList').text();  //单条参数模板
         if (this.request.params.length > 0) {
             for (var i = 0; i < this.request.params.length; i++) {
