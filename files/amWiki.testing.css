@@ -8,6 +8,7 @@
 .testing-box h2{position:relative;padding:2px 10px;margin:5px 0;color:#fff;background-color:@colour-light;}
 .testing-box h2:after{position:absolute;top:0;right:-45px;width:45px;height:100%;content:" ";background-color:@colour-light;}
 .testing-box h2 small{position:absolute;top:0;right:0;font-size:14px;line-height:38px;font-weight:normal;}
+.testing-box h2 svg{display:none;position:absolute;top:9px;right:0;width:17px;height:17px;animation:circle 1s linear infinite;}
 .testing-send{width:100%;max-width:800px;padding:20px 0 35px 25px;}
 .testing-send input{height:30px;padding:0 3px;font-family:Microsoft YaHei,STXihei,STHeiti,Verdana,Arial,Helvetica,sans-serif;;line-height:30px;}
 .testing-send input:hover{background:#f4f5f9;}
@@ -56,7 +57,6 @@
 
 /* ---------- testing response ---------- */
 @media screen and (max-width:720px){
-    
     .testing-show{position:fixed;top:3px;right:40px;z-index:11000;height:46px;padding:0 10px;line-height:47px;background:#fff;}
     .testing-box{width:-webkit-calc(100% + 10px);width:-moz-calc(100% + 10px);width:calc(100% + 10px);margin-left:-5px;}
     .testing-send{padding:20px 10px 35px;}
@@ -65,4 +65,14 @@
     .testing-btn button{font-size:12px;padding:0 5px;}
     #testingBtnSend{padding: 0 15px;}
     .testing-response{padding:20px 10px 10px;}
+}
+
+/* ---------- keyframes ---------- */
+@-webkit-keyframes circle{
+    from{-webkit-transform:rotate(0);}
+    to{-webkit-transform:rotate(360deg);}
+}
+@keyframes circle{
+	from{transform:rotate(0);}
+	to{transform:rotate(360deg);}
 }

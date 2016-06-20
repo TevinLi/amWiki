@@ -224,6 +224,7 @@
         var that = this;
         var frame = $('#testingResponse')[0];
         var $duration = $('#testingDuration');  //耗时输出
+        var $loading = $('#testingLoading');
         var $testingParam = $('#testingParam');  //参数列表
         $('#testingBtnSend').on('click', function () {
             $duration.text('');
@@ -243,6 +244,7 @@
                 }
             }
             frame.contentWindow.location.reload();  //刷新iframe以便重新输出内容
+            $loading.show();
             var startTime = Date.now();
             $.ajax({
                 type: that.request.method,
@@ -250,6 +252,7 @@
                 data: realParam,
                 dataType: 'text',
                 success: function (data) {
+                    $loading.hide();
                     $duration.text('耗时：' + parseFloat(Date.now() - startTime).toLocaleString() + ' ms');
                     var $frameBody = $(frame.contentWindow.document).find('body');
                     $frameBody.css('wordBreak', 'break-all');
@@ -265,6 +268,7 @@
                     }, 100);
                 },
                 error: function (xhr, textStatus) {
+                    $loading.hide();
                     $duration.text('耗时：' + parseFloat(Date.now() - startTime).toLocaleString() + ' ms');
                     var $frameBody = $(frame.contentWindow.document).find('body');
                     $frameBody.css('wordBreak', 'break-all');

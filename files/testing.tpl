@@ -46,7 +46,11 @@
             </div>
         </div>
     </div>
-    <h2 class="testing-title">响应内容<small id="testingDuration"></small></h2>
+    <h2 class="testing-title">响应内容<small id="testingDuration"></small>
+        <svg id="testingLoading">
+            <use xlink:href="#loading"></use>
+        </svg>
+    </h2>
     <div class="testing-response">
         <iframe id="testingResponse" width="100%" frameborder="0" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes" framespacing="0"></iframe>
     </div>
