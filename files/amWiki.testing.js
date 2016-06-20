@@ -43,10 +43,12 @@
             return false;
         } else {
             this.request.url = $url.parent().next().text().replace(/^\s+|\s+$/g, '');
-            if (this.request.url.indexOf('/') == 0) {
-                this.request.url = 'http://' + location.host + this.request.url;
-            } else {
-                this.request.url = 'http://' + location.host + '/' + this.request.url;
+            if (this.request.url.indexOf('http') < 0) {
+                if (this.request.url.indexOf('/') == 0) {
+                    this.request.url = 'http://' + location.host + this.request.url;
+                } else {
+                    this.request.url = 'http://' + location.host + '/' + this.request.url;
+                }
             }
         }
         //抓取请求类型
@@ -281,8 +283,9 @@
                         xhr.status + '</b> ' + xhr.statusText + '</div>';
                     //根据readyState简单判断跨域
                     if (xhr.readyState == 0) {
-                        html += '<div style="font-size:13px;">请求未发送！可能是因为：<ul>' +
-                            '<li>请求了跨域地址</li>' +
+                        html += '<div style="font-size:14px;">请求未发送！可能是因为：' +
+                            '<ul style="line-height:22px;">' +
+                            '<li>请求了<b style="color:#FF201E;margin-right:1px;">跨域</b>地址</li>' +
                             '<li>接口被302重定向到跨域地址</li>' +
                             '<li>其他原因</li>' +
                             '</ul></div>';
