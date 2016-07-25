@@ -19,7 +19,7 @@ GET
 | customer_id | number | 是 | 客户id | - |
 | type | number | 否 | 客户类型，0所有、1扩展、2报备、3成交 | - |
 
-### 返回JSON示例
+### 返回正确JSON示例
 ```javascript
 {
 	"state": {
@@ -34,6 +34,15 @@ GET
 		"created_at": "2016-04-04 20:00:00",  //加入时间
 		"last_login": "2016-05-22 15:30:21",  //最后登录时间
 		"log": []  //日志列表
+	}
+}
+```
+### 返回错误JSON示例
+```javascript
+{
+	"state": {
+		"code": 10500
+		"msg": "服务器未知报错"
 	}
 }
 ```

@@ -5,6 +5,9 @@
 .markdown-body{font-size:14px;}
 .markdown-body h1{margin-top:50px;font-size:38px;border-bottom:#d5d5d5 1px solid;}
 .markdown-body h2{margin-top:50px;font-size:32px;border-bottom:#ddd 1px solid;}
+.markdown-body h3{margin-top:32px;margin-bottom:14px;}
+.markdown-body h2 + h3{margin-top:24px;}
+.markdown-body p,.markdown-body blockquote,.markdown-body ul,.markdown-body ol,.markdown-body dl,.markdown-body table,.markdown-body pre{margin-bottom:12px;}
 .markdown-body .anchor{margin-left:-24px;}
 .markdown-body blockquote{padding:8px 15px;background-color:#fafafa;}
 .markdown-body .anchor{padding-top:10px;margin-top:-10px;}
