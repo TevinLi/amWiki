@@ -27,10 +27,10 @@ $(function () {
             $next = $this.next('ul');
         if ($this.hasClass('on')) {
             $this.removeClass('on');
-            $next.hide();
+            $next.slideUp(200);
         } else {
             $this.addClass('on');
-            $next.show();
+            $next.slideDown(200);
         }
     });
     $menuBar.on('click', 'h4', function () {
@@ -46,10 +46,10 @@ $(function () {
             $next = $this.next('ul');
         if ($this.hasClass('on')) {
             $this.removeClass('on');
-            $next.hide();
+            $next.slideUp(200);
         } else {
             $this.addClass('on');
-            $next.show();
+            $next.slideDown(200);
         }
     });
     //展开折叠所有导航栏位按钮
@@ -298,7 +298,7 @@ $(function () {
                     var className = $elm.attr('class') || '';
                     //流程图
                     if (className.indexOf('lang-flow') >= 0) {
-                        createFlowChart($elm)
+                        createFlowChart($elm);
                     }
                     //语法高亮
                     else if (className.indexOf('lang') >= 0) {
