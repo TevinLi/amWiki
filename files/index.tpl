@@ -63,7 +63,7 @@
         <div class="hidden">
             <script type="text/javascript" src="amWiki/js/forEach.js"></script>
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>
-            <script type="text/javascript" src="amWiki/js/jquery-1.11.3.min.js"></script>
+            <script type="text/javascript" src="amWiki/js/jquery-compat-3.1.0.min.js"></script>
             <script type="text/javascript" src="amWiki/js/marked.min.js"></script>
             <script type="text/javascript" src="amWiki/js/highlight.min.js"></script>
             <script type="text/javascript" src="amWiki/js/raphael-min.js"></script>
