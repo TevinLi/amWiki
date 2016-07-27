@@ -103,19 +103,42 @@
         var that = this;
         var $testingBox = $('#testingBox');  //测试面板
         var $view = $('#view');  //视图，md文档渲染处
-        $testingBox.css('min-height', $view.height());
         //显示隐藏测试面板
         var $testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');  //显示隐藏控制按钮
         $('#main').append($testingShow);
         $testingShow.on('click', function () {
             if ($testingShow.hasClass('on')) {
                 $testingShow.removeClass('on').find('span').text('测试接口');
-                $testingBox.hide();
+                $testingBox.css({
+                    'position': 'absolute',
+                    'padding': $(win).width() > 720 ? 45 : 25
+                });
                 $view.show();
+                $testingBox.animate({
+                    'width': '0%',
+                    'opacity': 0
+                }, 200, 'swing', function () {
+                    $testingBox.removeAttr('style');
+                });
             } else {
                 $testingShow.addClass('on').find('span').text('关闭测试');
-                $testingBox.show();
-                $view.hide();
+                $testingBox
+                    .css({
+                        'display': 'block',
+                        'width': '0',
+                        'min-height': $view.height() + 90,
+                        'opacity': 0
+                    })
+                    .animate({
+                        'width': '100%',
+                        'opacity': 1
+                    }, 300, 'swing', function () {
+                        $view.hide();
+                        $testingBox.css({
+                            'position': 'relative',
+                            'padding': 0
+                        });
+                    });
             }
         });
         //清空所有普通参数的值

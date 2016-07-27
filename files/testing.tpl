@@ -1,6 +1,6 @@
 <!-- 接口测试面板 -->
 <div class="testing-box" id="testingBox">
-    <h2 class="testing-title">请求内容</h2>
+    <h2>请求内容</h2>
     <div class="testing-send">
         <input class="testing-send-url" id="testingSendUrl" type="text" title="请求地址" />
         <select class="testing-send-type" id="testingSendType" title="请求类型">
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <h2 class="testing-title">响应内容<small id="testingDuration"></small>
+    <h2>响应内容<small id="testingDuration"></small>
         <svg id="testingLoading">
             <use xlink:href="#loading"></use>
         </svg>
