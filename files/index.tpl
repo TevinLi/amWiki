@@ -23,8 +23,8 @@
                 </a>
                 <div class="menu_icon">
                     <svg>
-						<use xlink:href="#navStart"></use>
-					</svg>
+                        <use xlink:href="#navStart"></use>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -33,15 +33,15 @@
             <div class="nav">
                 <div class="menu-filter">
                     <svg>
-						<use xlink:href="#navFilter"></use>
-					</svg>
+                        <use xlink:href="#navFilter"></use>
+                    </svg>
                     <input type="text" id="menuFilter" value="" placeholder="请输入筛选条件" title="请输入筛选条件" />
                     <i class="off" title="清空筛选">&times;</i>
                 </div>
                 <div class="menu-fold" title="展开/折叠导航栏所有菜单">
                     <svg>
-						<use xlink:href="#navFolder1"></use>
-					</svg>
+                        <use xlink:href="#navFolder1"></use>
+                    </svg>
                 </div>
                 <div class="menubar" id="menuBar"></div>
             </div>
@@ -54,8 +54,8 @@
         <div class="back-top">
             <a href="#" class="back-icon">
                 <svg>
-					<use xlink:href="#backTop"></use>
-				</svg>
+                    <use xlink:href="#backTop"></use>
+                </svg>
             </a>
             <a href="#" class="back-text">返回顶部</a>
         </div>
@@ -73,6 +73,30 @@
         </div>
         <!-- svg -->
         <div class="hidden" id="svgSymbols"></div>
+        <!-- 低版本浏览器警告 -->
+        <div id="lowBrowser">
+            <div></div>
+            <p><span>您的浏览器版本过低，不支持浏览本Wiki，请升级或更换您的浏览器再试！</span></p>
+            <script>
+                (function(win) {
+                    var notice = document.getElementById('lowBrowser');
+                    //jQuery 3.x 需要 addEventListener 方法支持
+                    if(typeof win.addEventListener == 'undefined') {
+                        notice.style.display = 'block';
+                    } else {
+                        var comments = notice.previousSibling;
+                        if (comments.nodeType == 8) {
+                            comments.parentNode.removeChild(comments);
+                        } else if (comments.previousSibling.nodeType == 8) {
+                            comments = comments.previousSibling;
+                            comments.parentNode.removeChild(comments);
+                        }
+                        notice.parentNode.removeChild(notice);
+                    }
+                    notice = comments = null;
+                })(window);
+            </script>
+        </div>
     </body>
 
 </html>

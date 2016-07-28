@@ -107,6 +107,11 @@ body{background:#e7e8eb;}
 .back-top:hover .back-icon{border:none;}
 .back-top:hover .back-text{display:block;color:#aaa;}
 
+/* ---------- lowBrowser ---------- */
+#lowBrowser{position:fixed;top:0;left:0;z-index:9999999;width:100%;height:100%;}
+#lowBrowser div{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#000000;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=50)";zoom:1;}
+#lowBrowser p{position:absolute;top:0;left:0;width:100%;text-align:center;}
+#lowBrowser p span{display:inline-block;padding:0 30px;color:#8a6d3b;line-height:50px;background:#fcf8e3;border:#faebcc 1px solid;}
 
 /* ---------- response ---------- */
 @media screen and (max-width:720px){
