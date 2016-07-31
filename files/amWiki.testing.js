@@ -181,8 +181,8 @@
     //测试面板普通操作
     Testing.prototype.bindPanelCtrl = function () {
         var that = this;
-        //显示隐藏按钮
-        this.$e.testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');  //显示隐藏控制按钮
+        //显示隐藏控制按钮
+        this.$e.testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');
         $('#main').append(this.$e.testingShow);
         //显示隐藏测试面板
         this.$e.testingShow.on('click', function () {
@@ -210,7 +210,7 @@
                 .replace('{{describe}}', '新增参数')
                 .replace('{{keyName}}', '')
                 .replace('{{default}}', '')
-                .replace('{{valueType}}', '')
+                .replace('({{valueType}})', '')
                 .replace('{{required}}', '');
             that.$e.testingParam.append(pHTML);
         });

@@ -1,10 +1,16 @@
 # 版本日志
 
+### 0.5.6
+- 调整 Testing.js 模块结构，允许不刷下页面重新抓取内容生成新接口测试
+- 删除低版本 IE 下 forEach 方法缺失的修补（由于不再支持微软原生浏览器IE8）
+- 调整部分标签为 HTML5 标签（由于不再支持微软原生浏览器IE8）
+- 底部增加 Powered by amWiki 签名
+
 ### 0.5.5
 - 紧急修复0.5.4升级后创建wiki报错问题
 
 ### 0.5.4
-- 替换 jQuery-1.11 为 jQuery-compat-3.1.0 版
+- 替换 jQuery-1.11 为 jQuery-compat-3.1.0 版 [#6](https://github.com/TevinLi/amWiki/issues/6 "#6")
 - 增加低版本浏览器检查，不兼容 jQuery-compat-3.x 的浏览器将给出警告
 - 增加测试面板进出动画
 - 增加导航栏展开折叠动画
