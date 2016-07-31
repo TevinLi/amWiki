@@ -292,7 +292,8 @@ $(function () {
             if (count == 2) {
                 localStorage.urlEcode = localStorage.urlEcode == 'utf8' ? 'gbk' : 'utf8';
             }
-            $view.html(marked(data))
+            $view
+                .html(marked(data))
                 .find('pre code').each(function (i, element) {
                     var $elm = $(element);
                     var className = $elm.attr('class') || '';
@@ -314,7 +315,10 @@ $(function () {
             //设置描点
             setTitleAnchor();
             //启用接口ajax测试
-            window.Testing && new Testing();
+            if (window.Testing) {
+                var testing = new Testing();
+                testing.crawlContent();
+            }
         }, 'text').fail(function () {
             return loadPage(++count);
         });

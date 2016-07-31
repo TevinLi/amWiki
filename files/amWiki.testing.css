@@ -1,6 +1,7 @@
 
 /* ---------- to show ---------- */
-.testing-show{position:absolute;top:0;right:0;padding:15px;cursor:pointer;}
+.testing-show{display:none;position:absolute;top:0;right:0;padding:15px;cursor:pointer;}
+.testing-show.show{display:block;}
 .testing-show span{color:@colour-dark;}
 
 /* ---------- testing ---------- */

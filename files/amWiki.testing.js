@@ -6,14 +6,30 @@
  * 仅当页面存在“请求地址”、“请求类型”、“请求参数”三个h3标题时触发
  */
 
-(function (win) {
+(function (win, doc) {
 
     var Testing = function () {
+        //缓存元素
+        this.$e = {
+            win: $(win),
+            doc: $(doc),
+            //测试面板
+            testingBox: $('#testingBox'),
+            //md文档渲染处
+            view: $('#view'),
+            //面板显示隐藏按钮
+            testingShow: null,
+            //参数列表的容器
+            testingParam: $('#testingParam')
+        };
+        //缓存数据
         this.data = {
             //全局参数列队
             globalParams: [],
             //全局参数是否生效
-            globalParamWorking: true
+            globalParamWorking: true,
+            //单条参数模板
+            paramTemplate: $('#templateFormList').text()
         };
         //请求数据
         this.request = {
@@ -26,21 +42,19 @@
             //全局参数
             paramGlobal: []
         };
-        //抓取页面成功才显示
-        if (this.crawlContent()) {
-            this.initPanel();
-            this.useGlobalParam();
-            this.bindAjaxSend();
-        }
+        this.useGlobalParam();
+        this.bindPanelCtrl();
+        this.bindAjaxSend();
     };
 
-    //抓取请求内容
+    //抓取请求内容，抓取成功才显示按钮
     Testing.prototype.crawlContent = function () {
+        this.$e.testingShow.removeClass('show');
         var that = this;
         //抓取请求地址
-        var $url = $('[name="请求地址"]').eq(0);  //地址title的描记
+        var $url = $('[name="请求地址"]').eq(0);  //描记-地址title
         if ($url.length == 0) {
-            return false;
+            return;
         } else {
             this.request.url = $url.parent().next().text().replace(/^\s+|\s+$/g, '');
             if (this.request.url.indexOf('http') < 0) {
@@ -52,9 +66,9 @@
             }
         }
         //抓取请求类型
-        var $method = $('[name="请求类型"]').eq(0);  //类型title的描记
+        var $method = $('[name="请求类型"]').eq(0);  //描记-类型title
         if ($method.length == 0) {
-            return false;
+            return;
         } else {
             this.request.method = $method.parent().next().text().replace(/^\s+|\s+$/g, '').toUpperCase();
             if (this.request.method != 'POST' && this.request.method != 'GET') {
@@ -62,10 +76,12 @@
             }
         }
         //抓取请求参数
-        var $param = $('[name="请求参数"]').eq(0);  //参数title的描记
+        var $param = $('[name="请求参数"]').eq(0);  //描记-参数title
         if ($param.length == 0) {
             return;
         } else {
+            //清空参数列表
+            this.request.params.length = 0;
             //不存在table直接无参数，存在table时开始解析
             if ($param.parent().next('table').length > 0) {
                 $param.parent().next('table').find('tbody').find('tr').each(function () {
@@ -95,84 +111,109 @@
                 });
             }
         }
-        return true;
+        this.initPanel();
     };
 
-    //测试面板初始化
+    //测试面板填充数据
     Testing.prototype.initPanel = function () {
-        var that = this;
-        var $testingBox = $('#testingBox');  //测试面板
-        var $view = $('#view');  //视图，md文档渲染处
-        //显示隐藏测试面板
-        var $testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');  //显示隐藏控制按钮
-        $('#main').append($testingShow);
-        $testingShow.on('click', function () {
-            if ($testingShow.hasClass('on')) {
-                $testingShow.removeClass('on').find('span').text('测试接口');
-                $testingBox.css({
-                    'position': 'absolute',
-                    'padding': $(win).width() > 720 ? 45 : 25
-                });
-                $view.show();
-                $testingBox.animate({
-                    'width': '0%',
-                    'opacity': 0
-                }, 200, 'swing', function () {
-                    $testingBox.removeAttr('style');
-                });
-            } else {
-                $testingShow.addClass('on').find('span').text('关闭测试');
-                $testingBox
-                    .css({
-                        'display': 'block',
-                        'width': '0',
-                        'min-height': $view.height() + 90,
-                        'opacity': 0
-                    })
-                    .animate({
-                        'width': '100%',
-                        'opacity': 1
-                    }, 300, 'swing', function () {
-                        $view.hide();
-                        $testingBox.css({
-                            'position': 'relative',
-                            'padding': 0
-                        });
-                    });
-            }
-        });
-        //清空所有普通参数的值
-        var $testingParam = $('#testingParam');  //参数列表
-        $('#testingBtnReset').on('click', function () {
-            $testingParam.find('.testing-param-val').val('');
-        });
-        //新增一个参数
-        $('#testingBtnAdd').on('click', function () {
-            $testingParam.append(template.replace('{{describe}}', '新增参数')
-                .replace('{{keyName}}', '')
-                .replace('{{default}}', '')
-                .replace('{{valueType}}', 'any-type')
-                .replace('{{required}}', ''));
-        });
-        //填充参数列表数据
-        $('#testingSendUrl').val(this.request.url).on('change', function () {
-            that.request.url = $(this).val();
-        });
-        $('#testingSendType').on('change', function () {
-            that.request.method = $(this).find("option:selected").text();
-        }).find('option[value="' + this.request.method + '"]').prop('selected', true);
-        var template = $('#templateFormList').text();  //单条参数模板
+        this.$e.testingShow.addClass('show');
+        //填充请求地址
+        $('#testingSendUrl').val(this.request.url);
+        //填充请求类型
+        $('#testingSendType').find('option[value="' + this.request.method + '"]').prop('selected', true);
+        //清空现有参数列表
+        this.$e.testingParam.html('');
+        //填充参数列表
         if (this.request.params.length > 0) {
+            var paramsHTML = '';
             for (var i = 0; i < this.request.params.length; i++) {
-                $testingParam.append(template.replace('{{describe}}', this.request.params[i].describe)
+                paramsHTML += this.data.paramTemplate
+                    .replace('{{describe}}', this.request.params[i].describe)
                     .replace('{{keyName}}', this.request.params[i].keyName)
                     .replace('{{default}}', this.request.params[i].default)
                     .replace('{{valueType}}', this.request.params[i].valueType)
-                    .replace('{{required}}', this.request.params[i].required));
+                    .replace('{{required}}', this.request.params[i].required);
             }
+            this.$e.testingParam.append(paramsHTML);
         } else {
-            $testingParam.append('<li>无</li>');
+            this.$e.testingParam.append('<li>无</li>');
         }
+    };
+
+    //切换测试面板显示隐藏状态
+    Testing.prototype.displayBox = function (type) {
+        var that = this;
+        if (type == 'off') {
+            this.$e.testingShow.removeClass('on').find('span').text('测试接口');
+            this.$e.testingBox.css({
+                'position': 'absolute',
+                'padding': this.$e.win.width() > 720 ? 45 : 25
+            });
+            this.$e.view.show();
+            this.$e.testingBox.animate({
+                'width': '30%',
+                'opacity': 0
+            }, 200, 'swing', function () {
+                that.$e.testingBox.removeAttr('style');
+            });
+        } else if (type == 'on') {
+            this.$e.testingShow.addClass('on').find('span').text('关闭测试');
+            this.$e.testingBox
+                .css({
+                    'display': 'block',
+                    'width': '0',
+                    'min-height': this.$e.view.height() + 90,
+                    'opacity': 0
+                })
+                .animate({
+                    'width': '100%',
+                    'opacity': 1
+                }, 300, 'swing', function () {
+                    that.$e.view.hide();
+                    that.$e.testingBox.css({
+                        'position': 'relative',
+                        'padding': 0
+                    });
+                });
+        }
+    };
+
+    //测试面板普通操作
+    Testing.prototype.bindPanelCtrl = function () {
+        var that = this;
+        //显示隐藏按钮
+        this.$e.testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');  //显示隐藏控制按钮
+        $('#main').append(this.$e.testingShow);
+        //显示隐藏测试面板
+        this.$e.testingShow.on('click', function () {
+            if (that.$e.testingShow.hasClass('on')) {
+                that.displayBox('off');
+            } else {
+                that.displayBox('on');
+            }
+        });
+        //填充请求地址
+        $('#testingSendUrl').on('change', function () {
+            that.request.url = $(this).val();
+        });
+        //填充请求类型
+        $('#testingSendType').on('change', function () {
+            that.request.method = $(this).find("option:selected").val();
+        });
+        //清空所有普通参数的值
+        $('#testingBtnReset').on('click', function () {
+            that.$e.testingParam.find('.testing-param-val').val('');
+        });
+        //新增一个参数
+        $('#testingBtnAdd').on('click', function () {
+            var pHTML = that.data.paramTemplate
+                .replace('{{describe}}', '新增参数')
+                .replace('{{keyName}}', '')
+                .replace('{{default}}', '')
+                .replace('{{valueType}}', '')
+                .replace('{{required}}', '');
+            that.$e.testingParam.append(pHTML);
+        });
     };
 
     //全局参数模块
@@ -259,7 +300,6 @@
         $('#testingBtnSend').on('click', function () {
             $duration.text('');
             var realParam = {};  //合并参数列表
-            var $this = $(this);
             //从面板获取最新(可能已修改)接口参数
             if ($testingParam.find('input').length > 0) {
                 $testingParam.find('li').each(function () {
@@ -401,7 +441,6 @@
         return formatted;
     };
 
-
     return win.Testing = Testing;
 
-})(window);
+})(window, document);
