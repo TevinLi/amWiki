@@ -50,6 +50,12 @@
                 {{amWiki.testing.tpl}}
             </div>
         </div>
+        <!-- 签名 -->
+        <footer>
+            <div class="signature">Powered by
+                <a href="https://github.com/TevinLi/amWiki" target="_blank">amWiki</a>
+            </div>
+        </footer>
         <!-- 返回顶部 -->
         <aside>
             <div class="back-top">
