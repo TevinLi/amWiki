@@ -31,7 +31,7 @@
 .markdown-body .lang-off-js-comment.on i{color:#f00;}
 
 /* ---------- base ---------- */
-body{background:#e7e8eb;}
+body{position:relative;background:#e7e8eb;}
 .hidden{display:none !important;}
 
 /* ---------- header ---------- */

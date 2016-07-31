@@ -14,7 +14,7 @@
 
     <body>
         <!-- 头部 -->
-        <div class="header">
+        <header class="header">
             <div class="header-inner">
                 <a class="logo" href="?file=首页">
                     <img src="{{logo}}" /><i></i>
@@ -27,7 +27,7 @@
                     </svg>
                 </div>
             </div>
-        </div>
+        </header>
         <!-- 页面 -->
         <div class="container">
             <div class="nav">
@@ -43,25 +43,26 @@
                         <use xlink:href="#navFolder1"></use>
                     </svg>
                 </div>
-                <div class="menubar" id="menuBar"></div>
+                <nav class="menubar" id="menuBar"></nav>
             </div>
             <div class="main" id="main">
-                <div class="markdown-body" id="view"></div>
+                <article class="markdown-body" id="view"></article>
                 {{amWiki.testing.tpl}}
             </div>
         </div>
         <!-- 返回顶部 -->
-        <div class="back-top">
-            <a href="#" class="back-icon">
-                <svg>
-                    <use xlink:href="#backTop"></use>
-                </svg>
-            </a>
-            <a href="#" class="back-text">返回顶部</a>
-        </div>
+        <aside>
+            <div class="back-top">
+                <a href="#" class="back-icon">
+                    <svg>
+                        <use xlink:href="#backTop"></use>
+                    </svg>
+                </a>
+                <a href="#" class="back-text">返回顶部</a>
+            </div>
+        </aside>
         <!-- js -->
         <div class="hidden">
-            <script type="text/javascript" src="amWiki/js/forEach.js"></script>
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>
             <script type="text/javascript" src="amWiki/js/jquery-compat-3.1.0.min.js"></script>
             <script type="text/javascript" src="amWiki/js/marked.min.js"></script>
@@ -81,7 +82,7 @@
                 (function(win) {
                     var notice = document.getElementById('lowBrowser');
                     //jQuery 3.x 需要 addEventListener 方法支持
-                    if(typeof win.addEventListener == 'undefined') {
+                    if (typeof win.addEventListener == 'undefined') {
                         notice.style.display = 'block';
                     } else {
                         var comments = notice.previousSibling;
