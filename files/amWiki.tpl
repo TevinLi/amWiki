@@ -77,6 +77,7 @@
             <script type="text/javascript" src="amWiki/js/flowchart.min.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.tools.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.storage.js"></script>
+            <script type="text/javascript" src="amWiki/js/amWiki.docs.js"></script>
             {{amWiki.testing.js}}
             <script type="text/javascript" src="amWiki/js/amWiki.js"></script>
         </div>
