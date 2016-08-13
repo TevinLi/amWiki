@@ -6,7 +6,9 @@
   "keywords": [
     "amWiki",
     "markdown",
-    "wiki"
+    "wiki",
+    "doc",
+    "api"
   ],
   "repository": {
     "type": "git",
