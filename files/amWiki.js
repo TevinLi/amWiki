@@ -10,15 +10,7 @@ $(function () {
 
     'use strict';
 
-    function getURLParameter(name) {
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-        var r = window.location.search.substr(1).match(reg);
-        if (r != null) {
-            return r[2];
-        } else {
-            return null;
-        }
-    }
+    var tools = window.tools;
 
     //菜单折叠
     var $menuBar = $('#menuBar');
@@ -225,7 +217,7 @@ $(function () {
     }
 
     //解析地址参数
-    var path = getURLParameter('file');
+    var path = tools.getURLParameter('file');
     if (!path) {
         path = '首页';
     } else {
@@ -278,7 +270,7 @@ $(function () {
             }
         } else if (count == 3) {
             //防止意外跳转循环
-            if (getURLParameter('jump') == 2) {
+            if (tools.getURLParameter('jump') == 2) {
                 return
             } else {
                 location.search = '?file=首页&jump=2';
@@ -316,7 +308,7 @@ $(function () {
             setTitleAnchor();
             //启用接口ajax测试
             if (window.Testing) {
-                var testing = new Testing();
+                var testing = new AWTesting();
                 testing.crawlContent();
             }
         }, 'text').fail(function () {

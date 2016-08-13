@@ -329,7 +329,7 @@
                     if (/^\s*\{[\s\S]*\}\s*$/.test(data)) {
                         $frameBody[0].innerHTML = '<pre style="white-space:pre-wrap;word-break:break-all;"><pre>';
                         //json格式化输出
-                        $frameBody.find('pre').text(that.formatJson(data));
+                        $frameBody.find('pre').text(win.tools.formatJson(data));
                     } else {
                         $frameBody[0].innerHTML = data.replace(/<!(doctype|DOCTYPE)\s+(html|HTML)>/, '');
                     }
@@ -359,7 +359,7 @@
                         html += '<pre style="white-space:pre-wrap;word-break:break-all;"><pre>';
                         $frameBody[0].innerHTML = html;
                         //json格式化输出
-                        $frameBody.find('pre').text(that.formatJson(xhr.responseText));
+                        $frameBody.find('pre').text(win.tools.formatJson(xhr.responseText));
                     }
                     //其他不跨域
                     else {
@@ -374,73 +374,6 @@
         });
     };
 
-    //json格式化
-    Testing.prototype.formatJson = function (str) {
-        var json = decodeURI(str);
-        var reg = null,
-            formatted = '',
-            pad = 0,
-            PADDING = '    ';
-        var options = {};
-        // remove newline where '{' or '[' follows ':'
-        options.newlineAfterColonIfBeforeBraceOrBracket = options.newlineAfterColonIfBeforeBraceOrBracket === true;
-        // use a space after a colon
-        options.spaceAfterColon = options.spaceAfterColon !== false;
-        // begin formatting...
-        if (typeof json !== 'string') {
-            json = JSON.stringify(json);
-        } else {
-            json = JSON.parse(json);
-            json = JSON.stringify(json);
-        }
-        // add newline before and after curly braces
-        reg = /([\{\}])/g;
-        json = json.replace(reg, '\r\n$1\r\n');
-        // add newline before and after square brackets
-        reg = /([\[\]])/g;
-        json = json.replace(reg, '\r\n$1\r\n');
-        // add newline after comma
-        reg = /(\,)/g;
-        json = json.replace(reg, '$1\r\n');
-        // remove multiple newlines
-        reg = /(\r\n\r\n)/g;
-        json = json.replace(reg, '\r\n');
-        // remove newlines before commas
-        reg = /\r\n\,/g;
-        json = json.replace(reg, ',');
-        // optional formatting...
-        if (!options.newlineAfterColonIfBeforeBraceOrBracket) {
-            reg = /\:\r\n\{/g;
-            json = json.replace(reg, ':{');
-            reg = /\:\r\n\[/g;
-            json = json.replace(reg, ':[');
-        }
-        if (options.spaceAfterColon) {
-            reg = /"\s*\:/g;
-            json = json.replace(reg, '": ');
-        }
-        $.each(json.split('\r\n'), function (index, node) {
-            var i = 0,
-                indent = 0,
-                padding = '';
-            if (node.match(/\{$/) || node.match(/\[$/)) {
-                indent = 1;
-            } else if (node.match(/\}/) || node.match(/\]/)) {
-                if (pad !== 0) {
-                    pad -= 1;
-                }
-            } else {
-                indent = 0;
-            }
-            for (i = 0; i < pad; i++) {
-                padding += PADDING;
-            }
-            formatted += padding + node + '\r\n';
-            pad += indent;
-        });
-        return formatted;
-    };
-
-    return win.Testing = Testing;
+    return win.AWTesting = Testing;
 
 })(window, document);

@@ -1,0 +1,120 @@
+/**
+ * @author Tevin
+ * @date 2016/8/11
+ */
+
+;
+(function (win) {
+
+    'use strict';
+
+    return win.tools = {
+
+        //获取url参数
+        getURLParameter: function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) {
+                return r[2];
+            } else {
+                return null;
+            }
+        },
+
+        //转换字符中每个汉字为两个字符
+        simString: function (str, mod) {
+            mod = mod == 'short';  //短字符串
+            var str2 = '';
+            var s = '';
+            var encodeURI = win.encodeURI;
+            for (var i = 0; i < str.length; i++) {
+                s = str.substr(i, 1);
+                if (/[\u4e00-\u9fa5]/.test(s)) {
+                    encodeURI(s).split('%').forEach(function (item) {
+                        if (item == '') {
+                            s = [];
+                        } else {
+                            s.push(parseInt('0x' + item));
+                        }
+                    });
+                    if (mod) {
+                        str2 += (s[0] + s[1] + s[2]).toString(16).substr(-1, 1);
+                    } else {
+                        str2 += (s[0] + s[1] + s[2]).toString(16).substr(-2, 2);
+                    }
+                } else {
+                    str2 += s;
+                }
+            }
+            return str2;
+        },
+
+        //json格式化
+        formatJson: function (str) {
+            var json = decodeURI(str);
+            var reg = null,
+                formatted = '',
+                pad = 0,
+                PADDING = '    ';
+            var options = {};
+            // remove newline where '{' or '[' follows ':'
+            options.newlineAfterColonIfBeforeBraceOrBracket = options.newlineAfterColonIfBeforeBraceOrBracket === true;
+            // use a space after a colon
+            options.spaceAfterColon = options.spaceAfterColon !== false;
+            // begin formatting...
+            if (typeof json !== 'string') {
+                json = JSON.stringify(json);
+            } else {
+                json = JSON.parse(json);
+                json = JSON.stringify(json);
+            }
+            // add newline before and after curly braces
+            reg = /([\{\}])/g;
+            json = json.replace(reg, '\r\n$1\r\n');
+            // add newline before and after square brackets
+            reg = /([\[\]])/g;
+            json = json.replace(reg, '\r\n$1\r\n');
+            // add newline after comma
+            reg = /(\,)/g;
+            json = json.replace(reg, '$1\r\n');
+            // remove multiple newlines
+            reg = /(\r\n\r\n)/g;
+            json = json.replace(reg, '\r\n');
+            // remove newlines before commas
+            reg = /\r\n\,/g;
+            json = json.replace(reg, ',');
+            // optional formatting...
+            if (!options.newlineAfterColonIfBeforeBraceOrBracket) {
+                reg = /\:\r\n\{/g;
+                json = json.replace(reg, ':{');
+                reg = /\:\r\n\[/g;
+                json = json.replace(reg, ':[');
+            }
+            if (options.spaceAfterColon) {
+                reg = /"\s*\:/g;
+                json = json.replace(reg, '": ');
+            }
+            $.each(json.split('\r\n'), function (index, node) {
+                var i = 0,
+                    indent = 0,
+                    padding = '';
+                if (node.match(/\{$/) || node.match(/\[$/)) {
+                    indent = 1;
+                } else if (node.match(/\}/) || node.match(/\]/)) {
+                    if (pad !== 0) {
+                        pad -= 1;
+                    }
+                } else {
+                    indent = 0;
+                }
+                for (i = 0; i < pad; i++) {
+                    padding += PADDING;
+                }
+                formatted += padding + node + '\r\n';
+                pad += indent;
+            });
+            return formatted;
+        }
+    }
+
+})(window);
