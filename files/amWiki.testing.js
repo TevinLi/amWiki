@@ -1,12 +1,10 @@
 /**
- * amWiki-testing
- * by Tevin
- *
- * 简单发送ajax测试工具
+ * @author Tevin
+ * @desc 简单发送ajax测试工具
  * 仅当页面存在“请求地址”、“请求类型”、“请求参数”三个h3标题时触发
  */
 
-(function (win, doc) {
+(function (win, doc, $) {
 
     var Testing = function () {
         //缓存元素
@@ -49,69 +47,69 @@
 
     //抓取请求内容，抓取成功才显示按钮
     Testing.prototype.crawlContent = function () {
-        this.$e.testingShow.removeClass('show');
         var that = this;
-        //抓取请求地址
-        var $url = $('[name="请求地址"]').eq(0);  //描记-地址title
-        if ($url.length == 0) {
-            return;
-        } else {
-            this.request.url = $url.parent().next().text().replace(/^\s+|\s+$/g, '');
-            if (this.request.url.indexOf('http') < 0) {
-                if (this.request.url.indexOf('/') == 0) {
-                    this.request.url = 'http://' + location.host + this.request.url;
-                } else {
-                    this.request.url = 'http://' + location.host + '/' + this.request.url;
-                }
-            }
-        }
-        //抓取请求类型
-        var $method = $('[name="请求类型"]').eq(0);  //描记-类型title
-        if ($method.length == 0) {
-            return;
-        } else {
-            this.request.method = $method.parent().next().text().replace(/^\s+|\s+$/g, '').toUpperCase();
-            if (this.request.method != 'POST' && this.request.method != 'GET') {
-                this.request.method = 'POST';
-            }
-        }
-        //抓取请求参数
-        var $param = $('[name="请求参数"]').eq(0);  //描记-参数title
-        if ($param.length == 0) {
-            return;
-        } else {
-            //清空参数列表
-            this.request.params.length = 0;
-            //不存在table直接无参数，存在table时开始解析
-            if ($param.parent().next('table').length > 0) {
-                $param.parent().next('table').find('tbody').find('tr').each(function () {
-                    var $tds = $(this).find('td');
-                    //抓取内容
-                    var param = {
-                        keyName: $tds.eq(0).text().replace(/^\s+|\s+$/g, ''),
-                        valueType: $tds.eq(1).text().replace(/^\s+|\s+$/g, ''),
-                        required: $tds.eq(2).text().replace(/^\s+|\s+$/g, ''),
-                        describe: $tds.eq(3).text().replace(/^\s+|\s+$/g, ''),
-                        default: $tds.eq(4).text().replace(/^\s+|\s+$/g, '')
-                    };
-                    //修正请求参数，正确键名才添加参数
-                    if (param.keyName != '无' && param.keyName != '-' && param.keyName != '') {
-                        //“必填”转换
-                        if (param.required == '是' || param.required == 'yes' || param.required == 'true') {
-                            param.required = 'required';
-                        } else {
-                            param.required = '';
-                        }
-                        //“默认值”转换
-                        if (param.default == '-' || param.default == '无' || param.default == 'Null') {
-                            param.default = '';
-                        }
-                        that.request.params.push(param);
+        var testingReqState = [false, false, false];
+        this.$e.testingShow.removeClass('show');
+        this.$e.view.find('h3').each(function () {
+            var $this = $(this);
+            var name = $.trim($this.text());
+            //抓取请求地址
+            if (name == '请求地址' && !testingReqState[0]) {
+                that.request.url = $.trim($this.next().text());
+                if (that.request.url.indexOf('http') < 0) {
+                    if (that.request.url.indexOf('/') == 0) {
+                        that.request.url = 'http://' + location.host + that.request.url;
+                    } else {
+                        that.request.url = 'http://' + location.host + '/' + that.request.url;
                     }
-                });
+                }
+                testingReqState[0] = true;
             }
-        }
+            //抓取请求类型
+            else if (name == '请求类型' && !testingReqState[1]) {
+                that.request.method = $.trim($this.next().text()).toUpperCase();
+                if (that.request.method != 'POST' && that.request.method != 'GET') {
+                    that.request.method = 'POST';
+                }
+                testingReqState[1] = true;
+            }
+            //抓取请求参数
+            else if (name == '请求参数' && !testingReqState[2]) {
+                //清空参数列表
+                that.request.params.length = 0;
+                //不存在table直接无参数，存在table时开始解析
+                if ($this.next('table').length > 0) {
+                    $this.next('table').find('tbody').find('tr').each(function () {
+                        var $tds = $(this).find('td');
+                        //抓取内容
+                        var param = {
+                            keyName: $tds.eq(0).text().replace(/^\s+|\s+$/g, ''),
+                            valueType: $tds.eq(1).text().replace(/^\s+|\s+$/g, ''),
+                            required: $tds.eq(2).text().replace(/^\s+|\s+$/g, ''),
+                            describe: $tds.eq(3).text().replace(/^\s+|\s+$/g, ''),
+                            default: $tds.eq(4).text().replace(/^\s+|\s+$/g, '')
+                        };
+                        //修正请求参数，正确键名才添加参数
+                        if (param.keyName != '无' && param.keyName != '-' && param.keyName != '') {
+                            //“必填”转换
+                            if (param.required == '是' || param.required == 'yes' || param.required == 'true') {
+                                param.required = 'required';
+                            } else {
+                                param.required = '';
+                            }
+                            //“默认值”转换
+                            if (param.default == '-' || param.default == '无' || param.default == 'Null') {
+                                param.default = '';
+                            }
+                            that.request.params.push(param);
+                        }
+                    });
+                }
+                testingReqState[2] = true;
+            }
+        });
         this.initPanel();
+        testingReqState = [false, false, false];
     };
 
     //测试面板填充数据
@@ -376,4 +374,4 @@
 
     return win.AWTesting = Testing;
 
-})(window, document);
+})(window, document, jQuery);

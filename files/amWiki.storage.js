@@ -1,6 +1,6 @@
 /**
  * @author Tevin
- * @date 2016/8/10
+ * @desc 本地缓存
  */
 
 ;
@@ -9,6 +9,7 @@
     'use strict';
 
     var tools = win.tools;
+    var LOCAL_STORAGE_NAME = 'AMWikiDataBase';  //本地数据localStorage键名
 
     var Storage = function () {
         this.db = null;  //内存中的文库缓存
@@ -17,11 +18,10 @@
 
     //存取本地存储
     Storage.prototype.bridgeLocalStorage = function (type) {
-        var LOCAL_STORAGE_NANE = 'amWikiDataBase';  //本地localstorage名称
         if (type == 'read') {
-            this.db = JSON.parse(win.localStorage[LOCAL_STORAGE_NANE] || '{"libraries":{}}');
+            this.db = JSON.parse(win.localStorage[LOCAL_STORAGE_NAME] || '{"libraries":{}}');
         } else if (type == 'save') {
-            win.localStorage[LOCAL_STORAGE_NANE] = JSON.stringify(this.db);
+            win.localStorage[LOCAL_STORAGE_NAME] = JSON.stringify(this.db);
         }
     };
 
