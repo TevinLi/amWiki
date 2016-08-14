@@ -28,8 +28,8 @@
     //初始化url编码类型标记
     Docs.prototype.initUrlEncode = function () {
         /*
-         * 由于win与linux采用不同编码保存文件名
-         * 记录浏览器打开当前域名的wiki时服务器文件名的编码类型
+         * 由于win与linux采用不同编码保存中文文件名
+         * 记录浏览器打开当前域名的wiki时服务器中文文件名的编码类型
          */
         if (!localStorage[URL_ENCODE_NAME]) {
             localStorage[URL_ENCODE_NAME] = 'utf8';
@@ -197,7 +197,7 @@
                 //设置描点
                 that.setTitlesAnchor();
                 //成功回调
-                callback('done');
+                callback('done', data);
             })
             //请求失败
             .fail(function () {
@@ -205,12 +205,21 @@
             });
     };
 
-    //加载页面
+    /**
+     * @callback loadPageCallback
+     * @param type {string} - 加载页面最终状态，success、error 两种
+     * @param content {string} - 加载页面成功时，传递加载的内容
+     */
+    /**
+     * @desc 加载指定页面
+     * @param path {string} - 页面资源地址
+     * @param callback {loadPageCallback} - 加载完成后的回调
+     */
     Docs.prototype.loadPage = function (path, callback) {
         //console.log(path);
         var that = this;
         var url = this.encodeUrl(path, 'normal');
-        this.getDoc(url, function (type) {
+        this.getDoc(url, function (type, data) {
             if (type == 'fail') {
                 //如果第一失败，转换url编码类型后发送第二次请求
                 var url = that.encodeUrl(path, 'reverse');
@@ -222,13 +231,21 @@
                     //如果第二次才成功，转换保存的编码类型标记
                     else if (type == 'done') {
                         localStorage[URL_ENCODE_NAME] = localStorage[URL_ENCODE_NAME] == 'utf8' ? 'gbk' : 'utf8';
-                        callback && callback('success');
+                        callback && callback('success', data);
                     }
                 });
             } else if (type == 'done') {
-                callback && callback('success');
+                callback && callback('success', data);
             }
         });
+    };
+
+    /**
+     * @desc 清理页面
+     */
+    Docs.prototype.cleanView = function () {
+        this.$e.view.find('.lang-off-js-comment').off('click');
+        this.$e.view.html('');
     };
 
     return win.AWDocs = Docs;

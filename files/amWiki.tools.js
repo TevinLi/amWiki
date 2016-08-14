@@ -10,7 +10,11 @@
 
     return win.tools = {
 
-        //获取url参数
+        /**
+         * @desc 获取url参数
+         * @param name {string}
+         * @returns {string|null} - 获取的参数
+         */
         getURLParameter: function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
             var r = window.location.search.substr(1).match(reg);
@@ -21,7 +25,12 @@
             }
         },
 
-        //转换字符中每个汉字为两个字符
+        /**
+         * @desc 转换字符中每个汉字为两个字符
+         * @param str {string} - 要编码的字符串
+         * @param mod {string} - 编码模式选择，normal一个汉字对应两位字符，short一个汉字对应一位字符
+         * @returns {string} - 编码后的字符串
+         */
         simString: function (str, mod) {
             mod = mod == 'short';  //短字符串
             var str2 = '';
@@ -49,7 +58,11 @@
             return str2;
         },
 
-        //json格式化
+        /**
+         * @desc json格式化
+         * @param str {string} - 需要格式化的json字符串
+         * @returns {string} - 格式化后的json字符串
+         */
         formatJson: function (str) {
             var json = decodeURI(str);
             var reg = null,

@@ -45,7 +45,9 @@
         this.bindAjaxSend();
     };
 
-    //抓取请求内容，抓取成功才显示按钮
+    /**
+     * @desc 抓取请求内容，抓取成功才显示按钮
+     */
     Testing.prototype.crawlContent = function () {
         var that = this;
         var testingReqState = [false, false, false];
@@ -108,8 +110,29 @@
                 testingReqState[2] = true;
             }
         });
-        this.initPanel();
+        if (testingReqState[0] && testingReqState[1] && testingReqState[2]) {
+            this.initPanel();
+        } else {
+            this.offPanel();
+        }
         testingReqState = [false, false, false];
+    };
+
+    //关闭测试面板
+    Testing.prototype.offPanel = function () {
+        this.$e.testingShow.removeClass('show');
+        //清除抓取参数
+        this.request.url = '';
+        this.request.method = '';
+        this.request.params = [];
+        //清空请求地址
+        $('#testingSendUrl').val('');
+        //还原请求类型
+        $('#testingSendType').find('option[value="POST"]').prop('selected', true);
+        //清空参数列表
+        this.$e.testingParam.html('');
+        //重置iframe
+        $('#testingResponse')[0].contentWindow.location.reload();
     };
 
     //测试面板填充数据
