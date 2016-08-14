@@ -160,6 +160,37 @@
         return url;
     };
 
+    /**
+     * @desc 渲染文档
+     * @param content {string} - 需要渲染的文档内容
+     */
+    Docs.prototype.renderDoc = function (content) {
+        var that = this;
+        this.cleanView();
+        this.$e.view
+            .html(marked(content))
+            .find('pre code').each(function (i, element) {
+                var $elm = $(element);
+                var className = $elm.attr('class') || '';
+                //流程图
+                if (className.indexOf('lang-flow') >= 0) {
+                    that.createFlowChart($elm);
+                }
+                //语法高亮
+                else if (className.indexOf('lang') >= 0) {
+                    hljs.highlightBlock(element);
+                }
+                //js注释开关
+                if (className.indexOf('javascript') >= 0) {
+                    that.setJSCommentDisable($elm);
+                }
+            });
+        //设置网页title
+        $('title').text(this.$e.view.find('h1').text());
+        //设置描点
+        this.setTitlesAnchor();
+    };
+
     //读取文档
     Docs.prototype.getDoc = function (url, callback) {
         var that = this;
@@ -174,28 +205,6 @@
                 if (/^\s*<!(DOCTYPE|doctype)/.test(data)) {
                     return callback('fail');
                 }
-                that.$e.view
-                    .html(marked(data))
-                    .find('pre code').each(function (i, element) {
-                        var $elm = $(element);
-                        var className = $elm.attr('class') || '';
-                        //流程图
-                        if (className.indexOf('lang-flow') >= 0) {
-                            that.createFlowChart($elm);
-                        }
-                        //语法高亮
-                        else if (className.indexOf('lang') >= 0) {
-                            hljs.highlightBlock(element);
-                        }
-                        //js注释开关
-                        if (className.indexOf('javascript') >= 0) {
-                            that.setJSCommentDisable($elm);
-                        }
-                    });
-                //设置网页title
-                $('title').text(that.$e.view.find('h1').text());
-                //设置描点
-                that.setTitlesAnchor();
                 //成功回调
                 callback('done', data);
             })

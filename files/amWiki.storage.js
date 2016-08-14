@@ -68,7 +68,7 @@
      * @returns {string} - 文档内容
      */
     Storage.prototype.read = function (uri) {
-        var id = tools.simString(str, 'short');
+        var id = tools.simString(uri, 'short');
         var article = '';
         if (this.db.libraries[id]) {
             article = this.db.libraries[id].content;

@@ -10,7 +10,18 @@ $(function () {
 
     'use strict';
 
+    //工具集
     var tools = window.tools;
+    //文档管理器
+    var docs = new AWDocs();
+    //本地存储
+    var storage = new AWStorage();
+    //启用接口ajax测试
+    if (window.AWTesting) {
+        var testing = new AWTesting();
+    }
+    //是否支持history.state的API (IE9不支持)
+    var historyStated = 'pushState' in history;
 
     //菜单折叠
     var $menuBar = $('#menuBar');
@@ -114,16 +125,44 @@ $(function () {
         }, 'text');
     }
 
-    //读取导航目录
-    $.get('library/$navigation.md', function (data) {
-        $menuBar.html(marked(data));
-        $('.menu-fold').on('click', setMenuFolding);
-        $menuBar
-            .find('h4').prepend('<svg><use xlink:href="#navHome"></use></svg>').end()
-            .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
-        setView();
-    }, 'text');
-
+    //改变页面
+    var changePage = function (path, firstOpen) {
+        //第一步，从本地缓存读取并渲染页面
+        var localDoc = storage.read(path);
+        docs.renderDoc(localDoc);
+        //更新history记录
+        if (!firstOpen && historyStated) {
+            history.pushState(null, '', '?file=' + path);
+        }
+        //第二步，加载服务器上的文档资源，如果有更新重新渲染
+        docs.loadPage(path, function (type, content) {
+            //读取服务器文档失败
+            if (type == 'error') {
+                //如果本地缓存为空，且服务器文档读取失败，跳回首页
+                if (localDoc == '') {
+                    docs.loadPage('首页', function (type, content) {
+                        if (type == 'success') {
+                            storage.save('首页', content);
+                        }
+                    });
+                    if (historyStated) {
+                        history.pushState(null, '', '?file=首页');
+                    }
+                }
+                //如果本地缓存不为空，但服务器文档读取失败，不进行任何操作
+            }
+            //读取服务器文档成功
+            else if (type == 'success') {
+                //如果服务器文档有更新，更新本地缓存、重新渲染页面、重新判断接口测试
+                if (content != localDoc) {
+                    docs.renderDoc(content);
+                    storage.save(path, content);
+                    testing && testing.crawlContent();
+                }
+                //如果服务器文档与本地缓存一致，不进行任何操作
+            }
+        });
+    };
 
     //解析地址参数
     var path = tools.getURLParameter('file');
@@ -132,14 +171,24 @@ $(function () {
     } else {
         path = decodeURI(path);
     }
-    var setView = function () {
+    changePage(path, true);
+
+    //读取导航目录
+    $.get('library/$navigation.md', function (data) {
+        $menuBar.html(marked(data));
+        $('.menu-fold').on('click', setMenuFolding);
+        $menuBar
+            .find('h4').prepend('<svg><use xlink:href="#navHome"></use></svg>').end()
+            .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
+        //初次打开页面设置导航显示
         if (path == '首页') {
             $menuBar.find('h4').addClass('on');
         } else {
             var hsLink = false;
             $menuBar.find('a').each(function () {
                 var $this = $(this);
-                if ($(this).attr('href').split('file=')[1] == path) {
+                var path2 = $(this).attr('href').split('file=')[1];
+                if (path2 == path) {
                     hsLink = true;
                     //第一层
                     var $prev = $this.addClass('on').parent().parent().show().prev().addClass('on');
@@ -150,27 +199,19 @@ $(function () {
                 } else {
                     $this.removeClass('on');
                 }
+                //支持历史api时改变默认事件
+                if (historyStated) {
+                    $this.on('click', function () {
+                        changePage(path2);
+                        return false;
+                    });
+                }
             });
             if (hsLink) {
                 $menuBar.find('h4').removeClass('on');
             }
         }
-    };
-
-    //启用接口ajax测试
-    if (window.AWTesting) {
-        var testing = new AWTesting();
-    }
-
-    var docs = new AWDocs();
-    docs.loadPage(path, function (type) {
-        //读取页面失败，跳转回首页
-        if (type == 'error') {
-            docs.loadPage('首页');
-        } else {
-            testing && testing.crawlContent();
-        }
-    });
+    }, 'text');
 
 });
 
