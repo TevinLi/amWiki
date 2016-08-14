@@ -9,7 +9,8 @@
     'use strict';
 
     var tools = win.tools;
-    var LOCAL_STORAGE_NAME = 'AMWikiDataBase';  //本地数据localStorage键名
+    var wikiId = tools.simString(win.location.pathname.replace('/', '').replace(/\//g, '_')).toUpperCase();
+    var LOCAL_STORAGE_NAME = 'AMWikiDataBase@' + wikiId;  //本地数据localStorage键名
 
     /**
      * @class 创建一个本地存储管理对象

@@ -28,7 +28,7 @@
         /**
          * @desc 转换字符中每个汉字为两个字符
          * @param str {string} - 要编码的字符串
-         * @param mod {string} - 编码模式选择，normal一个汉字对应两位字符，short一个汉字对应一位字符
+         * @param [mod] {string} - 编码模式选择，可选，normal(默认)一个汉字对应两位字符，short一个汉字对应一位字符
          * @returns {string} - 编码后的字符串
          */
         simString: function (str, mod) {

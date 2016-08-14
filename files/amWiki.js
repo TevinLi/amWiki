@@ -20,7 +20,7 @@ $(function () {
         var testing = new AWTesting();
     }
     //是否支持history.state的API (IE9不支持)
-    var historyStated = 'pushState' in history;
+    var HISTORY_STATE = 'pushState' in history;
 
     //页面基本显示与操作
     var $menuBar = $('#menuBar');
@@ -158,7 +158,7 @@ $(function () {
         docs.renderDoc(localDoc);
         testing && testing.crawlContent();
         //更新history记录
-        if (!withOutPushState && historyStated) {
+        if (!withOutPushState && HISTORY_STATE) {
             history.pushState({path: path}, '', '?file=' + path);
         }
         //第二步，加载服务器上的文档资源，如果有更新重新渲染
@@ -172,7 +172,7 @@ $(function () {
                             storage.save('首页', content);
                         }
                     });
-                    if (historyStated) {
+                    if (HISTORY_STATE) {
                         history.replaceState({path: '首页'}, '', '?file=首页');
                     }
                 }
@@ -200,7 +200,7 @@ $(function () {
                 .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
-                if (historyStated) {
+                if (HISTORY_STATE) {
                     var $this = $(this);
                     $this.on('click', function () {
                         var path = $this.attr('href').split('file=')[1];
@@ -233,7 +233,7 @@ $(function () {
     });
 
     //history api 前进后退响应
-    if (historyStated) {
+    if (HISTORY_STATE) {
         $(window).on('popstate', function (e) {
             var path = e.originalEvent.state.path;
             //改变导航
