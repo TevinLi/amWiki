@@ -1,6 +1,6 @@
 /**
+ * @desc 文档加载渲染模块
  * @author Tevin
- * @desc 文档加载渲染管理
  */
 
 ;
@@ -12,6 +12,9 @@
     var marked = win.marked;
     var URL_ENCODE_NAME = 'AMWikiUrlEncode';  //记录url编码的键名
 
+    /**
+     * @class 创建一个文档管理对象
+     */
     var Docs = function () {
         this.$e = {
             win: $(win),

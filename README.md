@@ -24,7 +24,7 @@ amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文�
 2. 安装Atom插件amWiki，并重启Atom
 	- Atom菜单，File -> Setting -> Install -> 搜索`amWiki`
 	- 或者，运行cmd：`apm install amWiki`
-	- 或者，从Github的 [amWiki项目托管](https://github.com/TevinLi/amWiki) 下载zip，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
+	- 或者，从Github的 [amWiki项目托管·版本发布](https://github.com/TevinLi/amWiki/releases) 下载zip，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
 
 3. (在本地服务器静态目录)创建一个文件夹
 

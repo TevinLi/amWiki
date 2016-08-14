@@ -1,11 +1,16 @@
 /**
+ * @desc 简单ajax测试模块
  * @author Tevin
- * @desc 简单发送ajax测试工具
- * 仅当页面存在“请求地址”、“请求类型”、“请求参数”三个h3标题时触发
+ * @summary 仅当页面存在“请求地址”、“请求类型”、“请求参数”三个h3标题时触发
  */
 
 (function (win, doc, $) {
 
+    'use strict';
+
+    /**
+     * @class 创建一个借口测试管理对象
+     */
     var Testing = function () {
         //缓存元素
         this.$e = {
@@ -121,6 +126,9 @@
     //关闭测试面板
     Testing.prototype.offPanel = function () {
         this.$e.testingShow.removeClass('show');
+        if (this.$e.testingShow.hasClass('on')) {
+            this.displayBox('off');
+        }
         //清除抓取参数
         this.request.url = '';
         this.request.method = '';

@@ -1,6 +1,6 @@
 /**
+ * @desc 本地缓存模块
  * @author Tevin
- * @desc 本地缓存
  */
 
 ;
@@ -11,6 +11,9 @@
     var tools = win.tools;
     var LOCAL_STORAGE_NAME = 'AMWikiDataBase';  //本地数据localStorage键名
 
+    /**
+     * @class 创建一个本地存储管理对象
+     */
     var Storage = function () {
         this.db = null;  //内存中的文库缓存
         this.bridgeLocalStorage('read');
