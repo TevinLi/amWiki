@@ -198,19 +198,21 @@ $(function () {
             $menuBar
                 .find('h4').prepend('<svg><use xlink:href="#navHome"></use></svg>').end()
                 .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
+            var docList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
                 if (HISTORY_STATE) {
                     var $this = $(this);
+                    var path = $this.attr('href').split('file=')[1];
+                    docList.push(path);
                     $this.on('click', function () {
-                        var path = $this.attr('href').split('file=')[1];
                         changeNav(path);
                         changePage(path);
                         return false;
                     });
                 }
             });
-            callback && callback();
+            callback && callback(docList);
         }, 'text');
     };
 
@@ -225,11 +227,13 @@ $(function () {
     //页面基本
     pageBase();
     //加载导航
-    loadNav(function () {
+    loadNav(function (list) {
         //首次打开改变导航
         changeNav(path);
         //首次打开改变页面
         changePage(path, true);
+        //核对本地存储
+        storage.checkLibChange(list);
     });
 
     //history api 前进后退响应

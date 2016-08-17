@@ -94,7 +94,17 @@
      * @desc 校对列表，清除失效文档
      * @param list {Array} - 由导航树偏平化生成的文档列表
      */
-    Storage.prototype.proofRead = function (list) {
+    Storage.prototype.checkLibChange = function (list) {
+        var libraries = {};
+        var id = '';
+        for (var i = 0; i < list.length; i++) {
+            id = tools.simString(list[i], 'short');
+            if (typeof this.db.libraries[id] != 'undefined') {
+                libraries[id] = this.db.libraries[id];
+            }
+        }
+        this.db.libraries = libraries;
+        this.bridgeLocalStorage('save');
     };
 
     return win.AWStorage = Storage;
