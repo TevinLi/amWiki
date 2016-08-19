@@ -169,6 +169,7 @@ $(function () {
                 if (localDoc == '') {
                     docs.loadPage('首页', function (type, content) {
                         if (type == 'success') {
+                            docs.renderDoc(content);
                             storage.save('首页', content);
                         }
                     });
@@ -198,13 +199,13 @@ $(function () {
             $menuBar
                 .find('h4').prepend('<svg><use xlink:href="#navHome"></use></svg>').end()
                 .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
-            var docList = [];
+            var pathList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
                 if (HISTORY_STATE) {
                     var $this = $(this);
                     var path = $this.attr('href').split('file=')[1];
-                    docList.push(path);
+                    pathList.push(path);
                     $this.on('click', function () {
                         changeNav(path);
                         changePage(path);
@@ -212,7 +213,7 @@ $(function () {
                     });
                 }
             });
-            callback && callback(docList);
+            callback && callback(pathList);
         }, 'text');
     };
 
@@ -228,12 +229,12 @@ $(function () {
     pageBase();
     //加载导航
     loadNav(function (list) {
+        //核对本地存储
+        storage.checkLibChange(list);
         //首次打开改变导航
         changeNav(path);
         //首次打开改变页面
         changePage(path, true);
-        //核对本地存储
-        storage.checkLibChange(list);
     });
 
     //history api 前进后退响应
