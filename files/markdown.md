@@ -7,7 +7,7 @@ Markdown的语法简洁明了、学习容易，得到了许多著名网络平台
 
 ## 语法快速入门
 
-### <font color=#C71585>标题</font>
+### <font color=#C71585>【标题】</font>
 在行首插入1到6个#，对应1到6阶标题
     # 这是 H1
     ## 这是 H2
@@ -15,6 +15,7 @@ Markdown的语法简洁明了、学习容易，得到了许多著名网络平台
     #### 这是 H4
     ##### 这是 H5
     ###### 这是 H6
+渲染效果：  
 # 这是 H1
 ## 这是 H2
 ### 这是 H3
@@ -22,7 +23,7 @@ Markdown的语法简洁明了、学习容易，得到了许多著名网络平台
 ##### 这是 H5
 ###### 这是 H6
 
-### <font color=#C71585>修辞和强调</font>
+### <font color=#C71585>【修辞和强调】</font>
 使用星号和底线来标记需要强调的区段
 
     **加粗**
@@ -30,19 +31,21 @@ Markdown的语法简洁明了、学习容易，得到了许多著名网络平台
     *斜体*
     _斜体_
 
+渲染效果：  
 **加粗**  
 __加粗__  
 *斜体*  
 _斜体_  
 
-### <font color=#C71585>删除线</font>
+### <font color=#C71585>【删除线】</font>
 
     ~~要删掉的内容~~
-    
+
+渲染效果：  
 ~~要删掉的内容~~
 
-### <font color=#C71585>列表</font>
-无序列表使用星号、加号和减号来做为列表的项目标记
+### <font color=#C71585>【列表】</font>
+**无序列表** 使用星号、加号和减号来做为列表的项目标记
     * Candy.
     * Gum.
     + Booze.
@@ -52,6 +55,8 @@ _斜体_
     - Booze.
       + 嵌套
       * 嵌套
+
+渲染效果：  
 * Candy.
 * Gum.
 + Booze.
@@ -62,101 +67,99 @@ _斜体_
   + 嵌套
   * 嵌套
 
-有序的列表则是使用一般的数字接着一个英文句点作为项目标记
+**有序列表** 则是使用一般的数字接着一个英文句点作为项目标记
     1. Red
     50. Green
     1000. Blue
+
+渲染效果：  
 1. Red
 50. Green
 1000. Blue
 
-### <font color=#C71585>链接</font>
+### <font color=#C71585>【链接】</font>
 在方括号后面用圆括号接上链接
 
     这是一个[链接显示文本](http://www.baidu.com "链接title文本")
 
+渲染效果：  
 这是一个[链接显示文本](http://www.baidu.com "链接title文本")
 
-### <font color=#C71585>图片</font>
+### <font color=#C71585>【图片】</font>
 图片的语法和链接很像
 
     ![alt文本](amWiki/images/logo.png "Title")
 
+渲染效果：  
 ![alt文本](amWiki/images/logo.png "Title")
 
-### <font color=#C71585>代码</font>
+### <font color=#C71585>【代码】</font>
 使用反引号 \` 来标记代码区段
 
     我是`code`，`<div>division</div>`
 
+渲染效果：  
 我是`code`，`<div>division</div>`
 
+### <font color=#C71585>【代码段】</font>
 如果要建立一个已经格式化好的代码区块，只要每行都缩进 4 个空格或是一个 tab 就可以了
+
+        var name = 'Candy'
+
+渲染效果：  
 
     var name = 'Candy'
 
-### <font color=#C71585>表格</font>
+### <font color=#C71585>【表格】</font>
 使用竖线分割内容，且同时使用“---”与“:”指定对齐方式
 
     | Header01 | Header02 | Header03
     | -------- | :------: | ---:
     | 默认 | 居中 | 右
 
+渲染效果：  
+
 | Header01 | Header02 | Header03
 | -------- | :------: | ---:
 | 默认 | 居中 | 右
 
-### <font color=#C71585>引用</font>
+### <font color=#C71585>【引用】</font>
 只需要在文本前加入 > 这种尖括号（大于号）即可
 
     >这里是一段引用
 
+渲染效果：  
 >这里是一段引用
 
-### <font color=#C71585>分割线</font>
+### <font color=#C71585>【分割线】</font>
 只需要三个 \- 号
 
     ---
 
+渲染效果：  
+
 ---
 
-### <font color=#C71585>换行</font>
+### <font color=#C71585>【换行】</font>
 只需要两个以上的空格然后回车
 
     我是首行  
     我换行了
 
+渲染效果：  
 我是首行  
 我换行了
 
-### <font color=#C71585>html</font>
+### <font color=#C71585>【html】</font>
 可以直接在文档里书写 HTML，不需要额外标注这是 HTML
 
     <div>division</div>
 
+渲染效果：  
 <div>division</div>
 
----
 
-## 更多
+## 研究更多 markdown 语法详细细节
 
-### 研究markdown语法详细细节
->   - [创始人 John Gruber 的 Markdown 语法说明](http://daringfireball.net/projects/markdown/syntax)  
->   - [Markdown 中文版语法说明](http://wowubuntu.com/markdown/)
-
-### Markdown编辑器众多
-
-#### 在线网页编辑器
-[MaHua](http://mahua.jser.me/)、 [简书](http://www.jianshu.com/)、[马克飞象](https://maxiang.io/)、[Dillinger](http://dillinger.io/)、[StackEdit](https://stackedit.io/)
-
-#### 全平台编辑器
-[Atom](https://atom.io/)、[SublimeText](http://www.sublimetext.com/)、[CmdMarkdown](https://www.zybuluo.com/mdeditor)、[小书匠编辑器](http://soft.xiaoshujiang.com/)
-
-#### Windows平台编辑器
-[MarkdownPad](http://www.markdownpad.com/)
-
-#### OSX平台编辑器
-[Mou](http://25.io/mou/)、[MacDown](http://macdown.uranusjr.com/)、[Byword](https://bywordapp.com/)
-
-#### Linux平台编辑器
-ReText、[UberWriter](http://uberwriter.wolfvollprecht.de/)
+- [创始人 John Gruber 的 Markdown 语法说明](http://daringfireball.net/projects/markdown/syntax)  
+- [Markdown 中文版语法说明](http://wowubuntu.com/markdown/)

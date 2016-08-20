@@ -1,4 +1,4 @@
-# markdown 语法高亮
+# Markdown 语法高亮
 
 amWiki使用 [highlight.js](https://highlightjs.org/) 进行预语法高亮渲染，它能对多达一百多种语言、样式提供语法高亮解析  
 使用两组每组三个反引号分单独两行将代码包围起来，并在第一组反引号后写上语言类型即可使用语法高亮，例如：
