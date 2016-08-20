@@ -184,6 +184,7 @@
                     hljs.highlightBlock(element);
                 }
                 //js注释开关
+                className = $elm.attr('class') || '';
                 if (className.indexOf('javascript') >= 0) {
                     that.setJSCommentDisable($elm);
                 }
