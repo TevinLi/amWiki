@@ -99,13 +99,31 @@ $(function () {
                 $menuBar.find('a').each(function () {
                     var $this = $(this);
                     if ($this.text().indexOf(value) >= 0) {
-                        $this.parent().removeClass('off').parent().show().prev('h5').addClass('on');
+                        $this.html($this.text().replace(value, '<mark>' + value + '</mark>'));
+                        var $prev = $this.parent().removeClass('off').parent().show().prev();
+                        //一级目录
+                        if ($prev.is('h5')) {
+                            $prev.addClass('on');
+                        }
+                        //二级目录
+                        else if ($prev.is('strong')) {
+                            $prev.addClass('on').parent().removeClass('off').parent().show().prev().addClass('on');
+                        }
                     } else {
+                        if ($this.find('mark').length > 0) {
+                            $this.text($this.text());
+                        }
                         $this.parent().addClass('off');
                     }
                 });
             } else {
                 $filterClean.addClass('off');
+                $menuBar.find('a').each(function () {
+                    var $this = $(this);
+                    if ($this.find('mark').length > 0) {
+                        $this.text($this.text());
+                    }
+                });
                 $menuBar.find('a').parent().removeClass('off');
             }
         });
