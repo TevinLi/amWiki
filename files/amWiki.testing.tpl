@@ -6,6 +6,8 @@
         <select class="testing-send-type" id="testingSendType" title="请求类型">
             <option value="GET">GET</option>
             <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
         </select>
         <h3>参数列表：</h3>
         <ul class="testing-params" id="testingParam"></ul>
