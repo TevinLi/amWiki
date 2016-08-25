@@ -47,6 +47,10 @@
             </div>
             <div class="main" id="main">
                 <article class="markdown-body" id="view"></article>
+                <div class="main-sibling" id="mainSibling">
+                    <p><span>上一篇：</span><a href="#"></a></p>
+                    <p><span>下一篇：</span><a href="#"></a></p>
+                </div>
                 {{amWiki.testing.tpl}}
             </div>
         </div>
