@@ -1,5 +1,5 @@
 /**
- * @desc amwiki主执行模块
+ * @desc amwiki Web端·主执行模块
  * @author Tevin
  * @see {@link https://github.com/TevinLi/amWiki}
  * @license MIT - Released under the MIT license.
@@ -141,21 +141,28 @@ $(function () {
         }
     };
 
-    //改变底部相关篇目
+    //改变底部上下篇目
     var $mainSibling = $('#mainSibling');
     var changeSibling = function ($item) {
-        var getDoc = function (type, $elm) {
+        //如果未传导航项进来，隐藏上下篇目栏位
+        if (!$item) {
+            $mainSibling.removeClass('on');
+            return;
+        }
+        //获取平级文档链接
+        var getDocLink = function (type, $elm) {
             var $other = $elm[type]();
             if ($other.length == 0) {
                 return null;
             }
             if ($other.children('ul').length > 0) {
-                return getDoc(type, $other);
+                return getDocLink(type, $other);
             } else {
                 return $other.children('a');
             }
         };
-        var setSib = function(num, $other){
+        //设置上下篇目导航
+        var setSiblingNav = function(num, $other){
             if ($other) {
                 $mainSibling.find('a').eq(num)
                     .attr('href', $other.attr('href'))
@@ -166,8 +173,8 @@ $(function () {
                     .text('没有了');
             }
         };
-        setSib(0, getDoc('prev', $item));
-        setSib(1, getDoc('next', $item));
+        setSiblingNav(0, getDocLink('prev', $item));
+        setSiblingNav(1, getDocLink('next', $item));
         $mainSibling.addClass('on');
     };
 
@@ -176,6 +183,7 @@ $(function () {
         if (path == '首页') {
             $menuBar.find('h4').addClass('on');
             $menuBar.find('a').removeClass('on');
+            changeSibling(null);
         } else {
             var hsLink = false;
             $menuBar.find('a').each(function () {
