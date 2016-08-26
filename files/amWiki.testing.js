@@ -1,5 +1,5 @@
 /**
- * @desc 简单ajax测试模块
+ * @desc amWiki Web端·简单ajax测试模块
  * @author Tevin
  * @summary 仅当页面存在“请求地址”、“请求类型”、“请求参数”三个h3标题时触发
  */
