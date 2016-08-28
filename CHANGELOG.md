@@ -1,5 +1,11 @@
 # 版本日志
 
+### 0.6.3
+- 工作端，添加、移除旧项目时，同步更新本地服务器的文库地址列表记录
+- Web端接口测试，补齐Restful接口设计风格之Delete和Put请求 [#9](https://github.com/TevinLi/amWiki/issues/9)
+- Web端文档最底端(首页除外)，新增上一篇、下一篇的翻页导航
+- 调整部分注释，atom工作部分命名为工作端，以便和web端做区分
+
 ### 0.6.2
 - 修复非wiki路径下atom重新得到焦点检查库变化时报错问题
 - 修复二级目录不能粘帖截图的问题 [#8](https://github.com/TevinLi/amWiki/issues/8)
