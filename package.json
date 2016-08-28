@@ -1,7 +1,7 @@
 {
   "name": "amWiki",
   "main": "./lib/main",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文库系统，仅仅需要您使用Atom编辑markdown文档和拥有http纯静态访问空间！使用amWiki，您无需服务端开发、不用数据库、一键创建新文库、自动更新文库目录、支持截图直接粘帖为本地png并插入当前markdown...",
   "keywords": [
     "amWiki",
