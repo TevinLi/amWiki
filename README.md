@@ -106,7 +106,7 @@ amWiki是一款基于atom编辑器markdown语法的轻量级wiki文库系统。
 
 2. PC端使用左侧导航栏、移动端使用右上角导航弹出菜单切换页面。
 
-3. 在导航栏或导航菜单顶部，可以使用 ![](http://tevinli.github.io/illustration/amWiki/icon_filter.png) 栏位对导航目录进行筛选。
+3. 在导航栏顶部，可以使用筛选功能整个导航目录进行筛选。
 
 4. 如果存在页内目录，直接点击，页内目录使用hash滚动；同时您可以直接带hash分享，以方便他人快速浏览指定内容。
 
@@ -117,10 +117,18 @@ amWiki是一款基于atom编辑器markdown语法的轻量级wiki文库系统。
 这个项目的初始灵感来自 MDwiki，它是一个使用 html5/js 纯静态的 markdown wiki 系统。  
 一开始，我也准备使用它来写一些文档，但是我很快发现，如果我新增一篇文档，需要我手动去编辑导航栏文件增加一条导航，这个体验并不友好。然后想写一套类似 [微信公众平台开发者文档](http://mp.weixin.qq.com/wiki/home/index.html) 这样较大的文档库，发现 MDwiki 由于其容量所限，并不能很好的胜任。  
 于是经过一番折腾，就有了amWiki。  
-个人开源不易，欢迎来github上star支持一下，如果发现问题或好的建议，请在github上issues骚扰一下，不胜感谢！
+个人开源不易，欢迎来github上star支持一下，如果发现问题或好的建议，请尽量在github上发issues，不胜感谢！
 
 ## 更新日志
+### 如何即时获取最新版本信息与动态？
+- 如果您是微信用户，欢迎加作者微信为好友，微信号 **XF90_Net**，您也可以通过扫码添加  
+  _(大家加微信的时候都尽量备注一下原因吧，没有备注的，不加！目前主要集中精力在开发，暂不接受各种调戏跟闲聊～)_  
+  ![Tevin](https://amWiki.xf09.net/provision/tevin/wx.qrcode.200.png)
+- 如果您是微博用户，您也可以关注 [微博](http://weibo.com/1706602953/profile?is_all=1) / [twitter](https://twitter.com/tevinli2009)
+- 如果您只用QQ，请加QQ交流群`347125653`
+
+### 如何查看历史版本日志？
 [amWiki 版本更新日志](https://github.com/TevinLi/amWiki/blob/master/CHANGELOG.md "amWiki版本更新日志")
 
 ## 其他
-QQ交流群：347125653
+
