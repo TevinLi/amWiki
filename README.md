@@ -1,7 +1,7 @@
-# amWiki 文库
+# amWiki 轻文库
 
-amWiki 是一款基于 Atom 编辑器 Markdown 语法的轻量级 wiki 文库系统。  
-使用 amWiki，您无需服务端开发，只需使用 Atom 编辑 Markdown 文档和支持 http 静态访问网页空间！  
+amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器、使用 Markdown 标记语法的轻量级 wiki 文库系统。  
+amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库系统！  
 
 **传送门:**  
 [amWiki 项目 Github 托管地址](https://github.com/TevinLi/amWiki "amWiki项目Github托管地址")  
