@@ -6,7 +6,7 @@ amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文�
 
 **传送门:**  
 [amWiki 项目 Github 托管地址](https://github.com/TevinLi/amWiki "amWiki项目Github托管地址")  
-[![amWiki github star](https://code.xf09.net/githubicons/Tevinli/amWiki/star) ![amWiki github fork](https://code.xf09.net/githubicons/Tevinli/amWiki/fork)](https://github.com/TevinLi/amWiki)
+[![amWiki github star](https://amwiki.xf09.net/githubicons/Tevinli/amWiki/star) ![amWiki github fork](https://amwiki.xf09.net/githubicons/Tevinli/amWiki/fork)](https://github.com/TevinLi/amWiki)
 
 ### amWiki优势
 - 文档系统采用 markdown 语法
@@ -125,10 +125,9 @@ amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文�
 
 ## 更新日志
 ### 如何获取最新版本信息与动态？
-- 欢迎添加作者微信为好友，微信号 **XF90_Net**，您也可以通过扫码添加  
-  _(大家加微信的时候都尽量备注一下原因吧，没有备注的，不加！目前主要集中精力在开发，暂不接受各种调戏跟闲聊～)_  
-  ![Tevin](https://amWiki.xf09.net/provision/tevin/wx.qrcode.200.png)
-- 其他途径： [微博](http://weibo.com/1706602953/profile?is_all=1) / [Twitter](https://twitter.com/tevinli2009) / QQ群`347125653`
+- 欢迎添加作者微信为好友，微信号 **XF90_Net**  
+  _(大家加微信的时候都尽量备注一下原因吧，没有备注的不加哦！目前主要集中精力在开发，暂不接受各种调戏跟闲聊～)_
+- 其他途径： QQ群`347125653` / [微博](http://weibo.com/1706602953/profile?is_all=1) / [Twitter](https://twitter.com/tevinli2009)
 
 ### 如何查看历史版本日志？
 [amWiki 版本更新日志](https://github.com/TevinLi/amWiki/blob/master/CHANGELOG.md "amWiki版本更新日志")
