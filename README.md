@@ -1,7 +1,7 @@
 # amWiki 轻文库
 
 ![amWiki logo](https://amwiki.xf09.net/docs/assets/logo.png)  
-amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器、使用 Markdown 标记语法的轻量级 wiki 文库系统。  
+amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。  
 amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库系统！  
 
 **传送门:**  

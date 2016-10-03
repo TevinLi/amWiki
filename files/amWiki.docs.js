@@ -115,10 +115,10 @@
         var chart = flowchart.parse(code);
         chart.drawSVG(id, {
             'line-width': 1.3,
-            'line-length': 30,
+            'line-length': 55,
             'line-color': '#666',
             'text-margin': 10,
-            'font-size': 14,
+            'font-size': 12,
             'font': 'normal',
             'font-family': 'Helvetica',
             'font-weight': 'normal',
