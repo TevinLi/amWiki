@@ -1,5 +1,10 @@
 # 版本日志
 
+### 0.6.4
+- 新版logo上线
+- 介绍文案调整
+- 代码段在移动端不换行
+
 ### 0.6.3
 - 工作端，添加、移除旧项目时，同步更新本地服务器的文库地址列表记录
 - Web端接口测试，补齐Restful接口设计风格之Delete和Put请求 [#9](https://github.com/TevinLi/amWiki/issues/9)
