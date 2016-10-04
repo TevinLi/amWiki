@@ -7,6 +7,8 @@
     @page{margin:2cm;size:A4 portrait;}
 }
 @media print {
+    
+    /* ---------- main ---------- */
     body{color:black;background:#fff;}
     .header{display:none;}
     .container{margin:0 auto;background:none;border:none;}
@@ -25,10 +27,15 @@
     .main .testing-box{display:none !important;}
     .main .markdown-body h2:first-of-type{page-break-before:always;}
     .main .markdown-body h1 + h2{page-break-before:auto !important;}
+    .main .main-sibling{display:none;}
     .back-top{display:none;}
+    .signature{display:none;}
+    
+    /* ---------- increment ---------- */
     .main{counter-reset:chapternum1;}
     h2{counter-reset:chapternum2;}
     h2:before{counter-increment:chapternum1;content:counter(chapternum1) " ";}
     h3:before{counter-increment:chapternum2;content:counter(chapternum1) "." counter(chapternum2) " ";}
+    
 }
 
