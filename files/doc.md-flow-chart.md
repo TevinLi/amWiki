@@ -72,7 +72,7 @@ c2(no)->op2->e
     tag1(branch,direction)->tag2
 
 1. `->` 流程定义符，连接两个元素
-2. `branch` 设置 condition 类型的两个分支，有 `yes`/`no` 两个值，其他元素无效
+2. `branch` 设置 condition 类型元素的两个分支，有 `yes`/`no` 两个值，其他元素无效
 3. `direction` 定义流程走线方向，有 `left`/`right`/`top`/`bottom` 四个值，所有元素有效，此项配置可选 (ps:此属性容易造成渲染 bug)  
 
 小提示：
