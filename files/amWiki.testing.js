@@ -100,19 +100,24 @@
                             valueType: $tds.eq(1).text().replace(/^\s+|\s+$/g, ''),
                             required: $tds.eq(2).text().replace(/^\s+|\s+$/g, ''),
                             describe: $tds.eq(3).text().replace(/^\s+|\s+$/g, ''),
-                            default: $tds.eq(4).text().replace(/^\s+|\s+$/g, '')
+                            default: $tds.eq(4).text().replace(/^\s+|\s+$/g, ''),
+                            reference: $tds.eq(5).text().replace(/^\s+|\s+$/g, '')
                         };
                         //修正请求参数，正确键名才添加参数
                         if (param.keyName != '无' && param.keyName != '-' && param.keyName != '') {
                             //“必填”转换
-                            if (param.required == '是' || param.required == 'yes' || param.required == 'true') {
+                            if (param.required == '是' || param.required == '必填' || param.required == 'yes' || param.required == 'true') {
                                 param.required = 'required';
                             } else {
                                 param.required = '';
                             }
                             //“默认值”转换
-                            if (param.default == '-' || param.default == '无' || param.default == 'Null') {
-                                param.default = '';
+                            if (param.default == '-' || param.default == '无' || param.default == 'Null' || param.default == 'null') {
+                                if (param.reference && param.reference != '-' && param.reference != '无' && param.reference != 'Null' && param.reference != 'null') {
+                                    param.default = param.reference;
+                                } else {
+                                    param.default = '';
+                                }
                             }
                             that.request.params.push(param);
                         }
