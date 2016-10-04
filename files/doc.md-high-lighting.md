@@ -1,12 +1,12 @@
-# Markdown 语法高亮
+# amWiki 与语法高亮
 
-amWiki使用 [highlight.js](https://highlightjs.org/) 进行预语法高亮渲染，它能对多达一百多种语言、样式提供语法高亮解析  
+amWiki使用 [highlight.js](https://github.com/isagalaev/highlight.js) 进行预语法高亮渲染，它能对多达一百多种语言、样式提供语法高亮解析  
 使用两组每组三个反引号分单独两行将代码包围起来，并在第一组反引号后写上语言类型即可使用语法高亮，例如：
     ```js
     //some js code here
     ```
 
-## javascript / js
+## javascript / js 代码
 普通代码块效果：  
 ```
 //发送验证码
@@ -35,7 +35,7 @@ function cd(num) {
 }
 ```
 
-添加`js`、`javascript`标记后的效果：
+添加 `js`、`javascript` 标记后的效果：
 ```javascript
 //发送验证码
 function cd(num) {
@@ -65,7 +65,7 @@ function cd(num) {
 amWiki对javascript代码片段做了再次增强，可以点击代码块右上角按钮隐藏/显示注释  
 当注释处于隐藏状态时不会被复制，比较适合模拟返回json数据的接口时直接拷贝（json不允许注释）
 
-## Html
+## Html 代码
 普通代码段效果：  
 ```
 <body>
@@ -83,7 +83,7 @@ amWiki对javascript代码片段做了再次增强，可以点击代码块右上�
 </body>
 ```
 
-## css
+## css 代码
 普通代码段效果：
 ```
 /* 紧凑 */
@@ -112,7 +112,7 @@ textarea {
 }
 ```
 
-## php
+## php 代码
 普通代码段效果：
 ```
 private function addQuestData($data, $filing_id)
@@ -140,7 +140,7 @@ private function addQuestData($data, $filing_id)
   }
 ```
 
-## sql
+## sql 代码
 普通代码段效果：
 ```
 SELECT Company, OrderNumber FROM Orders ORDER BY Company, OrderNumber
@@ -150,7 +150,7 @@ SELECT Company, OrderNumber FROM Orders ORDER BY Company, OrderNumber
 SELECT Company, OrderNumber FROM Orders ORDER BY Company, OrderNumber
 ```
 
-## java
+## java 代码
 普通代码段效果：
 ```
 public class Test {

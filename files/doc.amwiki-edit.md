@@ -34,6 +34,11 @@
     ![](https://amwiki.xf09.net/docs/assets/001.tiny/04-b7efbbde.png)
 
 6. ##### 如果需要在 Markdown 文档中插入图片，**请先截图**，然后在文档对应位置使用快捷键：`Ctrl + Shift + V`
+    此时，光标位置将多出一段 Markdown 图片代码，例如：
+
+        ![](assets/001/04-b7efbbde.png)
+
+    同时，将在项目目录依次创建文件夹 assets、001 (如果不存在的话)，以及此文件夹下名称为 04-b7efbbde.png 的图片文件
 
 7. ##### 对于较长文章，可以使用页内目录，依次进行如下操作，或使用快捷键 `Ctrl + D`，即可在光标处插入页内目录。
     菜单栏 -> amWiki文库 -> 提取h2、h3标题为页内目录  
