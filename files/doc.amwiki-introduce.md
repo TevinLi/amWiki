@@ -21,7 +21,7 @@ amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文�
 
 ## 效果演示
 **Web端**  
-一键创建新文库默认生成Web端效果一览：[http://tevinli.github.io/amWiki/](http://tevinli.github.io/amWiki/index.html)  
+一键创建新文库默认生成Web端效果一览：[https://tevinli.github.io/amWiki/](https://tevinli.github.io/amWiki/index.html)  
 
 **工作端**  
 工作端需要您安装 Atom 与 amWiki 才能体验
