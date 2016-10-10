@@ -11,7 +11,7 @@
         </select>
         <h3>参数列表：</h3>
         <ul class="testing-params" id="testingParam"></ul>
-        <script id="templateFormList" type="text/html">
+        <script id="template:formList" type="text/html">
             <li>
                 <span>{{describe}}</span>
                 <input class="testing-param-key" type="text" value="{{keyName}}" placeholder="参数名" title="参数名" />&nbsp;&nbsp;
@@ -32,7 +32,7 @@
                 <div class="testing-global-param"><i class="close">&times;</i>
                     <h4>全局参数列表<small>(全局参数影响所有接口)</small></h4>
                     <ul id="testingGlobalParam"></ul>
-                    <script id="templateGlobalParam" type="text/html">
+                    <script id="template:globalParam" type="text/html">
                         <li><i>&times;</i> 描述：
                             <input type="text" placeholder="describe" value="{{describe}}"><br> 参数名：
                             <input type="text" placeholder="key-name" value="{{keyName}}"><br> 参数值：
@@ -50,7 +50,7 @@
     </div>
     <h2>响应内容<small id="testingDuration"></small>
         <svg id="testingLoading">
-            <use xlink:href="#loading"></use>
+            <use xlink:href="#icon:loading"></use>
         </svg>
     </h2>
     <div class="testing-response">

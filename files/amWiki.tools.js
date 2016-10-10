@@ -127,6 +127,27 @@
                 pad += indent;
             });
             return formatted;
+        },
+
+        /**
+         * @desc 时间戳格式化为日期时间
+         * @param timestamp {number} - 时间戳
+         * @returns {string} - 日期时间
+         */
+        formatTime: function (timestamp) {
+            var time = new Date(timestamp);
+            var year = time.getFullYear() + '';
+            var month = time.getMonth() + 1;
+            month = month <= 9 ? '0' + month : month;
+            var date = time.getDate();
+            date = date <= 9 ? '0' + date : date;
+            var hour = time.getHours();
+            hour = hour <= 9 ? '0' + hour : hour;
+            var minute = time.getMinutes();
+            minute = minute <= 9 ? '0' + minute : minute;
+            var second = time.getSeconds();
+            second = second <= 9 ? '0' + second : second;
+            return year + '-' + month + '-' + date + ' ' + hour + ':' + minute + ':' + second;
         }
     }
 

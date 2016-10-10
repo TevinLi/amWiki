@@ -72,7 +72,8 @@
         if (location.hash && location.hash.length > 1) {
             hash = location.hash.split('#')[1];
         }
-        var anchorHtml = '<a class="anchor" href="#{title}" name="{title}"><svg><use xlink:href="#linkAnchor"></use></svg></a>';
+        var anchorHtml = '<a class="anchor" href="#{title}" name="{title}">' +
+            '<svg><use xlink:href="#icon:linkAnchor"></use></svg></a>';
         $titles = that.$e.view.find('h1,h2,h3');
         $titles.each(function (index, element) {
             var $this = $(element);

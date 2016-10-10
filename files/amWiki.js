@@ -15,6 +15,8 @@ $(function () {
     var docs = new AWDocs();
     //本地存储
     var storage = new AWStorage();
+    //全文库搜索
+    var search = new AWSearch(storage);
     //启用接口ajax测试
     if (window.AWTesting) {
         var testing = new AWTesting();
@@ -57,16 +59,16 @@ $(function () {
             }
         });
         //展开折叠所有导航栏位按钮
-        $('.menu-fold').on('click', function () {
-            var $this = $(this);
-            if ($this.hasClass('on')) {
-                $this.removeClass('on').find('use').attr('xlink:href', '#navFolder1');
-                $menuBar.find('h5').removeClass('on').next('ul').hide();
-            } else {
-                $this.addClass('on').find('use').attr('xlink:href', '#navFolder2');
-                $menuBar.find('h5').addClass('on').next('ul').show();
-            }
-        });
+        /*$('.menu-fold').on('click', function () {
+         var $this = $(this);
+         if ($this.hasClass('on')) {
+         $this.removeClass('on').find('use').attr('xlink:href', '#navFolder1');
+         $menuBar.find('h5').removeClass('on').next('ul').hide();
+         } else {
+         $this.addClass('on').find('use').attr('xlink:href', '#navFolder2');
+         $menuBar.find('h5').addClass('on').next('ul').show();
+         }
+         });*/
         //响应式菜单
         var $nav = $('.nav'),
             $menuIcon = $('.menu_icon');
@@ -74,11 +76,11 @@ $(function () {
             var $this = $(this);
             if ($this.hasClass('close')) {
                 $this.removeClass('close');
-                $menuIcon.find('use').attr('xlink:href', '#navStart');
+                $menuIcon.find('use').attr('xlink:href', '#icon:navStart');
                 $nav.removeClass('on');
             } else {
                 $this.addClass('close');
-                $menuIcon.find('use').attr('xlink:href', '#navClose');
+                $menuIcon.find('use').attr('xlink:href', '#icon:navClose');
                 $nav.addClass('on');
             }
         });
@@ -162,7 +164,7 @@ $(function () {
             }
         };
         //设置上下篇目导航
-        var setSiblingNav = function(num, $other){
+        var setSiblingNav = function (num, $other) {
             if ($other) {
                 $mainSibling.find('a').eq(num)
                     .attr('href', $other.attr('href'))
@@ -219,32 +221,39 @@ $(function () {
             history.pushState({path: path}, '', '?file=' + path);
         }
         //第二步，加载服务器上的文档资源，如果有更新重新渲染
-        docs.loadPage(path, function (type, content) {
+        docs.loadPage(path, function (state, content) {
             //读取服务器文档失败
-            if (type == 'error') {
+            if (state == 'error') {
                 //如果本地缓存为空，且服务器文档读取失败，跳回首页
                 if (localDoc == '') {
-                    docs.loadPage('首页', function (type, content) {
-                        if (type == 'success') {
+                    docs.loadPage('首页', function (state, content) {
+                        if (state == 'success') {
                             docs.renderDoc(content);
-                            storage.save('首页', content);
+                            storage.saveDoc('首页', content);
                         }
                     });
                     if (HISTORY_STATE) {
                         history.replaceState({path: '首页'}, '', '?file=首页');
                     }
                 }
-                //如果本地缓存不为空，但服务器文档读取失败，不进行任何操作
+                //如果本地缓存不为空，但服务器文档读取失败
+                else {
+                    //记录文档打开数
+                    storage.increaseOpenedCount(path);
+                }
             }
             //读取服务器文档成功
-            else if (type == 'success') {
+            else if (state == 'success') {
                 //如果服务器文档有更新，更新本地缓存、重新渲染页面、重新判断接口测试
                 if (content != localDoc) {
                     docs.renderDoc(content);
-                    storage.save(path, content);
+                    storage.saveDoc(path, content);
                     testing && testing.crawlContent();
                 }
                 //如果服务器文档与本地缓存一致，不进行任何操作
+                else {}
+                //记录文档打开数
+                storage.increaseOpenedCount(path);
             }
         });
     };
@@ -254,8 +263,8 @@ $(function () {
         $.get('library/$navigation.md', function (data) {
             $menuBar.html(marked(data));
             $menuBar
-                .find('h4').prepend('<svg><use xlink:href="#navHome"></use></svg>').end()
-                .find('h5').prepend('<svg><use xlink:href="#navArrow"></use></svg>');
+                .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
+                .find('h5').prepend('<svg><use xlink:href="#icon:navArrow"></use></svg>');
             var pathList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
@@ -264,6 +273,7 @@ $(function () {
                     var path = $this.attr('href').split('file=')[1];
                     pathList.push(path);
                     $this.on('click', function () {
+                        search.displayBox('off'); //关闭搜索面板
                         changeNav(path);
                         changePage(path);
                         return false;
@@ -294,6 +304,32 @@ $(function () {
         path = decodeURI(path);
     }
 
+    //重建缓存
+    search.onNeedRebuildStorage = function (callback) {
+        storage.clearLibraries();
+        var list = storage.getIndexList();
+        var count = 0;
+        var load = function (path, i) {
+            //为避免重建缓存频率过高，人为增设每个请求时间间隔
+            setTimeout(function () {
+                docs.loadPage(path, function (state, content) {
+                    //文档读取成功时保存到内存
+                    if (state == 'success') {
+                        storage.saveDocToDB(path, content);
+                    }
+                    //循环结束后完成重建
+                    if (++count >= list.length) {
+                        storage.saveRebuild();
+                        callback && callback();
+                    }
+                });
+            }, i * 100);
+        };
+        for (var i = 0, item; item = list[i]; i++) {
+            load(item, i);
+        }
+    };
+
     //页面基本
     pageBase();
     //加载导航
@@ -306,7 +342,7 @@ $(function () {
         changePage(path, true);
     });
 
-    //history api 前进后退响应
+    //history api 浏览器前进后退操作响应
     if (HISTORY_STATE) {
         $(window).on('popstate', function (e) {
             var path = e.originalEvent.state.path;
