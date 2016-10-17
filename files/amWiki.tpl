@@ -84,6 +84,7 @@
                                 <a href="?file={{path}}">
                                     <div class="content">
                                         <strong>{{title}}</strong>
+                                        {{api}}
                                         {{content}}
                                     </div>
                                     <div class="bottom">

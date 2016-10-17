@@ -17,9 +17,11 @@
             //搜索处理结果
             this._processing = {};
             //设置
-            this._setting = {
+            this._data = {
                 //标题命中得分
                 titleScore: 100,
+                //接口地址命中得分
+                apiScore: 50,
                 //单次内容命中得分
                 textScore: 5
             }
@@ -35,6 +37,7 @@
             }
         };
 
+        //文档预处理
         Searcher.prototype._preDoc = function (doc) {
             doc.content = doc.content
                 .replace(/^\s+|\s+$/g, '')
@@ -42,6 +45,12 @@
                 .replace(/^#\s?(.*?)[\r|\n]/, function (match, s1) {
                     doc.title = s1;
                     return '';
+                })
+                //分离测试文档请求地址
+                .replace(/([^#]#{3} *请求地址[\n\r]{1,4})([-\w:\/\.]+?)[\n\r]{1,}(#{3} *请求类型[\s\S]+?#{3} *请求参数)/,
+                function (match, s1, s2, s3) {
+                    doc.api = s2;
+                    return s1 + s3;
                 })
                 //清除 Markdown 标题标记
                 .replace(/#{1,6}(.*?)#{0,6}\s*[\r\n]/g, '$1')
@@ -63,7 +72,7 @@
                 .replace(/-{3,} *[\n\r]/g, '')
                 //清除 Markdown 表格标记
                 .replace(/(\|.*?[\n\r]{1,2}){3,}/g, function (match) {
-                    return match.replace(/\|.*?[\n\r]{1,2}/g, function(match){
+                    return match.replace(/\|.*?[\n\r]{1,2}/g, function (match) {
                         if (match.indexOf('---') >= 0) {
                             return '';
                         } else {
@@ -99,14 +108,19 @@
 
         //匹配搜索词与得分计算
         Searcher.prototype.matchWords = function (words) {
-            //this._processing = {};
             for (var id in this._documents) {
                 if (this._documents.hasOwnProperty(id)) {
                     //标题命中
                     if (this._documents[id].title && this._documents[id].title.indexOf(words) >= 0) {
                         var title = this._documents[id].title.replace(words, '<mark>' + words + '</mark>');
                         this._addPorcessing(id, 'title', title);
-                        this._addPorcessing(id, 'score', this._setting.titleScore);
+                        this._addPorcessing(id, 'score', this._data.titleScore);
+                    }
+                    //接口地址命中
+                    if (this._documents[id].api && this._documents[id].api.indexOf(words) >= 0) {
+                        var api = '<p class="p1"><em>接口</em>' + this._documents[id].api.replace(words, '<mark>' + words + '</mark>') + '</p>';
+                        this._addPorcessing(id, 'api', api);
+                        this._addPorcessing(id, 'score', this._data.apiScore);
                     }
                     //内容命中
                     if (this._documents[id].content.indexOf(words) >= 0) {
@@ -120,7 +134,7 @@
                             }
                             content += '</p>';
                             this._addPorcessing(id, 'content', content);
-                            this._addPorcessing(id, 'score', matches.length * this._setting.textScore);
+                            this._addPorcessing(id, 'score', matches.length * this._data.textScore);
                         }
                     }
                 }
@@ -139,6 +153,9 @@
                 if (this._processing.hasOwnProperty(id)) {
                     if (typeof this._processing[id].title == 'undefined') {
                         this._processing[id].title = this._documents[id].title ? this._documents[id].title : '';
+                    }
+                    if (typeof this._processing[id].api == 'undefined') {
+                        this._processing[id].api = '';
                     }
                     if (typeof this._processing[id].content == 'undefined') {
                         this._processing[id].content = '<p>' + this._documents[id].content.substr(0, 45) + '...</p>';
