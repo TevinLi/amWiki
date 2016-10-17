@@ -260,7 +260,7 @@ $(function () {
 
     //读取目录导航
     var loadNav = function (callback) {
-        $.get('library/$navigation.md', function (data) {
+        $.get('library/$navigation.md?t=' + Date.now(), function (data) {
             $menuBar.html(marked(data));
             $menuBar
                 .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
