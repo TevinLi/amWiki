@@ -77,7 +77,7 @@
         $titles = that.$e.view.find('h1,h2,h3');
         $titles.each(function (index, element) {
             var $this = $(element);
-            var text = $.trim($this.text());
+            var text = $.trim($this.text()).replace('"', '');
             //设置描记
             $this.prepend(anchorHtml.replace(/\{title\}/g, text));
             //首次打开页面滚动位置修正
