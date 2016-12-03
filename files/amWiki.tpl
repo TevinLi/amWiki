@@ -43,11 +43,6 @@
                         <use xlink:href="#icon:search"></use>
                     </svg>
                 </div>
-                <!--<div class="menu-fold" title="展开/折叠导航栏所有菜单">
-                    <svg>
-                        <use xlink:href="#navFolder1"></use>
-                    </svg>
-                </div>-->
                 <nav class="menubar" id="menuBar"></nav>
             </div>
             <div class="main" id="main">
@@ -73,7 +68,7 @@
                     <h2>全库搜索</h2>
                     <div class="search-input">
                         <input type="text" id="searchText" placeholder="请输入搜索内容" />
-                        <input type="button" id="search" value="搜 索"/>
+                        <input type="button" id="search" value="搜 索" />
                     </div>
                     <div class="search-results" id="results">
                         <div class="search-result-message" id="resultMsg"></div>
@@ -83,9 +78,7 @@
                             <li class="search-item">
                                 <a href="?file={{path}}">
                                     <div class="content">
-                                        <strong>{{title}}</strong>
-                                        {{api}}
-                                        {{content}}
+                                        <strong>{{title}}</strong> {{api}} {{content}}
                                     </div>
                                     <div class="bottom">
                                         <p>位置：<span>{{path}}</span></p>
@@ -102,23 +95,38 @@
                 {{amWiki.testing.tpl}}
             </div>
         </div>
-        <!-- 签名 -->
-        <footer>
-            <div class="signature">Powered by
-                <a href="https://github.com/TevinLi/amWiki" target="_blank">amWiki</a>
-            </div>
-        </footer>
-        <!-- 返回顶部 -->
         <aside>
+            <!-- 侧边目录 -->
+            <div class="contents" id="contents">
+                <div class="btn">
+                    <svg>
+                        <use xlink:href="#icon:contents"></use>
+                    </svg>
+                    <span>目录</span>
+                </div>
+                <div class="contents-list">
+                    <p>
+                        <a id="contentsTitle" href="#客户日志流水接口示例">客户日志流水接口示例</a>
+                    </p>
+                    <div class="markdown-contents"></div>
+                </div>
+            </div>
+            <!-- 返回顶部 -->
             <div class="back-top">
                 <a href="#" class="back-icon">
                     <svg>
-                        <use xlink:href="#backTop"></use>
+                        <use xlink:href="#icon:backTop"></use>
                     </svg>
                 </a>
                 <a href="#" class="back-text">返回顶部</a>
             </div>
         </aside>
+        <footer>
+            <!-- 签名 -->
+            <div class="signature">Powered by
+                <a href="https://github.com/TevinLi/amWiki" target="_blank">amWiki</a>
+            </div>
+        </footer>
         <!-- js -->
         <div class="hidden">
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>

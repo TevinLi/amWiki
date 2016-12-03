@@ -106,18 +106,30 @@ body{position:relative;background:#e7e8eb;}
 .main-sibling a:not([href]){color:#333;}
 .main-sibling a:not([href]):hover{text-decoration:none;}
 
-/* ---------- footer ---------- */
-footer{position:relative;width:100%;height:15px;}
-.signature{position:absolute;right:40px;bottom:17px;color:#999;}
+/* ---------- contents ---------- */
+aside .contents{position:fixed;bottom:137px;right:7px;z-index:9900;height:38px;width:38px;background:#f4f5f9;border:1px solid #ccc;}
+aside .contents .btn{cursor:pointer;}
+aside .contents .btn svg{position:absolute;top:7px;left:7px;width:22px;height:22px;color:#aaa;}
+aside .contents:hover .btn svg,aside .contents.on .btn svg{display:none;}
+aside .contents .btn span{display:none;padding:12px 0;font-family:Microsoft YaHei,STXihei,STHeiti,Verdana,Arial,Helvetica,sans-serif;line-height:14px;text-align:center;color:#aaa;}
+aside .contents:hover .btn span,aside .contents.on .btn span{display:block;}
+aside .contents-list{display:none;position:absolute;right:36px;bottom:-1px;width:270px;max-height:500px;padding:18px;overflow:hidden;overflow-y:scroll;background:#f4f5f9;border:1px solid #ccc;}
+aside .contents:hover .contents-list,aside .contents.on .contents-list{display:block;}
+aside .contents-list p{padding-bottom:5px;margin-bottom:8px;border-bottom:#ccc 1px solid;}
+aside .contents-list ol{padding-left:20px;}
 
 /* ---------- backTop ---------- */
-.back-top{position:fixed;bottom:100px;right:7px;z-index: 9900;height:38px;width:38px;background:#f4f5f9;border:1px solid #ccc;}
-.back-icon{display:block;position:relative;width:32px;margin:2px auto;}
-.back-icon svg{position:absolute;top:6px;left:5px;width:22px;height:22px;color:#aaa;}
-.back-text{display:none;position:absolute;top:0;left:0;z-index:99;margin:4px;font-family:Microsoft YaHei,STXihei,STHeiti,Verdana,Arial,Helvetica,sans-serif;font-size:11px;text-align:center;letter-spacing:2px;line-height:14px;background-color:#f4f5f9;cursor:pointer;}
-.back-text:hover{text-decoration:none;}
-.back-top:hover .back-icon{border:none;}
-.back-top:hover .back-text{display:block;color:#aaa;}
+aside .back-top{position:fixed;bottom:100px;right:7px;z-index: 9900;height:38px;width:38px;background:#f4f5f9;border:1px solid #ccc;}
+aside .back-icon{display:block;position:relative;width:32px;margin:2px auto;}
+aside .back-icon svg{position:absolute;top:6px;left:5px;width:22px;height:22px;color:#aaa;}
+aside .back-text{display:none;position:absolute;top:0;left:0;z-index:99;padding:4px;font-family:Microsoft YaHei,STXihei,STHeiti,Verdana,Arial,Helvetica,sans-serif;font-size:11px;text-align:center;letter-spacing:2px;line-height:14px;background-color:#f4f5f9;cursor:pointer;}
+aside .back-text:hover{text-decoration:none;}
+aside .back-top:hover .back-icon{border:none;}
+aside .back-top:hover .back-text{display:block;color:#aaa;}
+
+/* ---------- footer ---------- */
+footer{position:relative;width:100%;height:15px;}
+footer .signature{position:absolute;right:40px;bottom:17px;color:#999;}
 
 /* ---------- lowBrowser ---------- */
 #lowBrowser{position:fixed;top:0;left:0;z-index:9999999;width:100%;height:100%;}

@@ -19,7 +19,9 @@
         this.$e = {
             win: $(win),
             //markdown文档内容容器
-            view: $('#view')
+            view: $('#view'),
+            title: $('title'),
+            contentsTitle: $('#contentsTitle')
         };
         this.data = {
             pageWidth: 0
@@ -64,11 +66,24 @@
         });
     };
 
+    //转换链接文本
+    Docs.prototype._tramsformLinkText = function (str) {
+        return str
+            .replace(/^\s+|\s+$/g, '')  //去除首尾空格
+            .replace(/'/g, '&#39;')  //转义单引号
+            .replace(/"/g, '&#34;')  //转义双引号，由于双引号无法正确传递给html属性，当作为hash时将删除处理
+            .replace(/\(/g, '&#40;')  //转义左圆括号
+            .replace(/\)/g, '&#41;')  //转义右圆括号
+            .replace(/\[/g, '&#91;')  //转义左中括号
+            .replace(/\]/g, '&#93;');  //转义右中括号
+    };
+
     //设置文档h1、h2、h3描记
-    Docs.prototype.setTitlesAnchor = function () {
+    Docs.prototype._setTitlesAnchor = function () {
         var that = this;
         var $titles = null;
         var hash = '';
+        var contentsMd = '';  //提取目录为markdown字符串
         if (location.hash && location.hash.length > 1) {
             hash = location.hash.split('#')[1];
         }
@@ -77,11 +92,18 @@
         $titles = that.$e.view.find('h1,h2,h3');
         $titles.each(function (index, element) {
             var $this = $(element);
-            var text = $.trim($this.text()).replace('"', '');
+            var text1 = that._tramsformLinkText($this.text());
+            var text2 = text1.replace(/&#34;/g, '');  //删除双引号
+            //提取目录
+            if ($this.is('h2')) {
+                contentsMd += '1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
+            } else if ($this.is('h3')) {
+                contentsMd += '\t1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
+            }
             //设置描记
-            $this.prepend(anchorHtml.replace(/\{title\}/g, text));
+            $this.prepend(anchorHtml.replace(/\{title\}/g, text2));
             //首次打开页面滚动位置修正
-            if (hash == text) {
+            if (hash == $this.text().replace(/"/g, '')) {
                 if (that.data.pageWidth <= 720) {
                     that.$e.win.scrollTop($this.offset().top - 55);
                 } else {
@@ -89,6 +111,10 @@
                 }
             }
         });
+        if (contentsMd.indexOf('\t') == 0) {
+            contentsMd = '1. &#12288;\n' + contentsMd;
+        }
+        return contentsMd;
     };
 
     //设置js注释隐藏
@@ -171,8 +197,10 @@
     Docs.prototype.renderDoc = function (content) {
         var that = this;
         this.cleanView();
+        var html = marked(content)
+            .replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
         this.$e.view
-            .html(marked(content))
+            .html(html)
             .find('pre code').each(function (i, element) {
                 var $elm = $(element);
                 var className = $elm.attr('class') || '';
@@ -191,9 +219,13 @@
                 }
             });
         //设置网页title
-        $('title').text(this.$e.view.find('h1').eq(0).text());
+        var title = this.$e.view.find('h1').eq(0).text();
+        this.$e.title.text(title);
+        this.$e.contentsTitle.text(title).attr('href', '#' + title.replace(/"/g, ''));
         //设置描点
-        this.setTitlesAnchor();
+        var contents = this._setTitlesAnchor();
+        //设置目录
+        $('.markdown-contents').html(marked(contents));
     };
 
     //读取文档
