@@ -223,6 +223,7 @@ $(function () {
                 $menuBar.find('h4').removeClass('on');
             }
         }
+        curPath = path;
     };
 
     //改变页面
@@ -317,27 +318,43 @@ $(function () {
      */
 
     //解析地址参数
-    var path = tools.getURLParameter('file');
-    path = !path ? '首页' : decodeURI(path);
+    var curPath = tools.getURLParameter('file');
+    curPath = !curPath ? '首页' : decodeURI(curPath);
 
     //加载导航
     loadNav(function (list) {
         //核对本地存储
         storage.checkLibChange(list);
         //首次打开改变导航
-        changeNav(path);
+        changeNav(curPath);
         //首次打开改变页面
-        changePage(path, true);
+        changePage(curPath, true);
     });
 
     //history api 浏览器前进后退操作响应
     if (HISTORY_STATE) {
         $(window).on('popstate', function (e) {
-            var path = e.originalEvent.state.path;
-            //改变导航
-            changeNav(path);
-            //改变页面
-            changePage(path, true);
+            var path;
+            //当有状态记录时，直接跳转
+            if (e.originalEvent.state) {
+                path = e.originalEvent.state.path;
+                //改变导航
+                changeNav(path);
+                //改变页面
+                changePage(path, true);
+            }
+            //当没有状态记录时
+            else {
+                path = tools.getURLParameter('file');
+                path = !path ? '首页' : decodeURI(path);
+                //判断url是否和当前一样，不一样才跳转（同页hash变化不跳转）
+                if (path != curPath) {
+                    //改变导航
+                    changeNav(path);
+                    //改变页面
+                    changePage(path, true);
+                }
+            }
         });
     }
 
