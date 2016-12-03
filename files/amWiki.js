@@ -39,7 +39,8 @@ $(function () {
         $menuIcon = $('.menu_icon'),
         $filter = $('#menuFilter'),
         $filterClean = $filter.next('i'),
-        $contents = $('#contents');
+        $contents = $('#contents'),
+        $contentsList = $contents.children('.contents-list');
 
     //页面基本显示与操作
     (function () {
@@ -142,9 +143,14 @@ $(function () {
                 $('#svgSymbols').append(svg);
             }, 'text');
         }
-        //目录锁定
-        $contents.children('.btn').on('click', function(){
-            $contents.toggleClass('on');
+        //目录悬浮窗展开折叠
+        $contents.children('.btn').on('click', function (e) {
+            $contents.toggleClass('on').removeClass('hover');
+        });
+        $contents.hover(function(){
+            $contents.addClass('hover');
+        },function(){
+            $contents.removeClass('hover');
         });
 
     })();
