@@ -1,5 +1,16 @@
 # 版本日志
 
+### v0.7.4
+_2016-12-03_
+
+- 增加 Web 端右侧目录悬浮窗 ([#15](https://github.com/TevinLi/amWiki/issues/15))
+- 增加对 `[TOC]` 目录生成标签的支持 ([#15](https://github.com/TevinLi/amWiki/issues/15))
+- 修复工作端抽取页内目录含单双引号、圆括号时无法正确解析的问题 ([#16](https://github.com/TevinLi/amWiki/pull/16))
+- 修复工作端抽取页内目录无法跳转的问题 ([#15](https://github.com/TevinLi/amWiki/issues/15))
+- 修复工作端抽取页内目录时内容为空报错的问题 ([#13](https://github.com/TevinLi/amWiki/issues/13), [#14](https://github.com/TevinLi/amWiki/pull/14))
+- 修复 Web 端浏览器后退按钮报错问题
+- Atom 菜单栏添加 “关于amWiki” 按钮
+
 ### v0.7.3
 _2016-10-28_
 
