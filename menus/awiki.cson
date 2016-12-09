@@ -19,8 +19,16 @@
         'command': 'amWiki:browser'
     }, {
          'type': 'separator'
-     }, {
+    }, {
+         'label': '项目导出',
+         'submenu': [{
+             'label': '导出为 Github Wiki',
+             'command': 'amWiki:export.gitHub'
+         }]
+    }, {
+         'type': 'separator'
+    }, {
          'label': '关于 amWiki',
          'command': 'amWiki:about'
-     }]
+    }]
 }]
