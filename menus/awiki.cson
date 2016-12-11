@@ -4,11 +4,21 @@
         'label': '通过 "config.json" 创建新文库',
         'command': 'amWiki:create'
     }, {
-        'label': '手动更新当前文库导航文件',
-        'command': 'amWiki:makeNav'
+        'type': 'separator'
     }, {
         'label': '提取 h2,h3 标题为页内目录',
         'command': 'amWiki:catalogue'
+    }, {
+        'label': '手动更新当前文库导航文件',
+        'command': 'amWiki:makeNav'
+    }, {
+        'type': 'separator'
+    }, {
+        'label': '导出当前文库',
+        'submenu': [{
+            'label': '导出为 Github Wiki',
+            'command': 'amWiki:export.gitHub'
+        }]
     }, {
         'type': 'separator'
     }, {
@@ -18,17 +28,9 @@
         'label': '在浏览器打开当前文档',
         'command': 'amWiki:browser'
     }, {
-         'type': 'separator'
+        'type': 'separator'
     }, {
-         'label': '项目导出',
-         'submenu': [{
-             'label': '导出为 Github Wiki',
-             'command': 'amWiki:export.gitHub'
-         }]
-    }, {
-         'type': 'separator'
-    }, {
-         'label': '关于 amWiki',
-         'command': 'amWiki:about'
+        'label': '关于 amWiki',
+        'command': 'amWiki:about'
     }]
 }]
