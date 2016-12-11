@@ -161,7 +161,7 @@ footer .signature{position:absolute;right:40px;bottom:17px;color:#999;}
 	.container{position:relative;margin:50px auto 0;overflow:hidden;background:#fff;border:none;}
 	
 	/* ---------- menu ---------- */
-	.container .nav{display:none;position:fixed;left:0;top:50px;z-index:9999;width:100%;height:100%;padding-bottom:30px;background:rgba(0,0,0,0.8);overflow-y:scroll;}
+	.container .nav{display:none;position:fixed;left:0;top:50px;z-index:9999;width:100%;height:100%;padding-bottom:30px;background:rgba(0,0,0,0.92);overflow-y:scroll;}
 	.container .nav.on{display:block;}
 	.menu-filter{width:100%;padding-right:39px;background-color:none;box-sizing:border-box;}
 	.menu-filter input{width:90%;width:-webkit-calc(100% - 39px);width:-moz-calc(100% - 39px);width:-ms-calc(100% - 39px);width:calc(100% - 39px);color:#fff;background:none;border:none;border-bottom:#999 1px dashed;}

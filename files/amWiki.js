@@ -42,6 +42,17 @@ $(function () {
         $filterClean = $filter.next('i'),
         $contents = $('#contents');
 
+    //是否为移动端
+    var isMobi = (function () {
+        var winW = $win.width();
+        $win.on('resize', function () {
+            winW = $win.width();
+        });
+        return function () {
+            return winW <= 720;
+        };
+    })();
+
     //页面基本显示与操作
     (function () {
         //菜单折叠
@@ -147,12 +158,22 @@ $(function () {
         $contents.children('.btn').on('click', function (e) {
             $contents.toggleClass('on').removeClass('hover');
         });
-        $contents.hover(function(){
+        $contents.hover(function () {
             $contents.addClass('hover');
-        },function(){
+        }, function () {
             $contents.removeClass('hover');
         });
-
+        //全局点击
+        $(document).on('click', function (e) {
+            var $tag = $(e.target);
+            //移动端
+            if (isMobi()) {
+                //折叠目录悬浮窗
+                if ($tag.closest('#contents').length == 0) {
+                    $contents.removeClass('on').removeClass('on');
+                }
+            }
+        });
     })();
 
     /*
