@@ -1,5 +1,12 @@
 # 版本日志
 
+### v0.7.6
+_2016-12-11_  
+
+- 增加文库导出模块，可以将文库导出为 Github Wiki 项目 (**[#20](https://github.com/TevinLi/amWiki/issues/20)**)
+- 允许 `.md` 文件文件名带空格 ([#19](https://github.com/TevinLi/amWiki/issues/19))
+- Web 移动端点击页内目录以外的区域将折叠目录 ([#22](https://github.com/TevinLi/amWiki/issues/22))
+- 修复某些情况下跳页面不返回顶部的问题 ([#21](https://github.com/TevinLi/amWiki/issues/21))
 
 ### v0.7.5
 _2016-12-03_  
