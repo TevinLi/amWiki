@@ -7,15 +7,9 @@ amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文�
 [[view amWiki on Github](https://github.com/TevinLi/amWiki)]  
 
 GitHub:  
-[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars")
-[![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks")
-[![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues")
-[![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues")
-[![](https://img.shields.io/github/contributors/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Contributors")  
+[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars") [![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks") [![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues") [![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues") [![](https://img.shields.io/github/contributors/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Contributors")  
 Apm:  
-[![apm](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "Apm Version")
-[![apm](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "Apm Downloads")
-[![apm](https://img.shields.io/apm/l/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")
+[![apm](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "Apm Version") [![apm](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "Apm Downloads") [![apm](https://img.shields.io/apm/l/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")
 
 ### amWiki优势
 - 文档系统采用 markdown 语法
@@ -47,11 +41,12 @@ Apm:
 5. 在Atom刚创建的项目下新建`config.json`文件，并输入一下内容：
     ```javascript
     {
-        "name": "",      //您的文库名称，设置但为空或不设置将显示默认名
-        "ver": "",       //文本版本号或维护者名号，设置但为空将不显示，注意诺不设置此属性将显示amWiki作者
-        "logo": "",      //logo的url，设置但为空或不设置将显示默认logo
-        "testing": true, //是否启用接口测试，默认值false
-        "colour": ""     //自定义颜色，默认为蓝色
+        "name": "",       //您的文库名称，设置但为空或不设置将显示默认名
+        "ver": "",        //文本版本号或维护者名号，设置但为空将不显示，注意诺不设置此属性将显示 amWiki 作者
+        "logo": "",       //可选，logo 的 url，设置但为空或不设置将显示默认logo
+        "testing": true,  //可选，是否启用接口测试，默认值 false
+        "colour": "",     //可选，自定义颜色，默认为蓝色
+        "github-url": ""  //可选，导出 github wiki 时，需要对应项目的 url
     }
     ```
 6. 点击Atom菜单：
@@ -134,9 +129,8 @@ Apm:
 
 ## 更新日志
 ### 如何获取最新版本信息与动态？
-- 欢迎添加作者微信为好友，微信号 **XF90_Net**  
-  _(大家加微信的时候都尽量备注一下原因吧，没有备注的不加哦！目前主要集中精力在开发，暂不接受各种调戏跟闲聊～)_
-- 其他途径： QQ群`347125653` / [微博](http://weibo.com/1706602953/profile?is_all=1) / [Twitter](https://twitter.com/tevinli2009)
+- QQ群 **347125653**
+- 如果可以，欢迎直接加我微信，微信号 **XF90_Net**  
 
 ### 如何查看历史版本日志？
 [amWiki 版本更新日志](https://github.com/TevinLi/amWiki/blob/master/CHANGELOG.md "amWiki版本更新日志")
