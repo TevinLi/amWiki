@@ -108,34 +108,46 @@
 
         //匹配搜索词与得分计算
         Searcher.prototype.matchWords = function (words) {
+            var wordsReg = new RegExp(words, 'gi');
             for (var id in this._documents) {
                 if (this._documents.hasOwnProperty(id)) {
                     //标题命中
-                    if (this._documents[id].title && this._documents[id].title.indexOf(words) >= 0) {
-                        var title = this._documents[id].title.replace(words, '<mark>' + words + '</mark>');
-                        this._addPorcessing(id, 'title', title);
-                        this._addPorcessing(id, 'score', this._data.titleScore);
+                    if (this._documents[id].title) {
+                        var titleMatch = this._documents[id].title.match(wordsReg);
+                        if (titleMatch && titleMatch.length > 0) {
+                            var title = this._documents[id].title.replace(wordsReg, function (match) {
+                                return '<mark>' + match + '</mark>';
+                            });
+                            this._addPorcessing(id, 'title', title);
+                            this._addPorcessing(id, 'score', this._data.titleScore);
+                        }
                     }
                     //接口地址命中
-                    if (this._documents[id].api && this._documents[id].api.indexOf(words) >= 0) {
-                        var api = '<p class="p1"><em>接口</em>' + this._documents[id].api.replace(words, '<mark>' + words + '</mark>') + '</p>';
-                        this._addPorcessing(id, 'api', api);
-                        this._addPorcessing(id, 'score', this._data.apiScore);
+                    if (this._documents[id].api) {
+                        var apiMatch = this._documents[id].api.match(wordsReg);
+                        if (titleMatch && titleMatch.length > 0) {
+                            var api = '<p class="p1"><em>接口</em>' +
+                                this._documents[id].api.replace(wordsReg, function (match) {
+                                    return '<mark>' + match + '</mark>';
+                                }) + '</p>';
+                            this._addPorcessing(id, 'api', api);
+                            this._addPorcessing(id, 'score', this._data.apiScore);
+                        }
                     }
                     //内容命中
-                    if (this._documents[id].content.indexOf(words) >= 0) {
-                        var matches = this._documents[id].content.match(new RegExp('.{0,15}' + words + '.{0,30}', 'g'));
-                        if (matches) {
-                            var content = '<p>';
-                            for (var i = 0, item; item = matches[i]; i++) {
-                                if (i < 2) {
-                                    content += item.replace(words, '<mark>' + words + '</mark>') + '... ';
-                                }
+                    var contentMatch = this._documents[id].content.match(new RegExp('.{0,15}' + words + '.{0,30}', 'gi'));
+                    if (contentMatch) {
+                        var content = '<p>';
+                        for (var i = 0, item; item = contentMatch[i]; i++) {
+                            if (i < 2) {
+                                content += item.replace(wordsReg, function (match) {
+                                        return '<mark>' + match + '</mark>';
+                                    }) + '... ';
                             }
-                            content += '</p>';
-                            this._addPorcessing(id, 'content', content);
-                            this._addPorcessing(id, 'score', matches.length * this._data.textScore);
                         }
+                        content += '</p>';
+                        this._addPorcessing(id, 'content', content);
+                        this._addPorcessing(id, 'score', contentMatch.length * this._data.textScore);
                     }
                 }
             }
