@@ -1,5 +1,13 @@
 # 版本日志
 
+### v0.7.7
+_2016-12-_  
+
+- 全文库搜索，增加大小写忽略
+- 修复导出后，在 github wiki 页内目录无法跳转的问题 ([#20](https://github.com/TevinLi/amWiki/issues/20#issuecomment-266927563))
+- 修复导出时，html 格式的 img src 相对地址未转换问题 ([#23](https://github.com/TevinLi/amWiki/issues/23))
+- 修复导出时，链接与 a 标签相对地址未转换问题 ([#23](https://github.com/TevinLi/amWiki/issues/23))
+
 ### v0.7.6
 _2016-12-11_  
 
