@@ -34,22 +34,32 @@ $(function () {
 
     //页面元素
     var $win = $(window),
+        $body = $('body'),
         $menuBar = $('#menuBar'),
         $mainSibling = $('#mainSibling'),
-        $nav = $('.nav'),
-        $menuIcon = $('.menu_icon'),
+        $nav = $('#nav'),
+        $menuIcon = $('#menuIcon'),
         $filter = $('#menuFilter'),
         $filterClean = $filter.next('i'),
+        $container = $nav.parent(),
         $contents = $('#contents');
 
     //是否为移动端
-    var isMobi = (function () {
+    var isMobi = window.isMobi = (function () {
         var winW = $win.width();
-        $win.on('resize', function () {
+        var threshold = 720;
+        var onResize = function () {
             winW = $win.width();
-        });
+            if (winW <= threshold) {
+                $container.removeAttr('style');
+            } else {
+                $container.height($win.height() - 75 - 15 - 20 * 2);
+            }
+        };
+        onResize();
+        $win.on('resize', onResize);
         return function () {
-            return winW <= 720;
+            return winW <= threshold;
         };
     })();
 
@@ -163,6 +173,7 @@ $(function () {
         }, function () {
             $contents.removeClass('hover');
         });
+        $('.scroller').scrollbar();
         //全局点击
         $(document).on('click', function (e) {
             var $tag = $(e.target);
@@ -300,7 +311,7 @@ $(function () {
     //读取目录导航
     var loadNav = function (callback) {
         $.get('library/$navigation.md?t=' + Date.now(), function (data) {
-            $menuBar.html(marked(data));
+            $menuBar.find('.scroller-content').html(marked(data));
             $menuBar
                 .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
                 .find('h5').prepend('<svg><use xlink:href="#icon:navArrow"></use></svg>');
