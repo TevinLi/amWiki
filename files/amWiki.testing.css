@@ -6,7 +6,7 @@
 .testing-show span{color:@colour-dark;}
 
 /* ---------- testing ---------- */
-.testing-box{display:none;position:absolute;top:0;right:0;width:100%;padding:45px;background-color:#fff;}
+.testing-box{display:none;position:absolute;top:0;right:0;width:100%;padding:45px;min-height:100%;background-color:#fff;}
 .testing-box h2{position:relative;min-width:320px;padding:2px 10px;margin:5px 0;color:#fff;background-color:@colour-light;}
 .testing-box h2:after{position:absolute;top:0;right:-45px;width:45px;height:100%;content:" ";background-color:@colour-light;}
 .testing-box h2 small{position:absolute;top:0;right:0;font-size:14px;line-height:38px;font-weight:normal;}

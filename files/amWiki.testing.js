@@ -185,11 +185,11 @@
         if (type == 'off') {
             this.elm.$testingShow.removeClass('on').find('span').text('测试接口');
             this.elm.$testingBox.css({
-                'position': 'absolute',
-                'padding': this.elm.$win.width() > 720 ? 45 : 25
+                'position': 'absolute'
             });
-            this.elm.$view.show();
-            this.elm.$testingBox.animate({
+            this.elm.$view.show().addClass('scroller-content')
+                .next('#mainSibling').addClass('scroller-content').addClass('on');
+            this.elm.$testingBox.removeClass('scroller-content').stop().animate({
                 'width': '30%',
                 'opacity': 0
             }, 200, 'swing', function () {
@@ -201,17 +201,17 @@
                 .css({
                     'display': 'block',
                     'width': '0',
-                    'min-height': this.elm.$view.height() + 90,
                     'opacity': 0
                 })
+                .stop()
                 .animate({
                     'width': '100%',
                     'opacity': 1
                 }, 300, 'swing', function () {
-                    that.elm.$view.hide();
-                    that.elm.$testingBox.css({
-                        'position': 'relative',
-                        'padding': 0
+                    that.elm.$view.hide().removeClass('scroller-content')
+                        .next('#mainSibling').removeClass('scroller-content').removeClass('on');
+                    that.elm.$testingBox.addClass('scroller-content').css({
+                        'position': 'relative'
                     });
                 });
         }

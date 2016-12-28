@@ -44,23 +44,19 @@
         $(window).on('resize', function () {
             that._onWinResize();
             that.checkHeight();
-            that._reScroll();
         });
         this.$e.container.on('scrollbar', function () {
             that.checkHeight();
-            that._reScroll();
         });
         this.$e.inner.on({
             'click': function () {
                 that.checkHeight();
-                that._reScroll();
             },
             'scroll': function () {
                 that._reScroll();
             }
         });
         this.checkHeight();
-        this._reScroll();
         this._bindAction();
     };
 
@@ -113,8 +109,8 @@
     Scroller.prototype._resize = function () {
         var that = this;
         this.data.containerH = this.$e.inner.height();
-        //当内容高度小于容器时，不显示滚动条
-        if (this.data.contentH < this.data.containerH) {
+        //当内容高度小于等于容器时，不显示滚动条
+        if (this.data.contentH <= this.data.containerH) {
             this.data.contentH = this.data.containerH;
             this.$e.bar.addClass('off');
         } else {
@@ -153,6 +149,7 @@
             this.data.contentHLast = this.data.contentH;
         }
         this._resize();
+        this._reScroll();
     };
 
     //方法绑定

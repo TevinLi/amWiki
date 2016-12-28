@@ -135,70 +135,19 @@ footer{position:relative;width:100%;}
 footer .signature{position:absolute;right:20px;bottom:-5px;color:#999;}
 
 /* ---------- scroller ---------- */
-.scroller {
-    height: 100%;
-    overflow: hidden;
-}
-.scroller .scroller-inner {
-    height: 100%;
-    -webkit-overflow-scrolling: touch;
-}
-.scroller .scroller-inner.on {
-    overflow-y: scroll;
-}
-.scroller .scrollbar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 10px;
-    height: 100%;
-    padding: 1px 0;
-    opacity: 0;
-    transition-duration: .5s;
-    -moz-user-select:none;
-    -webkit-user-select:none;
-    user-select:none;
-    cursor: pointer;
-}
-.scroller:hover .scrollbar {
-    opacity: 1;
-    transition-duration: .3s;
-}
-.scroller .scrollbar.active {
-    opacity: 1;
-}
-.scroller .scrollbar.off {
-    opacity: 0;
-}
-.scroller .scrollbar div {
-    position: relative;
-    height: 100%;
-    transition-duration: .1s;
-}
-.scroller .scrollbar i {
-    position: absolute;
-    top: 0;
-    left: 4px;
-    width: 3px;
-    height: 100%;
-    background: rgba(50,50,50,.25);
-    border-radius: 2px;
-    transition-duration: .1s;
-}
-.scroller .scrollbar:active {
-    padding: 0;
-}
-.scroller .scrollbar:active div {
-    background: rgba(50,50,50,.07);
-}
-.scroller .scrollbar:active i {
-    left: 0;
-    width: 10px;
-    border-radius: 0;
-}
-body[onselectstart] {
-    cursor: pointer;
-}
+.scroller{height:100%;overflow:hidden;}
+.scroller .scroller-inner{height:100%;-webkit-overflow-scrolling:touch;}
+.scroller .scroller-inner.on{overflow-y:scroll;}
+.scroller .scrollbar{position:absolute;top:0;right:0;width:10px;height:100%;padding:1px 0;opacity:0;transition-duration:.5s;-moz-user-select:none;-webkit-user-select:none;user-select:none;cursor:pointer;}
+.scroller:hover .scrollbar{opacity:1;transition-duration:.3s;}
+.scroller .scrollbar.active{opacity:1;}
+.scroller .scrollbar.off{opacity:0;}
+.scroller .scrollbar div{position:relative;height:100%;transition-duration:.1s;}
+.scroller .scrollbar i{position:absolute;top:0;left:4px;width:3px;height:100%;background:rgba(50,50,50,.25);border-radius:2px;transition-duration:.1s;}
+.scroller .scrollbar:active{padding:0;}
+.scroller .scrollbar:active div{background:rgba(50,50,50,.07);}
+.scroller .scrollbar:active i{left:0;width:10px;border-radius:0;}
+body[onselectstart]{cursor:pointer;}
 
 /* ---------- lowBrowser ---------- */
 #lowBrowser{position:fixed;top:0;left:0;z-index:9999999;width:100%;height:100%;}
