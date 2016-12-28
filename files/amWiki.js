@@ -185,6 +185,9 @@ $(function () {
         });
         //开启滚动条
         $('.scroller').scrollbar();
+        $('#backTop').on('click', function () {
+            $main.children('.main-inner').scrollTop(0);
+        });
         //全局点击
         $(document).on('click', function (e) {
             var $tag = $(e.target);
