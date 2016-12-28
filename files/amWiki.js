@@ -35,14 +35,15 @@ $(function () {
     //页面元素
     var $win = $(window),
         $body = $('body'),
-        $menuBar = $('#menuBar'),
-        $mainSibling = $('#mainSibling'),
-        $nav = $('#nav'),
-        $menuIcon = $('#menuIcon'),
+        $menuIcon = $('#menuIcon'),            //顶部折叠显示导航按钮
+        $container = $('#container'),            //页面主容器
+        $nav = $('#nav'),                      //左侧导航
+        $menuBar = $('#menuBar'),              //左侧导航内容
         $filter = $('#menuFilter'),
         $filterClean = $filter.next('i'),
-        $container = $nav.parent(),
-        $contents = $('#contents');
+        $main = $('#main'),
+        $mainSibling = $('#mainSibling'),      //其他文章
+        $contents = $('#contents');            //目录
 
     //是否为移动端
     var isMobi = window.isMobi = (function () {
@@ -71,10 +72,14 @@ $(function () {
                 $next = $this.next('ul');
             if ($this.hasClass('on')) {
                 $this.removeClass('on');
-                $next.slideUp(200);
+                $next.slideUp(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
             } else {
                 $this.addClass('on');
-                $next.slideDown(200);
+                $next.slideDown(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
             }
         });
         $menuBar.on('click', 'h4', function () {
@@ -90,10 +95,14 @@ $(function () {
                 $next = $this.next('ul');
             if ($this.hasClass('on')) {
                 $this.removeClass('on');
-                $next.slideUp(200);
+                $next.slideUp(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
             } else {
                 $this.addClass('on');
-                $next.slideDown(200);
+                $next.slideDown(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
             }
         });
         //响应式菜单
@@ -116,7 +125,7 @@ $(function () {
             $nav.removeClass('on');
         });
         //页面筛选
-        $filter.on('blur change input propertychange', function () {
+        $filter.on('input propertychange', function () {
             var value = $filter.val();
             if (value != '') {
                 $filterClean.removeClass('off');
@@ -151,6 +160,7 @@ $(function () {
                 });
                 $menuBar.find('a').parent().removeClass('off');
             }
+            $menuBar.trigger('scrollbar');
         });
         $filterClean.on('click', function () {
             $filter.val('').trigger('change');
@@ -173,6 +183,7 @@ $(function () {
         }, function () {
             $contents.removeClass('hover');
         });
+        //开启滚动条
         $('.scroller').scrollbar();
         //全局点击
         $(document).on('click', function (e) {
@@ -256,6 +267,7 @@ $(function () {
             }
         }
         curPath = path;
+        $menuBar.trigger('scrollbar');
     };
 
     //改变页面
@@ -264,7 +276,8 @@ $(function () {
         var localDoc = storage.read(path);
         docs.renderDoc(localDoc);
         testing && testing.crawlContent();
-        $win.scrollTop(0);  //返回顶部
+        $main.trigger('scrollbar');
+        $main.children('.main-inner').scrollTop(0);  //返回顶部
         //更新history记录
         if (!withOutPushState && HISTORY_STATE) {
             history.pushState({path: path}, '', '?file=' + path);
@@ -279,6 +292,7 @@ $(function () {
                         if (state == 'success') {
                             docs.renderDoc(content);
                             storage.saveDoc('首页', content);
+                            $main.trigger('scrollbar');
                         }
                     });
                     if (HISTORY_STATE) {
@@ -298,6 +312,7 @@ $(function () {
                     docs.renderDoc(content);
                     storage.saveDoc(path, content);
                     testing && testing.crawlContent();
+                    $main.trigger('scrollbar');
                 }
                 //如果服务器文档与本地缓存一致，不进行任何操作
                 else {
@@ -315,6 +330,7 @@ $(function () {
             $menuBar
                 .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
                 .find('h5').prepend('<svg><use xlink:href="#icon:navArrow"></use></svg>');
+            $menuBar.trigger('scrollbar');
             var pathList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
