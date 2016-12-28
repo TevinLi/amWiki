@@ -61,6 +61,7 @@
 @media screen and (max-width:720px){
     .testing-show{position:fixed;top:3px;right:40px;z-index:11000;height:46px;padding:0 10px;line-height:47px;background:#fff;}
     .testing-box{padding:25px;}
+    .testing-box h2:after{right:-25px;width:25px;}
     .testing-send{padding:20px 10px 35px;}
     .testing-send-url{width:70%;}
     .testing-param-val{width:45%;}

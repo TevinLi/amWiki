@@ -25,7 +25,7 @@
 .search-input input[type="button"][disabled]{color:#ccc;background:#f2f2f2;border:#aaa 1px solid;border-radius:1px;}
 
 /* ---------- search-results ---------- */
-.search-results{background:#eee;overflow-y:scroll;}
+.search-results{overflow-y:scroll;background:#eee;border-top:#eee 1px solid;border-bottom:#eee 1px solid;}
 .search-result-message{display:none;padding-top:50px;text-align:center;color:#777;font-size:22px;line-height:35px;}
 .search-list{list-style:none;padding:18px 16px 5px;}
 .search-item{margin-bottom:14px;background:#fff;border:#e6e6e6 1px solid;}
@@ -55,4 +55,7 @@
     .search-update .text:after{display:none;content:'';}
     .search-input{padding-right:90px;}
     .search-input input[type="button"]{width:86px;}
+}
+@media screen and (max-width:720px){
+    .search-box{height:auto;min-height:100%;}
 }
