@@ -1,5 +1,13 @@
 # 版本日志
 
+### v0.8.0
+_2016-12-30_
+
+- Web 端页面左右分栏滚动 ([#26](https://github.com/TevinLi/amWiki/issues/26))
+- 工作端解除部分判断对 F12 造成的限制 ([#27](https://github.com/TevinLi/amWiki/issues/27))
+
+---
+
 ### v0.7.7
 _2016-12-19_  
 
