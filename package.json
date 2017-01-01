@@ -13,9 +13,9 @@
 	"activationEvents": [
 		"onCommand:amWiki.create",
 		"onCommand:amWiki.catalogue",
-		"onCommand:amWiki.makeNav",
+		// "onCommand:amWiki.makeNav",
 		"onCommand:amWiki.pasteImg",
-		"onCommand:amWiki.runServer",
+		// "onCommand:amWiki.runServer",
 		"onCommand:amWiki.browser",
 		"onCommand:amWiki.exportTogitHub"
 	],
@@ -32,21 +32,21 @@
 				"command": "amWiki.catalogue",
 				"title": "在当前文档上抓取h2、h3为页内目录"
 			},
-			{
-				//手动更新当前文库导航
-				"command": "amWiki.makeNav",
-				"title": "手动更新当前文库导航"
-			},
+			// {
+			// 	//手动更新当前文库导航
+			// 	"command": "amWiki.makeNav",
+			// 	"title": "手动更新当前文库导航"
+			// },
 			{
 				//粘帖截图
 				"command": "amWiki.pasteImg",
 				"title": "粘帖截图"
 			},
-			{
-				//启动node静态服务器
-				"command": "amWiki.runServer",
-				"title": "启动node静态服务器"
-			},
+			// {
+			// 	//启动node静态服务器
+			// 	"command": "amWiki.runServer",
+			// 	"title": "启动node静态服务器"
+			// },
 			{
 				//浏览打开当前页面
 				"command": "amWiki.browser",
@@ -72,11 +72,11 @@
 					"command": "amWiki.catalogue",
 					"group": "amWikiMenu@2"
 				},
-				{
-					"when": "resourceLangId == markdown",
-					"command": "amWiki.makeNav",
-					"group": "amWikiMenu@3"
-				},
+				// {
+				// 	"when": "resourceLangId == markdown",
+				// 	"command": "amWiki.makeNav",
+				// 	"group": "amWikiMenu@3"
+				// },
 				{
 					"when": "resourceLangId == markdown",
 					"command": "amWiki.browser",
@@ -96,14 +96,20 @@
 		//绑定快捷键响应
 		"keybindings": [
 			{
-				//设置触发此快捷键生效的时机，如不指定，则默认为任何时机
-				// "when": "editorHasSelection",
-				//此快捷键触发后所执行的事件
 				"command": "amWiki.pasteImg",
 				//Windows下的快捷键设置
 				"key": "shift+ctrl+alt+v",
 				//Mac OS下的快捷键设置
-				"mac": "cmd+f1"
+				"mac": "shift+cmd+alt+v"
+			},
+			{
+				"when": "resourceLangId == markdown",
+				//此快捷键触发后所执行的事件
+				"command": "amWiki.browser",
+				//Windows下的快捷键设置
+				"key": "f12",
+				//Mac OS下的快捷键设置
+				"mac": "f12"
 			}
 		]
 	},
