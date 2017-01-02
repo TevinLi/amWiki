@@ -3,7 +3,7 @@
 	"displayName": "amWikiForVSCode",
 	"description": "本项目是一款轻量型的wiki文库编辑器，通过移植Atom中的amWiki项目所得",
 	"version": "0.0.1",
-	"publisher": "yaoxuanzhi",
+	"publisher": "耀轩之",
 	"engines": {
 		"vscode": "^0.10.1"
 	},
@@ -72,11 +72,11 @@
 					"command": "amWiki.catalogue",
 					"group": "amWikiMenu@2"
 				},
-				// {
-				// 	"when": "resourceLangId == markdown",
-				// 	"command": "amWiki.makeNav",
-				// 	"group": "amWikiMenu@3"
-				// },
+				{
+					"when": "resourceLangId == markdown",
+					"command": "amWiki.exportTogitHub",
+					"group": "amWikiMenu@3"
+				},
 				{
 					"when": "resourceLangId == markdown",
 					"command": "amWiki.browser",
@@ -100,7 +100,7 @@
 				//Windows下的快捷键设置
 				"key": "shift+ctrl+alt+v",
 				//Mac OS下的快捷键设置
-				"mac": "shift+cmd+alt+v"
+				"mac": "shift+ctrl+alt+v"
 			},
 			{
 				"when": "resourceLangId == markdown",
