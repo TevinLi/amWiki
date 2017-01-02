@@ -30,7 +30,7 @@
 			{
 				//在当前文档上抓取h2、h3为页内目录
 				"command": "amWiki.catalogue",
-				"title": "在当前文档上抓取h2、h3为页内目录"
+				"title": "插入页内目录"
 			},
 			// {
 			// 	//手动更新当前文库导航
@@ -40,7 +40,7 @@
 			{
 				//粘帖截图
 				"command": "amWiki.pasteImg",
-				"title": "粘帖截图"
+				"title": "粘帖截图到文档"
 			},
 			// {
 			// 	//启动node静态服务器
@@ -48,9 +48,9 @@
 			// 	"title": "启动node静态服务器"
 			// },
 			{
-				//浏览打开当前页面
+				//在浏览器中浏览当前页面
 				"command": "amWiki.browser",
-				"title": "浏览打开当前页面"
+				"title": "浏览当前页面"
 			},
 			{
 				//导出项目为 github wiki
