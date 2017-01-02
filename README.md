@@ -14,3 +14,19 @@ Apm:
 
 [[view amWikiForVSCode on Github](https://github.com/YaoXuanZhi/amWikiForVSCode)]  
 [![](https://img.shields.io/github/stars/YaoXuanZhi/amWikiForVSCode.svg?style=social&label=Star)](https://github.com/YaoXuanZhi/amWikiForVSCode "GitHub Stars") [![](https://img.shields.io/github/forks/YaoXuanZhi/amWikiForVSCode.svg?style=social&label=Fork)](https://github.com/YaoXuanZhi/amWikiForVSCode "GitHub Forks") [![](https://img.shields.io/github/issues-raw/YaoXuanZhi/amWikiForVSCode.svg)](https://github.com/YaoXuanZhi/amWikiForVSCode "GitHub Open Issues") [![](https://img.shields.io/github/issues-closed-raw/YaoXuanZhi/amWikiForVSCode.svg)](https://github.com/YaoXuanZhi/amWikiForVSCode "GitHub Closed Issues") [![](https://img.shields.io/github/contributors/YaoXuanZhi/amWikiForVSCode.svg)](https://github.com/YaoXuanZhi/amWikiForVSCode "GitHub Contributors")
+
+## 在VSCode中的使用演示
+1. 创建新文库
+> 先在一个文件夹下创建`config.json`文件，然后用`VSCode`打开此文件夹，此时在“`资源管理器`”上的`config.json`右击，执行右键菜单中的“基于config.json创建wiki”命令，即可在此文件夹下创建默认的amWiki文库，如下图所示：
+
+1. 粘贴截图
+>按下组合键`shift+ctrl+alt+v`或者是使用文档编辑器的右键菜单中的`粘帖截图到文档`命令，如下图所示：
+
+1. 插入页内目录
+>使用文档编辑器的右键菜单中的`插入页内目录`命令，会把当前markdown文档中的h2、h3级作为页内目录抽取成文本，并将其粘贴到当前光标处，如下图所示：
+
+1. 导出项目为`github wiki`
+>使用文档编辑器的右键菜单中的`导出项目为github wiki`命令，最终会在指定目录下生成符合github wiki目录结构的文件，如下图所示：
+
+1. 浏览当前页面
+>按下组合键`f12`或者使用文档编辑器的右键菜单中的`浏览当前页面`命令，然后，会自动打开默认浏览器来浏览当前markdown文件对应的页面，如下图所示：
