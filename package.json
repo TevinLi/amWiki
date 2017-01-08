@@ -1,39 +1,119 @@
 {
-  "name": "amWiki",
-  "main": "./lib/main",
-  "version": "0.8.0",
-  "description": "amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库系统！",
-  "keywords": [
-    "amWiki",
-    "markdown",
-    "wiki",
-    "doc",
-    "api"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/TevinLi/amWiki.git"
-  },
-  "license": "MIT",
-  "engines": {
-    "atom": ">=1.0.0 <2.0.0"
-  },
-  "bugs": {
-    "url": "https://github.com/TevinLi/amWiki/issues"
-  },
-  "homepage": "https://github.com/TevinLi/amWiki",
-  "configSchema": {
-    "checkLibraryOnWindowFocus": {
-      "type": "boolean",
-      "default": true,
-      "title": "Atom得到焦点时检查文库变化",
-      "description": "当用户切换窗口至atom之外，并在超过30秒后再切换回atom时，检查当前文库目录树，如果有变化则重新输出导航文件。  \n（如果您仅在atom中通过增删改等操作来组织文库目录树，而不是通过操作系统，您可以关闭此选项以节约一部分性能开销）"
-    },
-    "checkAllLibraryOnAtomStart": {
-      "type": "boolean",
-      "default": true,
-      "title": "Atom启动时全量检查文库变化",
-      "description": "当Atom启动时，全量检查所有文库目录树，如果有变化则重新输出导航文件，amWiki仅在此时做全量检查。  \n（如果您仅在atom中通过增删改等操作来组织文库目录树，而不是通过操作系统，您可以关闭此选项以节约一部分性能开销）"
-    }
-  }
+	"name": "amWiki",
+	"displayName": "amWikiForVSCode",
+	"description": "本项目是一款轻量型的wiki文库编辑器，通过移植Atom中的amWiki项目所得",
+	"version": "0.0.1",
+	"publisher": "耀轩之",
+	"engines": {
+		"vscode": "^0.10.1"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onCommand:amWiki.create",
+		"onCommand:amWiki.catalogue",
+		// "onCommand:amWiki.makeNav",
+		"onCommand:amWiki.pasteImg",
+		// "onCommand:amWiki.runServer",
+		"onCommand:amWiki.browser",
+		"onCommand:amWiki.exportTogitHub"
+	],
+	"main": "./lib/main",
+	"contributes": {
+		"commands": [
+			{
+				//基于当前config.json创建wiki
+				"command": "amWiki.create",
+				"title": "基于当前config.json创建wiki"
+			},
+			{
+				//在当前文档上抓取h2、h3为页内目录
+				"command": "amWiki.catalogue",
+				"title": "插入页内目录"
+			},
+			// {
+			// 	//手动更新当前文库导航
+			// 	"command": "amWiki.makeNav",
+			// 	"title": "手动更新当前文库导航"
+			// },
+			{
+				//粘帖截图
+				"command": "amWiki.pasteImg",
+				"title": "粘帖截图到文档"
+			},
+			// {
+			// 	//启动node静态服务器
+			// 	"command": "amWiki.runServer",
+			// 	"title": "启动node静态服务器"
+			// },
+			{
+				//在浏览器中浏览当前页面
+				"command": "amWiki.browser",
+				"title": "浏览当前页面"
+			},
+			{
+				//导出项目为 github wiki
+				"command": "amWiki.exportTogitHub",
+				"title": "导出项目为github wiki"
+			}
+		],
+		"menus": {
+			//定制文档编辑器上的右键菜单
+			"editor/context": [
+				//定制amWiki专属菜单组
+				{
+					"when": "resourceLangId == markdown",
+					"command": "amWiki.pasteImg",
+					"group": "amWikiMenu@1"
+				},
+				{
+					"when": "resourceLangId == markdown",
+					"command": "amWiki.catalogue",
+					"group": "amWikiMenu@2"
+				},
+				{
+					"when": "resourceLangId == markdown",
+					"command": "amWiki.exportTogitHub",
+					"group": "amWikiMenu@3"
+				},
+				{
+					"when": "resourceLangId == markdown",
+					"command": "amWiki.browser",
+					"group": "amWikiMenu@4"
+				}
+			],
+			//定制资源管理器上的弹出菜单
+			"explorer/context": [
+				{
+					//点击此菜单项后响应的事件
+					"command": "amWiki.create",
+					//指定此菜单项出现在那个菜单群组上
+					"group": "navigation"
+				}
+			]
+		},
+		//绑定快捷键响应
+		"keybindings": [
+			{
+				"command": "amWiki.pasteImg",
+				//Windows下的快捷键设置
+				"key": "shift+ctrl+alt+v",
+				//Mac OS下的快捷键设置
+				"mac": "shift+ctrl+alt+v"
+			},
+			{
+				"when": "resourceLangId == markdown",
+				//此快捷键触发后所执行的事件
+				"command": "amWiki.browser",
+				//Windows下的快捷键设置
+				"key": "f12",
+				//Mac OS下的快捷键设置
+				"mac": "f12"
+			}
+		]
+	},
+	"devDependencies": {
+		"vscode": "0.10.x"
+	}
 }
