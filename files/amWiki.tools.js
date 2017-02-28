@@ -64,7 +64,7 @@
          * @returns {string} - 格式化后的json字符串
          */
         formatJson: function (str) {
-            var json = decodeURI(str.replace(/%([^0-9A-Z]{2})/g, '%25$1'));
+            var json = decodeURI(str.replace(/%([^0-9A-Z]{0,2})/g, '%25$1'));
             var reg = null,
                 formatted = '',
                 pad = 0,
