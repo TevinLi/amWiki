@@ -14,19 +14,16 @@
     }, {
         'type': 'separator'
     }, {
-        'label': '导出当前文库',
-        'submenu': [{
-            'label': '导出为 Github Wiki',
-            'command': 'amWiki:export.gitHub'
-        }]
-    }, {
-        'type': 'separator'
-    }, {
         'label': '启动本地静态 Web 服务器',
         'command': 'amWiki:runServer'
     }, {
         'label': '在浏览器打开当前文档',
         'command': 'amWiki:browser'
+    }, {
+        'type': 'separator'
+    }, {
+        'label': '导出当前文库为 Github Wiki',
+        'command': 'amWiki:export.gitHub'
     }, {
         'type': 'separator'
     }, {
