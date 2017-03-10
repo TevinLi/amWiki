@@ -4,7 +4,7 @@
  */
 
 var fs = require("fs");
-var makeNav = require('./makeNav');
+var makeNav = require('./make-navigation');
 
 //复制文件
 var copyFile = function (from, to) {
