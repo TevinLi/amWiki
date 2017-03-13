@@ -1,5 +1,5 @@
 /**
- * @desc amWiki 工作端·创建$navigation导航文件模块
+ * @desc 工作端·创建$navigation导航文件模块
  * @author Tevin
  */
 

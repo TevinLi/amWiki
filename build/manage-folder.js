@@ -1,5 +1,5 @@
 /**
- * @desc amWiki 工作端·文件夹管理模块
+ * @desc 工作端·文件夹管理模块
  * @author Tevin
  */
 
@@ -117,21 +117,8 @@ module.exports = {
         }
         return list2;
     },
-    //判断一个文件夹是否为amWiki文库项目
-    isAmWiki: function (path) {
-        path = path.indexOf('library') < 0 ? path : path.split('library')[0];
-        path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
-        path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
-        var states = [
-            fs.existsSync(path + '/library/'),
-            fs.existsSync(path + '/amWiki/'),
-            fs.existsSync(path + '/config.json'),
-            fs.existsSync(path + '/index.html')
-        ];
-        return states[0] && states[1] && states[2] && states[3] ? path : false;
-    },
     //清空文件夹
-    cleanDir: function(path) {
+    cleanFolder: function(path) {
         var list = fs.readdirSync(path);
         var path2;
         for (var i = 0, item; item = list[i]; i++) {

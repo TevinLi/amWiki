@@ -1,5 +1,5 @@
 /**
- * @desc amWiki 工作端·本地服务器模块
+ * @desc 工作端·本地服务器模块
  * @author Tevin
  */
 
@@ -137,18 +137,6 @@ module.exports = {
         if (!this.server) {
             this.createServer();
         }
-    },
-    //创建映射列表
-    createMappingId: function (path) {
-        path = path.replace(/\\/g, '/');
-        //累加地址字符串每个字符Unicode值与其序号的乘积
-        var code = 0;
-        for (var j = 0; j < path.length; j++) {
-            code += path.charCodeAt(j) * j;
-        }
-        //再与地址字符串长度拼合
-        code = parseInt(path.length + '' + code);
-        return code;
     },
     //浏览当前文档
     browser: function (list) {

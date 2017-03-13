@@ -1,5 +1,5 @@
 /**
- * @desc amWiki 工作端·输出web静态资源模块
+ * @desc 工作端·输出web静态资源模块
  * @author Tevin
  */
 

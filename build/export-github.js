@@ -1,5 +1,5 @@
 /**
- * @desc amWiki 工作端·导出项目(github)模块
+ * @desc 工作端·导出项目(github)模块
  * @author Tevin
  */
 
@@ -142,7 +142,7 @@ module.exports = {
     //开始导出
     _toExport: function (pathFrom, pathTo, fileList, duplicates) {
         if (fs.readdirSync(pathTo).length > 0 && confirm('所选文件夹不为空，是否需要清空？')) {
-            directories.cleanDir(pathTo);
+            directories.cleanFolder(pathTo);
         }
         var fileList2 = [];
         var duplicate2 = [];
