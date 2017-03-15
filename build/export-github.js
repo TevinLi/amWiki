@@ -6,7 +6,7 @@
 var electronRemote = require('electron').remote,
     dialog = electronRemote.dialog;
 var fs = require("fs");
-var directories = require('./directories');
+var directories = require('./manage-folder');
 
 module.exports = {
     //拷贝一张图片
@@ -75,7 +75,7 @@ module.exports = {
     _exportImage: function (pathFrom, pathTo) {
         var that = this;
         if (!fs.existsSync(pathTo + '/images/')) {
-            fs.mkdirSync(pathTo + '/images/', 0777);
+            fs.mkdirSync(pathTo + '/images/', 0o777);
         }
         //文件夹拷贝
         var copyFolder = function (from, to) {
@@ -85,7 +85,7 @@ module.exports = {
                 path = from + '/' + item;
                 to2 = to + '/' + item;
                 if (fs.statSync(path).isDirectory(path)) {
-                    fs.mkdirSync(to2, 0777);
+                    fs.mkdirSync(to2, 0o777);
                     copyFolder(path, to + '/' + item);
                 } else {
                     that._copyImg(path, to + '/' + item);

@@ -4,7 +4,7 @@
  */
 
 var fs = require("fs");
-var directories = require('./directories');
+var directories = require('./manage-folder');
 
 module.exports = {
     //手动更新导航

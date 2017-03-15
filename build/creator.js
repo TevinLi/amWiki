@@ -6,135 +6,132 @@
 var fs = require("fs");
 var makeNav = require('./make-navigation');
 
-//复制文件
-var copyFile = function (from, to) {
-    var encoding = from.indexOf('png') >= 0 ? 'binary' : 'utf-8';
-    var file = fs.readFileSync(from, encoding);
-    fs.writeFileSync(to, file, encoding);
-};
-
-//创建amWiki需要的文件夹
-var createDir = function (outputPath) {
-    if (!fs.existsSync(outputPath + 'amWiki/')) {
-        fs.mkdirSync(outputPath + 'amWiki/', 0777);
-    }
-    if (!fs.existsSync(outputPath + 'amWiki/js/')) {
-        fs.mkdirSync(outputPath + 'amWiki/js/', 0777);
-    }
-    if (!fs.existsSync(outputPath + 'amWiki/css')) {
-        fs.mkdirSync(outputPath + 'amWiki/css', 0777);
-    }
-    if (!fs.existsSync(outputPath + 'amWiki/images')) {
-        fs.mkdirSync(outputPath + 'amWiki/images', 0777);
-    }
-    if (!fs.existsSync(outputPath + 'library/')) {
-        fs.mkdirSync(outputPath + 'library/', 0777);
-        if (!fs.existsSync(outputPath + 'library/001-学习amWiki')) {
-            fs.mkdirSync(outputPath + 'library/001-学习amWiki', 0777);
-        }
-        if (!fs.existsSync(outputPath + 'library/001-学习amWiki/05-学习markdown')) {
-            fs.mkdirSync(outputPath + 'library/001-学习amWiki/05-学习markdown', 0777);
-        }
-        if (!fs.existsSync(outputPath + 'library/002-文档示范')) {
-            fs.mkdirSync(outputPath + 'library/002-文档示范', 0777);
-        }
-        return false;
-    }
-    return true;
-};
-
-//创建着色色系（颜色变亮变暗不是rgb分别同时增加或减少一个值）
-var makeColours = function (color) {
-    var colours = {};
-    //修复16进制下的1位数
-    var lessThan = function (str) {
-        if (str <= 9) {
-            str = '0' + str;
-        } else {
-            var num = parseInt('0x' + str);
-            if (num >= 10 && num <= 15) {
-                str = '0' + str;
-            }
-        }
-        return str;
-    };
-    //颜色合法检查
-    var atBinary16 = /^#([0-9a-fA-F]{3}){1,2}$/.test(color);
-    var atRGB = /^(r|R)(g|G)(b|B)(a|A)?\(\d{1,3},\d{1,3},\d{1,3}(,.*?)?\)$/.test(color);
-    var atList = /(blue|default)/.test(color);
-    if (!atBinary16 && !atRGB && !atList) {
-        alert('请使用标准16进制颜色、标准RGB颜色、2种特定颜色名指定颜色！本次创建使用默认颜色');
-        return makeColours('default');
-    }
-    //颜色名称转色值
-    var colorList = {
-        default: '#4296eb',
-        blue: '#4296eb'
-    };
-    if (atList) {
-        color = colorList[color];
-    }
-    //解析颜色为rgb
-    var rgb = [];
-    if (color.indexOf('#') == 0) {
-        rgb[0] = parseInt('0x' + color.substr(1, 2));
-        rgb[1] = parseInt('0x' + color.substr(3, 2));
-        rgb[2] = parseInt('0x' + color.substr(5, 2));
-    } else {
-        var rgbStr = color.split('(')[1].split(')')[0].split(',');
-        rgb[0] = parseInt(rgbStr[0]);
-        rgb[1] = parseInt(rgbStr[1]);
-        rgb[2] = parseInt(rgbStr[2]);
-    }
-    //生成主色base
-    colours.base = '#' + [
-            lessThan(rgb[0].toString(16)),
-            lessThan(rgb[1].toString(16)),
-            lessThan(rgb[2].toString(16))
-        ].join('');
-    //颜色变化量，越小的值变化越大
-    var increment = [
-        Math.round((255 - rgb[0]) / 3),
-        Math.round((255 - rgb[1]) / 3),
-        Math.round((255 - rgb[2]) / 3)
-    ];
-    //生成亮色light
-    colours.light = '#' + [
-            (rgb[0] + increment[0]).toString(16),
-            (rgb[1] + increment[1]).toString(16),
-            (rgb[2] + increment[2]).toString(16)
-        ].join('');
-    //生成暗色dark
-    var larger = 0,
-        largeIndex = -1;
-    var largerFd = function (i) {
-        if (increment[i] > larger) {
-            larger = increment[i];
-            largeIndex = i;
-        }
-    };
-    largerFd(0);
-    largerFd(1);
-    largerFd(2);
-    if (rgb[largeIndex] - larger < 0) {
-        //修复加深颜色值为负的情况，最多减到0，其他三色等比例减小
-        var reduce = (rgb[largeIndex] - larger) / larger;
-        increment[0] += Math.round(increment[0] * reduce);
-        increment[1] += Math.round(increment[1] * reduce);
-        increment[2] += Math.round(increment[2] * reduce);
-    }
-    colours.dark = '#' + [
-            lessThan((rgb[0] - increment[0]).toString(16)),
-            lessThan((rgb[1] - increment[1]).toString(16)),
-            lessThan((rgb[2] - increment[2]).toString(16))
-        ].join('');
-    return colours;
-};
-
 
 module.exports = {
-    //开始创建
-    create: function (state) {
+    //复制文件
+    _copyWikiFile: function (from, to) {
+        var encoding = from.indexOf('png') >= 0 ? 'binary' : 'utf-8';
+        var file = fs.readFileSync(from, encoding);
+        fs.writeFileSync(to, file, encoding);
+    },
+    //创建amWiki需要的文件夹
+    _createWikiFolder: function (outputPath) {
+        if (!fs.existsSync(outputPath + 'amWiki/')) {
+            fs.mkdirSync(outputPath + 'amWiki/', 0777);
+        }
+        if (!fs.existsSync(outputPath + 'amWiki/js/')) {
+            fs.mkdirSync(outputPath + 'amWiki/js/', 0777);
+        }
+        if (!fs.existsSync(outputPath + 'amWiki/css')) {
+            fs.mkdirSync(outputPath + 'amWiki/css', 0777);
+        }
+        if (!fs.existsSync(outputPath + 'amWiki/images')) {
+            fs.mkdirSync(outputPath + 'amWiki/images', 0777);
+        }
+        if (!fs.existsSync(outputPath + 'library/')) {
+            fs.mkdirSync(outputPath + 'library/', 0777);
+            if (!fs.existsSync(outputPath + 'library/001-学习amWiki')) {
+                fs.mkdirSync(outputPath + 'library/001-学习amWiki', 0777);
+            }
+            if (!fs.existsSync(outputPath + 'library/001-学习amWiki/05-学习markdown')) {
+                fs.mkdirSync(outputPath + 'library/001-学习amWiki/05-学习markdown', 0777);
+            }
+            if (!fs.existsSync(outputPath + 'library/002-文档示范')) {
+                fs.mkdirSync(outputPath + 'library/002-文档示范', 0777);
+            }
+            return false;
+        }
+        return true;
+    },
+    //创建着色色系（颜色变亮变暗不是rgb分别同时增加或减少一个值）
+    _clacWikiColour: function (color) {
+        var colours = {};
+        //修复16进制下的1位数
+        var lessThan = function (str) {
+            if (str <= 9) {
+                str = '0' + str;
+            } else {
+                var num = parseInt('0x' + str);
+                if (num >= 10 && num <= 15) {
+                    str = '0' + str;
+                }
+            }
+            return str;
+        };
+        //颜色合法检查
+        var atBinary16 = /^#([0-9a-fA-F]{3}){1,2}$/.test(color);
+        var atRGB = /^[rR][gG][bB]([aA])?\(\d{1,3},\d{1,3},\d{1,3}(,.*?)?\)$/.test(color);
+        var atList = /(blue|default)/.test(color);
+        if (!atBinary16 && !atRGB && !atList) {
+            alert('请使用标准16进制颜色、标准RGB颜色、2种特定颜色名指定颜色！本次创建使用默认颜色');
+            return this._clacWikiColour('default');
+        }
+        //颜色名称转色值
+        var colorList = {
+            default: '#4296eb',
+            blue: '#4296eb'
+        };
+        if (atList) {
+            color = colorList[color];
+        }
+        //解析颜色为rgb
+        var rgb = [];
+        if (color.indexOf('#') === 0) {
+            rgb[0] = parseInt('0x' + color.substr(1, 2));
+            rgb[1] = parseInt('0x' + color.substr(3, 2));
+            rgb[2] = parseInt('0x' + color.substr(5, 2));
+        } else {
+            var rgbStr = color.split('(')[1].split(')')[0].split(',');
+            rgb[0] = parseInt(rgbStr[0]);
+            rgb[1] = parseInt(rgbStr[1]);
+            rgb[2] = parseInt(rgbStr[2]);
+        }
+        //生成主色base
+        colours.base = '#' + [
+                lessThan(rgb[0].toString(16)),
+                lessThan(rgb[1].toString(16)),
+                lessThan(rgb[2].toString(16))
+            ].join('');
+        //颜色变化量，越小的值变化越大
+        var increment = [
+            Math.round((255 - rgb[0]) / 3),
+            Math.round((255 - rgb[1]) / 3),
+            Math.round((255 - rgb[2]) / 3)
+        ];
+        //生成亮色light
+        colours.light = '#' + [
+                (rgb[0] + increment[0]).toString(16),
+                (rgb[1] + increment[1]).toString(16),
+                (rgb[2] + increment[2]).toString(16)
+            ].join('');
+        //生成暗色dark
+        var larger = 0,
+            largeIndex = -1;
+        var largerFd = function (i) {
+            if (increment[i] > larger) {
+                larger = increment[i];
+                largeIndex = i;
+            }
+        };
+        largerFd(0);
+        largerFd(1);
+        largerFd(2);
+        if (rgb[largeIndex] - larger < 0) {
+            //修复加深颜色值为负的情况，最多减到0，其他三色等比例减小
+            var reduce = (rgb[largeIndex] - larger) / larger;
+            increment[0] += Math.round(increment[0] * reduce);
+            increment[1] += Math.round(increment[1] * reduce);
+            increment[2] += Math.round(increment[2] * reduce);
+        }
+        colours.dark = '#' + [
+                lessThan((rgb[0] - increment[0]).toString(16)),
+                lessThan((rgb[1] - increment[1]).toString(16)),
+                lessThan((rgb[2] - increment[2]).toString(16))
+            ].join('');
+        return colours;
+    },
+    //配置检查
+    _checkConfig: function () {
         var options = {};
         var editor = atom.workspace.getActiveTextEditor();
         if (!editor) {
@@ -150,7 +147,7 @@ module.exports = {
         options.outputPath = options.editorPath.split('config.json')[0].replace(/\\/g, '/');
         //读取配置
         var config = fs.readFileSync(options.editorPath, 'utf-8') || '';
-        if (config.length == 0) {
+        if (config.length === 0) {
             if (!confirm('没有读取到任何配置，继续创建么？')) {
                 return;
             } else {
@@ -168,21 +165,24 @@ module.exports = {
         if (!parseOk) {
             return;
         }
-        config.name = config.name || 'amWiki轻文库系统';  //库名称
-        config.version = typeof config.ver == 'string' ? config.ver : 'by Tevin';  //库版本号
-        config.logo = config.logo || 'amWiki/images/logo.png';  //logo地址
-        config.testing = config.testing || false;  //是否开启接口测试
-        config.colour = config.colour ? makeColours(config.colour) : makeColours('#4296eb');  //设置自定义颜色
-        //开始创建
-        this.buildAt(options, config, function (path) {
-            //添加文库
-            state.libraryList.push(path);
-            //更新导航
-            makeNav.refresh(options.outputPath + 'library/');
-        });
+        //库名称
+        config.name = config.name || 'amWiki轻文库系统';
+        //库版本号
+        config.version = typeof config.ver === 'string' ? config.ver : 'by Tevin';
+        //logo地址
+        config.logo = config.logo || 'amWiki/images/logo.png';
+        //是否开启接口测试
+        config.testing = config.testing || false;
+        //设置自定义颜色
+        config.colour = config.colour ? this._clacWikiColour(config.colour) : this._clacWikiColour('#4296eb');
+        return {
+            options: options,
+            config:config
+        };
     },
     //创建amWiki本地文件
-    buildAt: function (options, config, callback) {
+    create: function (callback) {
+        var {options, config} = this._checkConfig();
         //创建
         fs.readdir(options.outputPath, function (err, files) {
             if (files.length > 1) {
@@ -208,7 +208,7 @@ module.exports = {
             }
             fs.writeFileSync(options.outputPath + 'index.html', indexPage, 'utf-8');
             //创建文件夹
-            var hasLibrary = createDir(options.outputPath);
+            var hasLibrary = this._createWikiFolder(options.outputPath);
             //创建amWiki.css
             var wikiCss = fs.readFileSync(options.filesPath + 'amWiki.css', 'utf-8');
             if (config.testing) {
@@ -244,7 +244,7 @@ module.exports = {
                 ['menubar_bg.png', 'amWiki/images/menubar_bg.png']
             ];
             for (var i = 0; i < fileList.length; i++) {
-                copyFile(options.filesPath + fileList[i][0], options.outputPath + fileList[i][1]);
+                this._copyWikiFile(options.filesPath + fileList[i][0], options.outputPath + fileList[i][1]);
             }
             //如果没有library则复制一套默认文档
             if (!hasLibrary) {
@@ -268,10 +268,10 @@ module.exports = {
                     ['doc.demo-long-article.md', 'library/002-文档示范/002-超长文档页内目录示例.md']
                 ];
                 for (var j = 0; j < fileList2.length; j++) {
-                    copyFile(options.filesPath + fileList2[j][0], options.outputPath + fileList2[j][1]);
+                    this._copyWikiFile(options.filesPath + fileList2[j][0], options.outputPath + fileList2[j][1]);
                 }
             }
-            callback && callback(options.outputPath + 'library/');
+            callback();
         });
     }
 };
