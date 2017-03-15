@@ -3,41 +3,41 @@
  * @author Tevin
  */
 
-var fs = require("fs");
-var makeNav = require('./make-navigation');
+let fs = require("fs");
+let makeNav = require('./make-navigation');
 
 
 module.exports = {
     //复制文件
     _copyWikiFile: function (from, to) {
-        var encoding = from.indexOf('png') >= 0 ? 'binary' : 'utf-8';
-        var file = fs.readFileSync(from, encoding);
+        let encoding = from.indexOf('png') >= 0 ? 'binary' : 'utf-8';
+        let file = fs.readFileSync(from, encoding);
         fs.writeFileSync(to, file, encoding);
     },
     //创建amWiki需要的文件夹
     _createWikiFolder: function (outputPath) {
         if (!fs.existsSync(outputPath + 'amWiki/')) {
-            fs.mkdirSync(outputPath + 'amWiki/', 0777);
+            fs.mkdirSync(outputPath + 'amWiki/', 0o777);
         }
         if (!fs.existsSync(outputPath + 'amWiki/js/')) {
-            fs.mkdirSync(outputPath + 'amWiki/js/', 0777);
+            fs.mkdirSync(outputPath + 'amWiki/js/', 0o777);
         }
         if (!fs.existsSync(outputPath + 'amWiki/css')) {
-            fs.mkdirSync(outputPath + 'amWiki/css', 0777);
+            fs.mkdirSync(outputPath + 'amWiki/css', 0o777);
         }
         if (!fs.existsSync(outputPath + 'amWiki/images')) {
-            fs.mkdirSync(outputPath + 'amWiki/images', 0777);
+            fs.mkdirSync(outputPath + 'amWiki/images', 0o777);
         }
         if (!fs.existsSync(outputPath + 'library/')) {
-            fs.mkdirSync(outputPath + 'library/', 0777);
+            fs.mkdirSync(outputPath + 'library/', 0o777);
             if (!fs.existsSync(outputPath + 'library/001-学习amWiki')) {
-                fs.mkdirSync(outputPath + 'library/001-学习amWiki', 0777);
+                fs.mkdirSync(outputPath + 'library/001-学习amWiki', 0o777);
             }
             if (!fs.existsSync(outputPath + 'library/001-学习amWiki/05-学习markdown')) {
-                fs.mkdirSync(outputPath + 'library/001-学习amWiki/05-学习markdown', 0777);
+                fs.mkdirSync(outputPath + 'library/001-学习amWiki/05-学习markdown', 0o777);
             }
             if (!fs.existsSync(outputPath + 'library/002-文档示范')) {
-                fs.mkdirSync(outputPath + 'library/002-文档示范', 0777);
+                fs.mkdirSync(outputPath + 'library/002-文档示范', 0o777);
             }
             return false;
         }
@@ -45,13 +45,13 @@ module.exports = {
     },
     //创建着色色系（颜色变亮变暗不是rgb分别同时增加或减少一个值）
     _clacWikiColour: function (color) {
-        var colours = {};
+        let colours = {};
         //修复16进制下的1位数
-        var lessThan = function (str) {
+        let lessThan = function (str) {
             if (str <= 9) {
                 str = '0' + str;
             } else {
-                var num = parseInt('0x' + str);
+                let num = parseInt('0x' + str);
                 if (num >= 10 && num <= 15) {
                     str = '0' + str;
                 }
@@ -59,15 +59,15 @@ module.exports = {
             return str;
         };
         //颜色合法检查
-        var atBinary16 = /^#([0-9a-fA-F]{3}){1,2}$/.test(color);
-        var atRGB = /^[rR][gG][bB]([aA])?\(\d{1,3},\d{1,3},\d{1,3}(,.*?)?\)$/.test(color);
-        var atList = /(blue|default)/.test(color);
+        let atBinary16 = /^#([0-9a-fA-F]{3}){1,2}$/.test(color);
+        let atRGB = /^[rR][gG][bB]([aA])?\(\d{1,3},\d{1,3},\d{1,3}(,.*?)?\)$/.test(color);
+        let atList = /(blue|default)/.test(color);
         if (!atBinary16 && !atRGB && !atList) {
             alert('请使用标准16进制颜色、标准RGB颜色、2种特定颜色名指定颜色！本次创建使用默认颜色');
             return this._clacWikiColour('default');
         }
         //颜色名称转色值
-        var colorList = {
+        let colorList = {
             default: '#4296eb',
             blue: '#4296eb'
         };
@@ -75,13 +75,13 @@ module.exports = {
             color = colorList[color];
         }
         //解析颜色为rgb
-        var rgb = [];
+        let rgb = [];
         if (color.indexOf('#') === 0) {
             rgb[0] = parseInt('0x' + color.substr(1, 2));
             rgb[1] = parseInt('0x' + color.substr(3, 2));
             rgb[2] = parseInt('0x' + color.substr(5, 2));
         } else {
-            var rgbStr = color.split('(')[1].split(')')[0].split(',');
+            let rgbStr = color.split('(')[1].split(')')[0].split(',');
             rgb[0] = parseInt(rgbStr[0]);
             rgb[1] = parseInt(rgbStr[1]);
             rgb[2] = parseInt(rgbStr[2]);
@@ -93,7 +93,7 @@ module.exports = {
                 lessThan(rgb[2].toString(16))
             ].join('');
         //颜色变化量，越小的值变化越大
-        var increment = [
+        let increment = [
             Math.round((255 - rgb[0]) / 3),
             Math.round((255 - rgb[1]) / 3),
             Math.round((255 - rgb[2]) / 3)
@@ -105,9 +105,9 @@ module.exports = {
                 (rgb[2] + increment[2]).toString(16)
             ].join('');
         //生成暗色dark
-        var larger = 0,
+        let larger = 0,
             largeIndex = -1;
-        var largerFd = function (i) {
+        let largerFd = function (i) {
             if (increment[i] > larger) {
                 larger = increment[i];
                 largeIndex = i;
@@ -118,7 +118,7 @@ module.exports = {
         largerFd(2);
         if (rgb[largeIndex] - larger < 0) {
             //修复加深颜色值为负的情况，最多减到0，其他三色等比例减小
-            var reduce = (rgb[largeIndex] - larger) / larger;
+            let reduce = (rgb[largeIndex] - larger) / larger;
             increment[0] += Math.round(increment[0] * reduce);
             increment[1] += Math.round(increment[1] * reduce);
             increment[2] += Math.round(increment[2] * reduce);
@@ -132,8 +132,8 @@ module.exports = {
     },
     //配置检查
     _checkConfig: function () {
-        var options = {};
-        var editor = atom.workspace.getActiveTextEditor();
+        let options = {};
+        let editor = atom.workspace.getActiveTextEditor();
         if (!editor) {
             return;
         }
@@ -146,18 +146,19 @@ module.exports = {
         options.filesPath = atom.configDirPath.replace(/\\/g, '/') + '/packages/amWiki/files/';
         options.outputPath = options.editorPath.split('config.json')[0].replace(/\\/g, '/');
         //读取配置
-        var config = fs.readFileSync(options.editorPath, 'utf-8') || '';
-        if (config.length === 0) {
+        let configStr = fs.readFileSync(options.editorPath, 'utf-8') || '';
+        if (configStr.length === 0) {
             if (!confirm('没有读取到任何配置，继续创建么？')) {
                 return;
             } else {
-                config = "{}";
+                configStr = "{}";
             }
         }
         //解析默认配置
-        var parseOk = true;
+        let parseOk = true,
+            config = null;
         try {
-            config = JSON.parse(config);
+            config = JSON.parse(configStr);
         } catch (e) {
             alert('配置解析失败，请检查您的 config.json 是否有严格按 Json 格式书写！\n错误消息：' + e.message);
             parseOk = false;
@@ -177,12 +178,12 @@ module.exports = {
         config.colour = config.colour ? this._clacWikiColour(config.colour) : this._clacWikiColour('#4296eb');
         return {
             options: options,
-            config:config
+            config: config
         };
     },
     //创建amWiki本地文件
     create: function (callback) {
-        var {options, config} = this._checkConfig();
+        let {options, config} = this._checkConfig();
         //创建
         fs.readdir(options.outputPath, function (err, files) {
             if (files.length > 1) {
@@ -191,13 +192,13 @@ module.exports = {
                 }
             }
             //创建index.html
-            var indexPage = fs.readFileSync(options.filesPath + 'amWiki.tpl', 'utf-8');
+            let indexPage = fs.readFileSync(options.filesPath + 'amWiki.tpl', 'utf-8');
             indexPage = indexPage.replace(/\{\{name\}\}/g, config.name)
                 .replace('{{version}}', config.version)
                 .replace('{{logo}}', config.logo);
             if (config.testing) {
-                var testingTpl = fs.readFileSync(options.filesPath + 'amWiki.testing.tpl', 'utf-8');
-                var testingScript = '<script src="amWiki/js/amWiki.testing.js"></script>';
+                let testingTpl = fs.readFileSync(options.filesPath + 'amWiki.testing.tpl', 'utf-8');
+                let testingScript = '<script src="amWiki/js/amWiki.testing.js"></script>';
                 indexPage = indexPage
                     .replace('{{amWiki.testing.tpl}}', testingTpl)
                     .replace('{{amWiki.testing.js}}', testingScript);
@@ -208,9 +209,9 @@ module.exports = {
             }
             fs.writeFileSync(options.outputPath + 'index.html', indexPage, 'utf-8');
             //创建文件夹
-            var hasLibrary = this._createWikiFolder(options.outputPath);
+            let hasLibrary = this._createWikiFolder(options.outputPath);
             //创建amWiki.css
-            var wikiCss = fs.readFileSync(options.filesPath + 'amWiki.css', 'utf-8');
+            let wikiCss = fs.readFileSync(options.filesPath + 'amWiki.css', 'utf-8');
             if (config.testing) {
                 wikiCss += fs.readFileSync(options.filesPath + 'amWiki.testing.css', 'utf-8');
             }
@@ -222,7 +223,7 @@ module.exports = {
                 .replace(/@colour-dark/g, config.colour.dark);
             fs.writeFileSync(options.outputPath + 'amWiki/css/amWiki.css', wikiCss, 'utf-8');
             //拷贝页面资源
-            var fileList = [
+            let fileList = [
                 ['markdownbody.github.css', 'amWiki/css/markdownbody.github.css'],
                 ['lhjs.github-gist.css', 'amWiki/css/lhjs.github-gist.css'],
                 ['gbk.js', 'amWiki/js/gbk.js'],
@@ -243,17 +244,17 @@ module.exports = {
                 ['logo.png', 'amWiki/images/logo.png'],
                 ['menubar_bg.png', 'amWiki/images/menubar_bg.png']
             ];
-            for (var i = 0; i < fileList.length; i++) {
+            for (let i = 0; i < fileList.length; i++) {
                 this._copyWikiFile(options.filesPath + fileList[i][0], options.outputPath + fileList[i][1]);
             }
             //如果没有library则复制一套默认文档
             if (!hasLibrary) {
                 //首页文档
-                var home = fs.readFileSync(options.filesPath + 'doc.home.md', 'utf-8');
+                let home = fs.readFileSync(options.filesPath + 'doc.home.md', 'utf-8');
                 home = home.replace('{{name}}', config.name);
                 fs.writeFileSync(options.outputPath + 'library/首页.md', home, 'utf-8');
                 //其他页面文档
-                var fileList2 = [
+                let fileList2 = [
                     ['doc.amwiki-introduce.md', 'library/001-学习amWiki/01-amWiki轻文库简介.md'],
                     ['doc.amwiki-mind-map.md', 'library/001-学习amWiki/02-amWiki功能导图.md'],
                     ['doc.amwiki-new.md', 'library/001-学习amWiki/03-如何开始一个新amWiki轻文库.md'],
@@ -267,7 +268,7 @@ module.exports = {
                     ['doc.demo-api.md', 'library/002-文档示范/001-通用API接口文档示例.md'],
                     ['doc.demo-long-article.md', 'library/002-文档示范/002-超长文档页内目录示例.md']
                 ];
-                for (var j = 0; j < fileList2.length; j++) {
+                for (let j = 0; j < fileList2.length; j++) {
                     this._copyWikiFile(options.filesPath + fileList2[j][0], options.outputPath + fileList2[j][1]);
                 }
             }

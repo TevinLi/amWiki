@@ -3,16 +3,16 @@
  * @author Tevin
  */
 
-var http = require('http');
-var url = require('url');
-var fs = require('fs');
-var util = require('util');
-var os = require('os');
-var child_process = require("child_process");
-var GBK = require('../files/gbk.js').GBK;
+let http = require('http');
+let url = require('url');
+let fs = require('fs');
+let util = require('util');
+let os = require('os');
+let child_process = require("child_process");
+let GBK = require('../files/gbk.js').GBK;
 
 //文件类型
-var mimeType = {
+let mimeType = {
     'txt': 'text/plain',
     'html': 'text/html',
     'css': 'text/css',
@@ -32,7 +32,7 @@ var mimeType = {
 };
 
 //404未找到页面
-var page_404 = function (req, res, path) {
+let page_404 = function (req, res, path) {
     res.writeHead(404, {
         'Content-Type': 'text/html'
     });
@@ -48,7 +48,7 @@ var page_404 = function (req, res, path) {
 };
 
 //500错误页面
-var page_500 = function (req, res, error) {
+let page_500 = function (req, res, error) {
     res.writeHead(500, {
         'Content-Type': 'text/html'
     });
@@ -60,18 +60,18 @@ var page_500 = function (req, res, error) {
 
 //获取本地ip
 function getLocalIP() {
-    var ifaces = os.networkInterfaces();
-    var ip = '';
-    for (var dev in ifaces) {
+    let ifaces = os.networkInterfaces();
+    let ip = '';
+    for (let dev in ifaces) {
         if (ifaces.hasOwnProperty(dev)) {
             ifaces[dev].forEach(function (details) {
-                if (details.family == 'IPv4' && details.address.indexOf(192) >= 0) {
+                if (details.family === 'IPv4' && details.address.indexOf(192) >= 0) {
                     ip = details.address;
                 }
             });
         }
     }
-    if (ip == '') {
+    if (ip === '') {
         ip = '127.0.0.1';
     }
     return ip;
@@ -84,11 +84,11 @@ module.exports = {
     mappingList: {},
     //创建web服务器
     createServer: function () {
-        var that = this;
+        let that = this;
         this.server = http.createServer(function (req, res) {
-            var pathname = url.parse(req.url).pathname;
-            var mappingId = '';
-            var filePath = pathname.replace(/^\/wiki(\d{3,}?)\//g, function (match, $1) {
+            let pathname = url.parse(req.url).pathname;
+            let mappingId = '';
+            let filePath = pathname.replace(/^\/wiki(\d{3,}?)\//g, function (match, $1) {
                 mappingId = 'wiki' + $1;
                 return ''
             });
@@ -102,13 +102,13 @@ module.exports = {
                 filePath = GBK.decode(filePath);
             }
             //真实地址
-            var realPath = that.mappingList[mappingId] + filePath;
+            let realPath = that.mappingList[mappingId] + filePath;
             //解析文件
             fs.exists(realPath, function (exists) {
                 if (!exists) {
                     return page_404(req, res, pathname);
                 } else {
-                    var file = fs.createReadStream(realPath);
+                    let file = fs.createReadStream(realPath);
                     res.writeHead(200, {
                         'Content-Type': mimeType[realPath.split('.').pop()] || 'text/plain'
                     });
@@ -125,8 +125,8 @@ module.exports = {
     //更新映射列表
     updateMap: function(list) {
         this.mappingList = {};
-        for (var i = 0; i < list.length; i++) {
-            var path = list[i].replace('library/', '');
+        for (let i = 0; i < list.length; i++) {
+            let path = list[i].replace('library/', '');
             //缩短数字并设置为地址映射名
             this.mappingList['wiki' + this.createMappingId(path)] = path;
         }
@@ -141,9 +141,9 @@ module.exports = {
     //浏览当前文档
     browser: function (list) {
         //编辑器
-        var editor = atom.workspace.getActiveTextEditor();
+        let editor = atom.workspace.getActiveTextEditor();
         //状态验证，当编辑md文档时才允许操作
-        var grammar, img;
+        let grammar, img;
         if (!editor) {
             return;
         }
@@ -156,8 +156,8 @@ module.exports = {
             return;
         }
         //更新地址映射
-        for (var i = 0; i < list.length; i++) {
-            var path = list[i].replace('library/', '');
+        for (let i = 0; i < list.length; i++) {
+            let path = list[i].replace('library/', '');
             //缩短数字并设置为地址映射名
             this.mappingList['wiki' + this.createMappingId(path)] = path;
         }
@@ -168,15 +168,15 @@ module.exports = {
             }
         }
         //解析地址
-        var host = 'http://' + getLocalIP() + ':5171';
-        var editorPath = editor.getPath();
-        var mappingId = this.createMappingId(editorPath.split('library')[0]);
-        var url;
+        let host = 'http://' + getLocalIP() + ':5171';
+        let editorPath = editor.getPath();
+        let mappingId = this.createMappingId(editorPath.split('library')[0]);
+        let url;
         if (editorPath.indexOf('$navigation.md') >= 0) {
             url = host + '/wiki' + mappingId + '/index.html';
         } else {
-            var filePath = editorPath.split('library\\')[1];
-            if (typeof filePath == 'undefined') {
+            let filePath = editorPath.split('library\\')[1];
+            if (typeof filePath === 'undefined') {
                 url = host + '/wiki' + mappingId + '/index.html';
             } else {
                 filePath = filePath.replace(/\\/g, '/').replace(/ /g, '%20').replace('.md', '');
@@ -184,17 +184,17 @@ module.exports = {
             }
         }
         //呼起默认浏览器打开页面
-        var cmd;
+        let cmd;
         //windows
-        if (process.platform == 'win32') {
+        if (process.platform === 'win32') {
             cmd = 'start';
         }
         //linux
-        else if (process.platform == 'linux') {
+        else if (process.platform === 'linux') {
             cmd = 'xdg-open';
         }
         //mac
-        else if (process.platform == 'darwin') {
+        else if (process.platform === 'darwin') {
             cmd = 'open';
         }
         child_process.exec(cmd + ' ' + url);

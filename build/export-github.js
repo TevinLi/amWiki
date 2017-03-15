@@ -3,10 +3,10 @@
  * @author Tevin
  */
 
-var electronRemote = require('electron').remote,
+let electronRemote = require('electron').remote,
     dialog = electronRemote.dialog;
-var fs = require("fs");
-var directories = require('./manage-folder');
+let fs = require("fs");
+let directories = require('./manage-folder');
 
 module.exports = {
     //拷贝一张图片
@@ -15,7 +15,7 @@ module.exports = {
     },
     //拷贝一篇文档
     _copyMd: function (fileName, pathTo) {
-        var file = fs.readFileSync(fileName[0], 'utf-8');
+        let file = fs.readFileSync(fileName[0], 'utf-8');
         //相对路径图片地址转换
         file = file
             .replace(/!\[(.*?)]\(assets(.*?)\)/g, '![$1](' + this._githubUrl + 'wiki/images$2)')
@@ -34,10 +34,10 @@ module.exports = {
     },
     //导出导航、底部签名
     _exportNavigation: function (fileList, duplicate, pathFrom, pathTo) {
-        var navigation = fs.readFileSync(pathFrom + '/$navigation.md', 'utf-8');
-        var list = fileList.concat(duplicate);
-        var path, name;
-        for (var i = 0, item; item = list[i]; i++) {
+        let navigation = fs.readFileSync(pathFrom + '/$navigation.md', 'utf-8');
+        let list = fileList.concat(duplicate);
+        let path, name;
+        for (let i = 0, item; item = list[i]; i++) {
             path = item[0]
                 .replace(/\\/g, '/')
                 .split('library/')[1]
@@ -56,8 +56,8 @@ module.exports = {
     },
     //导出首页
     _exportHome: function (pathFrom, pathTo) {
-        var that = this;
-        var file = fs.readFileSync(pathFrom + '/首页.md', 'utf-8');
+        let that = this;
+        let file = fs.readFileSync(pathFrom + '/首页.md', 'utf-8');
         file = file
             //相对路径图片地址转换
             .replace(/!\[(.*?)]\(assets(.*?)\)/g, '![$1](' + this._githubUrl + 'wiki/images$2)')
@@ -73,15 +73,15 @@ module.exports = {
     },
     //导出图片
     _exportImage: function (pathFrom, pathTo) {
-        var that = this;
+        let that = this;
         if (!fs.existsSync(pathTo + '/images/')) {
             fs.mkdirSync(pathTo + '/images/', 0o777);
         }
         //文件夹拷贝
-        var copyFolder = function (from, to) {
-            var list = fs.readdirSync(from);
-            var path, to2;
-            for (var i = 0, item; item = list[i]; i++) {
+        let copyFolder = function (from, to) {
+            let list = fs.readdirSync(from);
+            let path, to2;
+            for (let i = 0, item; item = list[i]; i++) {
                 path = from + '/' + item;
                 to2 = to + '/' + item;
                 if (fs.statSync(path).isDirectory(path)) {
@@ -98,10 +98,10 @@ module.exports = {
     },
     //检查重名
     _checkDuplicate: function (fileList) {
-        var dup = [];
-        for (var i = 0, item; item = fileList[i]; i++) {
-            for (var j = i + 1, item2; item2 = fileList[j]; j++) {
-                if (item[1] == item2[1]) {
+        let dup = [];
+        for (let i = 0, item; item = fileList[i]; i++) {
+            for (let j = i + 1, item2; item2 = fileList[j]; j++) {
+                if (item[1] === item2[1]) {
                     dup.push([item, item2]);
                 }
             }
@@ -110,12 +110,12 @@ module.exports = {
     },
     //导出重复文档
     _exportDuplicate: function (list, pathTo) {
-        if (list.length == 0) {
+        if (list.length === 0) {
             return;
         }
-        var that = this;
-        var file;
-        var checkExist = function (fileName) {
+        let that = this;
+        let file;
+        let checkExist = function (fileName) {
             //如果已存在，增加空格
             if (fs.existsSync(pathTo + '/' + fileName[1])) {
                 fileName[1] = fileName[1].replace(/\.md$/, ' .md');
@@ -126,16 +126,16 @@ module.exports = {
                 that._copyMd(fileName, pathTo);
             }
         };
-        for (var i = 0, fileName; fileName = list[i]; i++) {
+        for (let i = 0, fileName; fileName = list[i]; i++) {
             checkExist(fileName);
         }
     },
     //导出普通文档
     _exportNormal: function (list, pathTo) {
-        if (list.length == 0) {
+        if (list.length === 0) {
             return;
         }
-        for (var i = 0, fileName; fileName = list[i]; i++) {
+        for (let i = 0, fileName; fileName = list[i]; i++) {
             this._copyMd(fileName, pathTo);
         }
     },
@@ -144,13 +144,13 @@ module.exports = {
         if (fs.readdirSync(pathTo).length > 0 && confirm('所选文件夹不为空，是否需要清空？')) {
             directories.cleanFolder(pathTo);
         }
-        var fileList2 = [];
-        var duplicate2 = [];
-        if (typeof duplicates != 'undefined') {
-            for (var i = 0, file; file = fileList[i]; i++) {
-                var fileDup = false;
-                for (var j = 0, dup; dup = duplicates[j]; j++) {
-                    if (file[0] == dup) {
+        let fileList2 = [];
+        let duplicate2 = [];
+        if (typeof duplicates !== 'undefined') {
+            for (let i = 0, file; file = fileList[i]; i++) {
+                let fileDup = false;
+                for (let j = 0, dup; dup = duplicates[j]; j++) {
+                    if (file[0] === dup) {
                         fileDup = true;
                         duplicate2.push(file);
                         break;
@@ -172,31 +172,31 @@ module.exports = {
     },
     //导出准备
     _toPrepare: function (pathFrom, pathTo) {
-        var that = this;
-        var fileList = [];
-        pathFrom += pathFrom.substr(pathFrom.length - 1, 1) == '\\' ? 'library\\' : '\\library\\';
+        let that = this;
+        let fileList = [];
+        pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
         //读取文件夹
         directories.readLibraryDir(pathFrom, function (err, tree, files) {
             if (err) {
                 console.warn(err);
             } else {
                 //console.log(tree, files);
-                var fileName = '';
+                let fileName = '';
                 //提取文件名
-                for (var i = 0, item; item = files[i]; i++) {
-                    fileName = item.split(/\\|\//);
+                for (let i = 0, item; item = files[i]; i++) {
+                    fileName = item.split(/[\\\/]/);
                     fileList.push([
                         item,
                         fileName[fileName.length - 1].replace(/^\d+(\.\d+)?[-_](.*?)$/, '$2')
                     ]);
                 }
                 //重名检查
-                var duplicate = that._checkDuplicate(fileList);
+                let duplicate = that._checkDuplicate(fileList);
                 //重名文件单独处理
                 if (duplicate.length > 0) {
-                    var dups = [];
-                    var message = '以下文件脱离文件夹偏平化时将会重名：\n\n';
-                    for (var j = 0, dup; dup = duplicate[j]; j++) {
+                    let dups = [];
+                    let message = '以下文件脱离文件夹偏平化时将会重名：\n\n';
+                    for (let j = 0, dup; dup = duplicate[j]; j++) {
                         message += dup[0][0].replace(/\//g, '\\') + '\n' +
                             dup[1][0].replace(/\//g, '\\') + '\n\n';
                         dups.push(dup[0][0], dup[1][0]);
@@ -216,17 +216,17 @@ module.exports = {
     _githubUrl: '',
     //解析 GitHub url
     _parseGithubUrl: function (path) {
-        var config = JSON.parse(fs.readFileSync(path + '/config.json', 'utf-8'));
-        if (typeof config['github-url'] == 'undefined') {
+        let config = JSON.parse(fs.readFileSync(path + '/config.json', 'utf-8'));
+        if (typeof config['github-url'] === 'undefined') {
             alert('导出失败！\n未检测到 “github-url” 配置，请在 config.json 中配置您项目的 github-url');
             return false;
         }
-        var url = config['github-url'];
-        if (url.indexOf('github.com') == 0 || url.split('github.com')[1] == '') {
+        let url = config['github-url'];
+        if (url.indexOf('github.com') === 0 || url.split('github.com')[1] === '') {
             alert('导出失败！\n请配置完整 github 项目地址！');
             return false;
         }
-        var urlArr = url.split('github.com')[1].split('/');
+        let urlArr = url.split('github.com')[1].split('/');
         if (urlArr.length < 3) {
             alert('导出失败！\n请配置完整 github 项目地址！');
             return false;
@@ -235,12 +235,12 @@ module.exports = {
     },
     //导出
     export: function () {
-        var that = this;
-        var editor = atom.workspace.getActiveTextEditor();
+        let that = this;
+        let editor = atom.workspace.getActiveTextEditor();
         if (!editor) {
             return;
         }
-        var path = editor.getPath();
+        let path = editor.getPath();
         //检测是否为 amWiki 项目
         path = directories.isAmWiki(path);
         if (!path) {
