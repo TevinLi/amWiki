@@ -4,49 +4,15 @@
  */
 
 let fs = require("fs");
-let directories = require('./manage-folder');
+let mngFolder = require('./manage-folder');
 
 module.exports = {
-    //手动更新导航
-    update: function (state, callback) {
-        let editor = atom.workspace.getActiveTextEditor();
-        if (!editor) {
-            return;
-        }
-        let grammar = editor.getGrammar();
-        if (!grammar) {
-            alert('只有当你打开library文件夹下的文档时，才能手动更新导航文件！');
-            return;
-        }
-        let editorPath = editor.getPath();
-        if (editorPath.indexOf('library') < 0 && editorPath.substr(-3) !== '.md') {
-            alert('只有当你打开library文件夹下的文档时，才能手动更新导航文件！');
-            return;
-        }
-        this.refresh(editorPath, function (libPath) {
-            //如果当前文库没有记录，添加记录
-            let hs, i;
-            i = 0;
-            hs = false;
-            while (i < state.libraryList.length) {
-                if (state.libraryList[i] === libPath) {
-                    hs = true;
-                    break;
-                }
-                i++;
-            }
-            if (!hs) {
-                state.libraryList.push(libPath);
-                callback && callback(libPath);
-            }
-        });
-    },
     //刷新导航（创建wiki时）
     refresh: function (editorPath, callback) {
         let that = this;
         let path = editorPath.replace(/\\/g, '/').split('library')[0] + 'library/';
         callback && callback(path);
-        directories.readLibraryDir(path, function (err, tree) {
+        mngFolder.readLibraryDir(path, function (err, tree) {
             if (err) {
                 console.warn(err);
             } else {
@@ -165,6 +131,6 @@ module.exports = {
         } else {
             duplicate = 'yes';
         }
-        return duplicate == 'yes';
+        return duplicate === 'yes';
     }
 };
