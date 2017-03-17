@@ -6,7 +6,7 @@
 let electronRemote = require('electron').remote,
     dialog = electronRemote.dialog;
 let fs = require("fs");
-let directories = require('./manage-folder');
+let directories = require('./manageFolder');
 
 module.exports = {
     //拷贝一张图片

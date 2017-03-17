@@ -4,7 +4,7 @@
  */
 
 let fs = require("fs");
-let mngFolder = require('./manage-folder');
+let mngFolder = require('./manageFolder');
 
 module.exports = {
     //刷新导航（创建wiki时）

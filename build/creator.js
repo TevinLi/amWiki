@@ -4,7 +4,7 @@
  */
 
 let fs = require("fs");
-let makeNav = require('./make-navigation');
+let makeNav = require('./makeNavigation');
 
 
 module.exports = {
