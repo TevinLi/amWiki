@@ -7,15 +7,15 @@ let fs = require('fs');
 
 module.exports = {
     //创建文库id
-    createWikiId: function (path) {
-        path = path.replace(/\\/g, '/');
+    createWikiId: function (root) {
+        root = root.replace(/\\/g, '/');
         //累加地址字符串每个字符Unicode值与此字符序号的乘积
         let code = 0;
-        for (let j = 0; j < path.length; j++) {
-            code += path.charCodeAt(j) * j;
+        for (let j = 0; j < root.length; j++) {
+            code += root.charCodeAt(j) * j;
         }
         //再与地址字符串长度拼合
-        code = parseInt(path.length + '' + code);
+        code = parseInt(root.length + '' + code);
         return code;
     },
     //判断一个文件夹是否为amWiki文库项目

@@ -132,5 +132,12 @@ module.exports = {
                 fs.unlinkSync(path2);
             }
         }
+    },
+    //创建文件夹
+    createFolder: function (path, callback) {
+        if (!fs.existsSync(path)) {
+            fs.mkdirSync(path, 0o777);
+        }
+        callback && callback();
     }
 };
