@@ -7,7 +7,7 @@ let fs = require('fs');
 
 module.exports = {
     //读取文库文件夹
-    readLibraryDir: function (path, callback) {
+    readLibraryTree: function (path, callback) {
         if (!/library[\\\/]$/.test(path)) {
             callback('The path is not a library.');
             return;
@@ -74,49 +74,6 @@ module.exports = {
         }
         callback(null, tree, files, folders);
     },
-    //循环检查每个库
-    eachLibrary: function (list, stepCallback) {
-        let list2 = [];
-        let path = '';
-        let atomProjects = atom.project.getPaths();
-        for (let i = 0; i < list.length; i++) {
-            //路径缺乏library字段弃用
-            if (list[i].indexOf('library') < 0) {
-                continue;
-            }
-            path = list[i].replace(/\\/g, '/').split('library')[0] + 'library/';
-            //路径不存在弃用
-            if (!fs.existsSync(path)) {
-                continue;
-            }
-            //路径重复弃用
-            let pathRepeat = false;
-            for (let j = 0; j < list2.length; j++) {
-                if (list2[j] === list[i]) {
-                    pathRepeat = true;
-                    break;
-                }
-            }
-            if (pathRepeat) {
-                continue;
-            }
-            //如果atom已经移除此项目，弃用
-            /*let pathUseful = false;
-            for (let k = 0; k < atomProjects.length; k++) {
-                if (atomProjects[k].replace(/\\/g, '/') + '/library/' == path) {
-                    pathUseful = true;
-                    break;
-                }
-            }
-            if (!pathUseful) {
-                continue;
-            }*/
-            //有用路径
-            list2.push(path);
-            stepCallback && stepCallback(list[i]);
-        }
-        return list2;
-    },
     //清空文件夹
     cleanFolder: function(path) {
         let list = fs.readdirSync(path);
@@ -139,5 +96,18 @@ module.exports = {
             fs.mkdirSync(path, 0o777);
         }
         callback && callback();
+    },
+    //判断一个文件夹是否为amWiki文库项目
+    isAmWiki: function (path) {
+        path = path.indexOf('library') < 0 ? path : path.split('library')[0];
+        path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
+        path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
+        let states = [
+            fs.existsSync(path + '/library/'),
+            fs.existsSync(path + '/amWiki/'),
+            fs.existsSync(path + '/config.json'),
+            fs.existsSync(path + '/index.html')
+        ];
+        return states[0] && states[1] && states[2] && states[3] ? path : false;
     }
 };

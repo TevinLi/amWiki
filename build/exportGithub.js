@@ -6,7 +6,8 @@
 let electronRemote = require('electron').remote,
     dialog = electronRemote.dialog;
 let fs = require("fs");
-let directories = require('./manageFolder');
+let mngFolder = require('./manageFolder');
+let mngWiki = require('./manageWiki');
 
 module.exports = {
     //拷贝一张图片
@@ -142,7 +143,7 @@ module.exports = {
     //开始导出
     _toExport: function (pathFrom, pathTo, fileList, duplicates) {
         if (fs.readdirSync(pathTo).length > 0 && confirm('所选文件夹不为空，是否需要清空？')) {
-            directories.cleanFolder(pathTo);
+            mngFolder.cleanFolder(pathTo);
         }
         let fileList2 = [];
         let duplicate2 = [];
@@ -176,7 +177,7 @@ module.exports = {
         let fileList = [];
         pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
         //读取文件夹
-        directories.readLibraryDir(pathFrom, function (err, tree, files) {
+        mngFolder.readLibraryDir(pathFrom, function (err, tree, files) {
             if (err) {
                 console.warn(err);
             } else {
@@ -234,27 +235,18 @@ module.exports = {
         return '/' + urlArr[1] + '/' + urlArr[2] + '/';
     },
     //导出
-    export: function () {
+    export: function (editPath) {
         let that = this;
-        let editor = atom.workspace.getActiveTextEditor();
-        if (!editor) {
-            return;
-        }
-        let path = editor.getPath();
-        //检测是否为 amWiki 项目
-        path = directories.isAmWiki(path);
-        if (!path) {
-            alert('导出失败！\n只能对一个 amWiki 项目进行导出！');
-            return;
-        }
         //检测 GitHub 项目地址
-        this._githubUrl = this._parseGithubUrl(path);
+        this._githubUrl = this._parseGithubUrl(editPath.split('library')[0]);
         if (!this._githubUrl) {
             return;
         }
+        //选取导出地址
         dialog.showOpenDialog({properties: ['openDirectory']}, function (data) {
             if (data && data.length) {
-                that._toPrepare(path, data[0]);
+                //开始导出
+                that._toPrepare(editPath, data[0]);
             }
         });
     }
