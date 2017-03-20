@@ -27,8 +27,8 @@ module.exports = {
             }
         }
         //解析地址
-        let host = 'http://' + this._server.localIP + ':5171';
-        let wikiId = mngWiki.createWikiId(editPath.split('library')[0]);
+        const host = 'http://' + this._server.localIP + ':5171';
+        const wikiId = mngWiki.createWikiId(editPath.split('library')[0]);
         let url;
         if (editPath.indexOf('$navigation.md') >= 0) {
             url = host + '/wiki' + wikiId + '/index.html';

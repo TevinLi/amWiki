@@ -65,7 +65,7 @@ class Server {
 
     //获取本地ip
     getLocalIP() {
-        let iFaces = os.networkInterfaces();
+        const iFaces = os.networkInterfaces();
         let ip = '';
         for (let dev in iFaces) {
             if (iFaces.hasOwnProperty(dev)) {
@@ -81,7 +81,7 @@ class Server {
 
     //解析请求
     parse(req, res) {
-        let pathname = url.parse(req.url).pathname;
+        const pathname = url.parse(req.url).pathname;
         let wikiId = '';
         let filePath = pathname.replace(/^\/wiki(\d{3,}?)\//g, function (match, $1) {
             wikiId = $1;
@@ -98,13 +98,13 @@ class Server {
             filePath = gbk.decode(filePath);
         }
         //真实地址
-        let realPath = this._wikis[wikiId].root + filePath;
+        const realPath = this._wikis[wikiId].root + filePath;
         //解析文件
         fs.exists(realPath, (exists) => {
             if (!exists) {
                 return Server.page404(req, res, pathname);
             } else {
-                let file = fs.createReadStream(realPath);
+                const file = fs.createReadStream(realPath);
                 res.writeHead(200, {
                     'Content-Type': MimeType[realPath.split('.').pop()] || 'text/plain'
                 });

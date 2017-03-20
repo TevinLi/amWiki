@@ -52,7 +52,7 @@ module.exports = {
         if (path.indexOf('library') > 0) {
             this.addWiki(path.split('library')[0]);
         } else {
-            let wId = this.createWikiId(path);
+            const wId = this.createWikiId(path);
             //不包含library路径时，需要判断是否为amWiki项目
             if (typeof this._wikis[wId] === 'undefined' && mngFolder.isAmWiki(path)) {
                 this.addWiki(path, wId);
@@ -62,7 +62,7 @@ module.exports = {
     //检查文库是否仍然有效，失效则标记弃用
     checkWikiValid: function (wId) {
         if (typeof this._wikis[wId] !== 'undefined') {
-            let root = this._wikis[wId];
+            const root = this._wikis[wId];
             //当文件夹不存在或者文件夹不为amWiki时，标记弃用
             //从atom目录树删除项目，并不会标记弃用，必须删除文库本地文件和文件夹
             if (!fs.existsSync(root) || !mngFolder.isAmWiki(root)) {

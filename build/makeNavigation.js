@@ -9,7 +9,7 @@ const mngFolder = require('./manageFolder');
 module.exports = {
     //刷新导航（创建wiki时）
     refresh: function (editorPath, callback) {
-        let path = editorPath.replace(/\\/g, '/').split('library')[0] + 'library/';
+        const path = editorPath.replace(/\\/g, '/').split('library')[0] + 'library/';
         callback && callback(path);
         mngFolder.readLibraryTree(path, (err, tree) => {
             if (err) {
@@ -24,24 +24,24 @@ module.exports = {
         if (this.hasDuplicateId(data)) {
             return;
         }
-        let hsErrId = false;
-        let checkId = (name, path) => {
+        let errIdHas = false;
+        const checkId = (name, path) => {
             if (/^\d+(\.\d+)?[-_](.*?)$/.test(name)) {
                 return true
             } else {
-                let text = 'Error File ID!\n排序id仅允许由整数或浮点数构成，并使用连接符或下划线与具体名称相连\n' +
+                const text = 'Error File ID!\n排序id仅允许由整数或浮点数构成，并使用连接符或下划线与具体名称相连\n' +
                     '    at path "library/' + path + '"\n' +
                     '    at file "' + name + '"';
-                hsErrId = true;
+                errIdHas = true;
                 alert(text);
                 return false;
             }
         };
-        let checkFileName = (name, path) => {
+        const checkFileName = (name, path) => {
             if (/^\d+(\.\d+)?[-_](.*?)\.md$/.test(name)) {
                 return true
             } else {
-                let errText = 'Error File Name\n文件名须由 “排序id-名称.md” 格式构成\n' +
+                const errText = 'Error File Name\n文件名须由 “排序id-名称.md” 格式构成\n' +
                     '    at path "library/' + path + '/"\n' +
                     '    at file "' + name + '"';
                 alert(errText);
@@ -61,7 +61,7 @@ module.exports = {
                             for (let dir3 in data[dir1][dir2]) {
                                 if (data[dir1][dir2].hasOwnProperty(dir3) && checkId(dir3, dir1 + '/' + dir2 + '/')) {
                                     if (checkFileName(dir3, dir1 + '/' + dir2 + '/')) {
-                                        let name2 = dir3.match(/^\d+(\.\d+)?[-_](.*?)\.md$/)[2];
+                                        const name2 = dir3.match(/^\d+(\.\d+)?[-_](.*?)\.md$/)[2];
                                         markdown += '    - [' + name2 + '](?file=' +
                                             dir1 + '/' + dir2 + '/' + dir3.split('.md')[0] + ' "' + name2 + '")\n';
                                     }
@@ -71,7 +71,7 @@ module.exports = {
                         //当为文件时
                         else {
                             if (checkFileName(dir2, dir1 + '/')) {
-                                let name = dir2.match(/^\d+(\.\d+)?[-_](.*?)\.md$/)[2];
+                                const name = dir2.match(/^\d+(\.\d+)?[-_](.*?)\.md$/)[2];
                                 markdown += '- [' + name + '](?file=' +
                                     dir1 + '/' + dir2.split('.md')[0] + ' "' + name + '")\n';
                             }
@@ -80,15 +80,15 @@ module.exports = {
                 }
             }
         }
-        if (!hsErrId) {
+        if (!errIdHas) {
             fs.writeFileSync(path + '$navigation.md', markdown, 'utf-8');
         }
     },
     //检查重复id
     hasDuplicateId: function (data) {
         //单层检查
-        let check = (obj, path) => {
-            let hash = {};
+        const check = (obj, path) => {
+            const hash = {};
             for (let name in obj) {
                 if (obj.hasOwnProperty(name)) {
                     if (!hash[name.split('-')[0]]) {

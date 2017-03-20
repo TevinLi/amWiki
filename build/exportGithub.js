@@ -34,9 +34,9 @@ module.exports = {
     //导出导航、底部签名
     _exportNavigation: function (fileList, duplicate, pathFrom, pathTo) {
         let navigation = fs.readFileSync(pathFrom + '/$navigation.md', 'utf-8');
-        let list = fileList.concat(duplicate);
+        const list = fileList.concat(duplicate);
         let path, name;
-        for (let i = 0, item; item = list[i]; i++) {
+        for (let item of list) {
             path = item[0]
                 .replace(/\\/g, '/')
                 .split('library/')[1]
@@ -75,10 +75,10 @@ module.exports = {
             fs.mkdirSync(pathTo + '/images/', 0o777);
         }
         //文件夹拷贝
-        let copyFolder = (from, to) => {
-            let list = fs.readdirSync(from);
+        const copyFolder = (from, to) => {
+            const list = fs.readdirSync(from);
             let path, to2;
-            for (let i = 0, item; item = list[i]; i++) {
+            for (let item of list) {
                 path = from + '/' + item;
                 to2 = to + '/' + item;
                 if (fs.statSync(path).isDirectory(path)) {
@@ -95,7 +95,7 @@ module.exports = {
     },
     //检查重名
     _checkDuplicate: function (fileList) {
-        let dup = [];
+        const dup = [];
         for (let i = 0, item; item = fileList[i]; i++) {
             for (let j = i + 1, item2; item2 = fileList[j]; j++) {
                 if (item[1] === item2[1]) {
@@ -110,8 +110,7 @@ module.exports = {
         if (list.length === 0) {
             return;
         }
-        let file;
-        let checkExist = (fileName) => {
+        const checkExist = (fileName) => {
             //如果已存在，增加空格
             if (fs.existsSync(pathTo + '/' + fileName[1])) {
                 fileName[1] = fileName[1].replace(/\.md$/, ' .md');
@@ -122,7 +121,7 @@ module.exports = {
                 this._copyMd(fileName, pathTo);
             }
         };
-        for (let i = 0, fileName; fileName = list[i]; i++) {
+        for (let fileName of list) {
             checkExist(fileName);
         }
     },
@@ -131,7 +130,7 @@ module.exports = {
         if (list.length === 0) {
             return;
         }
-        for (let i = 0, fileName; fileName = list[i]; i++) {
+        for (let fileName of list) {
             this._copyMd(fileName, pathTo);
         }
     },
@@ -141,11 +140,11 @@ module.exports = {
             mngFolder.cleanFolder(pathTo);
         }
         let fileList2 = [];
-        let duplicate2 = [];
+        const duplicate2 = [];
         if (typeof duplicates !== 'undefined') {
-            for (let i = 0, file; file = fileList[i]; i++) {
+            for (let file of fileList) {
                 let fileDup = false;
-                for (let j = 0, dup; dup = duplicates[j]; j++) {
+                for (let dup of duplicates) {
                     if (file[0] === dup) {
                         fileDup = true;
                         duplicate2.push(file);
@@ -168,7 +167,7 @@ module.exports = {
     },
     //导出准备
     _toPrepare: function (pathFrom, pathTo) {
-        let fileList = [];
+        const fileList = [];
         pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
         //读取文件夹
         mngFolder.readLibraryTree(pathFrom, (err, tree, files) => {
@@ -178,7 +177,7 @@ module.exports = {
                 //console.log(tree, files);
                 let fileName = '';
                 //提取文件名
-                for (let i = 0, item; item = files[i]; i++) {
+                for (let item of files) {
                     fileName = item.split(/[\\\/]/);
                     fileList.push([
                         item,
@@ -186,10 +185,10 @@ module.exports = {
                     ]);
                 }
                 //重名检查
-                let duplicate = this._checkDuplicate(fileList);
+                const duplicate = this._checkDuplicate(fileList);
                 //重名文件单独处理
                 if (duplicate.length > 0) {
-                    let dups = [];
+                    const dups = [];
                     let message = '以下文件脱离文件夹偏平化时将会重名：\n\n';
                     for (let j = 0, dup; dup = duplicate[j]; j++) {
                         message += dup[0][0].replace(/\//g, '\\') + '\n' +
@@ -211,17 +210,17 @@ module.exports = {
     _githubUrl: '',
     //解析 GitHub url
     _parseGithubUrl: function (path) {
-        let config = JSON.parse(fs.readFileSync(path + '/config.json', 'utf-8'));
+        const config = JSON.parse(fs.readFileSync(path + '/config.json', 'utf-8'));
         if (typeof config['github-url'] === 'undefined') {
             alert('导出失败！\n未检测到 “github-url” 配置，请在 config.json 中配置您项目的 github-url');
             return false;
         }
-        let url = config['github-url'];
+        const url = config['github-url'];
         if (url.indexOf('github.com') === 0 || url.split('github.com')[1] === '') {
             alert('导出失败！\n请配置完整 github 项目地址！');
             return false;
         }
-        let urlArr = url.split('github.com')[1].split('/');
+        const urlArr = url.split('github.com')[1].split('/');
         if (urlArr.length < 3) {
             alert('导出失败！\n请配置完整 github 项目地址！');
             return false;

@@ -12,9 +12,9 @@ module.exports = {
             callback('The path is not a library.');
             return;
         }
-        let tree = {};
-        let folders = [];
-        let files = [];
+        const tree = {};
+        const folders = [];
+        const files = [];
         try {
             let files1 = fs.readdirSync(path),
                 files2, files3,
@@ -76,13 +76,13 @@ module.exports = {
     },
     //清空文件夹
     cleanFolder: function(path) {
-        let list = fs.readdirSync(path);
+        const list = fs.readdirSync(path);
         let path2;
-        for (let i = 0, item; item = list[i]; i++) {
+        for (let item of list) {
             path2 = path + '/' + item;
             if (fs.statSync(path2).isDirectory(path2)) {
                 if (item.indexOf('.') !== 0) {  //跳过特殊文件夹
-                    this.cleanDir(path2);
+                    this.cleanFolder(path2);
                     fs.rmdirSync(path2);
                 }
             } else {
