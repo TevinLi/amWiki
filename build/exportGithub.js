@@ -3,11 +3,9 @@
  * @author Tevin
  */
 
-let electronRemote = require('electron').remote,
-    dialog = electronRemote.dialog;
-let fs = require("fs");
-let mngFolder = require('./manageFolder');
-let mngWiki = require('./manageWiki');
+const {dialog} = require('electron').remote;
+const fs = require("fs");
+const mngFolder = require('./manageFolder');
 
 module.exports = {
     //拷贝一张图片
@@ -57,7 +55,6 @@ module.exports = {
     },
     //导出首页
     _exportHome: function (pathFrom, pathTo) {
-        let that = this;
         let file = fs.readFileSync(pathFrom + '/首页.md', 'utf-8');
         file = file
             //相对路径图片地址转换
@@ -66,20 +63,19 @@ module.exports = {
             .replace(/<img(.*?)src="assets(.*?)"/g, '<img$1src="' + this._githubUrl + 'wiki/images$2"')
             .replace(/<a(.*?)href="assets(.*?)"/g, '<a$1href="' + this._githubUrl + 'wiki/images$2"')
             //logo复制与图片引用地址转换
-            .replace('amWiki/images/logo.png', function () {
-                that._copyImg(pathFrom + '../amWiki/images/logo.png', pathTo + '\\images\\amWiki-logo.png');
-                return that._githubUrl + 'wiki/images/amWiki-logo.png';
+            .replace('amWiki/images/logo.png', () => {
+                this._copyImg(pathFrom + '../amWiki/images/logo.png', pathTo + '\\images\\amWiki-logo.png');
+                return this._githubUrl + 'wiki/images/amWiki-logo.png';
             });
         fs.writeFileSync(pathTo + '/Home.md', file, 'utf-8');
     },
     //导出图片
     _exportImage: function (pathFrom, pathTo) {
-        let that = this;
         if (!fs.existsSync(pathTo + '/images/')) {
             fs.mkdirSync(pathTo + '/images/', 0o777);
         }
         //文件夹拷贝
-        let copyFolder = function (from, to) {
+        let copyFolder = (from, to) => {
             let list = fs.readdirSync(from);
             let path, to2;
             for (let i = 0, item; item = list[i]; i++) {
@@ -89,7 +85,7 @@ module.exports = {
                     fs.mkdirSync(to2, 0o777);
                     copyFolder(path, to + '/' + item);
                 } else {
-                    that._copyImg(path, to + '/' + item);
+                    this._copyImg(path, to + '/' + item);
                 }
             }
         };
@@ -114,9 +110,8 @@ module.exports = {
         if (list.length === 0) {
             return;
         }
-        let that = this;
         let file;
-        let checkExist = function (fileName) {
+        let checkExist = (fileName) => {
             //如果已存在，增加空格
             if (fs.existsSync(pathTo + '/' + fileName[1])) {
                 fileName[1] = fileName[1].replace(/\.md$/, ' .md');
@@ -124,7 +119,7 @@ module.exports = {
             }
             //不存在正常复制
             else {
-                that._copyMd(fileName, pathTo);
+                this._copyMd(fileName, pathTo);
             }
         };
         for (let i = 0, fileName; fileName = list[i]; i++) {
@@ -173,11 +168,10 @@ module.exports = {
     },
     //导出准备
     _toPrepare: function (pathFrom, pathTo) {
-        let that = this;
         let fileList = [];
         pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
         //读取文件夹
-        mngFolder.readLibraryDir(pathFrom, function (err, tree, files) {
+        mngFolder.readLibraryTree(pathFrom, (err, tree, files) => {
             if (err) {
                 console.warn(err);
             } else {
@@ -192,7 +186,7 @@ module.exports = {
                     ]);
                 }
                 //重名检查
-                let duplicate = that._checkDuplicate(fileList);
+                let duplicate = this._checkDuplicate(fileList);
                 //重名文件单独处理
                 if (duplicate.length > 0) {
                     let dups = [];
@@ -205,10 +199,10 @@ module.exports = {
                     message += '点击确认将自动处理（追加额外空格）并继续导出；\n' +
                         '点击取消将退出导出，您可以在改名后再次重新导出。';
                     if (confirm(message)) {
-                        that._toExport(pathFrom, pathTo, fileList, dups);
+                        this._toExport(pathFrom, pathTo, fileList, dups);
                     }
                 } else {
-                    that._toExport(pathFrom, pathTo, fileList);
+                    this._toExport(pathFrom, pathTo, fileList);
                 }
             }
         });
@@ -236,17 +230,16 @@ module.exports = {
     },
     //导出
     export: function (editPath) {
-        let that = this;
         //检测 GitHub 项目地址
         this._githubUrl = this._parseGithubUrl(editPath.split('library')[0]);
         if (!this._githubUrl) {
             return;
         }
         //选取导出地址
-        dialog.showOpenDialog({properties: ['openDirectory']}, function (data) {
+        dialog.showOpenDialog({properties: ['openDirectory']}, (data) => {
             if (data && data.length) {
                 //开始导出
-                that._toPrepare(editPath, data[0]);
+                this._toPrepare(editPath, data[0]);
             }
         });
     }

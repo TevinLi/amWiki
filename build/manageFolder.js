@@ -3,7 +3,7 @@
  * @author Tevin
  */
 
-let fs = require('fs');
+const fs = require('fs');
 
 module.exports = {
     //读取文库文件夹

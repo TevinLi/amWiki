@@ -3,11 +3,11 @@
  * @author Tevin
  */
 
-let fs = require('fs');
-let http = require('http');
-let url = require('url');
-let os = require('os');
-let gbk = require('../files/gbk.js').GBK;
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
+const os = require('os');
+const gbk = require('../files/gbk.js').GBK;
 
 //文件类型
 const MimeType = {
@@ -32,11 +32,10 @@ const MimeType = {
 class Server {
 
     constructor(wikis) {
-        let that = this;
         this._wikis = wikis;
         this.localIP = this.getLocalIP();
-        this.server = http.createServer(function (req, res) {
-            that.parse(req, res);
+        this.server = http.createServer((req, res) => {
+            this.parse(req, res);
         }).listen(5171);
         console.info('Server running at http://' + this.localIP + ':5171/');
     }
@@ -70,7 +69,7 @@ class Server {
         let ip = '';
         for (let dev in iFaces) {
             if (iFaces.hasOwnProperty(dev)) {
-                iFaces[dev].forEach(function (details) {
+                iFaces[dev].forEach((details) => {
                     if (details.family === 'IPv4' && details.address.indexOf(192) >= 0) {
                         ip = details.address;
                     }
@@ -101,7 +100,7 @@ class Server {
         //真实地址
         let realPath = this._wikis[wikiId].root + filePath;
         //解析文件
-        fs.exists(realPath, function (exists) {
+        fs.exists(realPath, (exists) => {
             if (!exists) {
                 return Server.page404(req, res, pathname);
             } else {

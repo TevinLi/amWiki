@@ -3,8 +3,8 @@
  * @author Tevin
  */
 
-let fs = require("fs");
-let makeNav = require('./makeNavigation');
+const fs = require("fs");
+const makeNav = require('./makeNavigation');
 
 
 module.exports = {
@@ -47,7 +47,7 @@ module.exports = {
     _clacWikiColour: function (color) {
         let colours = {};
         //修复16进制下的1位数
-        let lessThan = function (str) {
+        let lessThan = (str) => {
             if (str <= 9) {
                 str = '0' + str;
             } else {
@@ -107,7 +107,7 @@ module.exports = {
         //生成暗色dark
         let larger = 0,
             largeIndex = -1;
-        let largerFd = function (i) {
+        let largerFd = (i) => {
             if (increment[i] > larger) {
                 larger = increment[i];
                 largeIndex = i;
@@ -185,7 +185,7 @@ module.exports = {
     create: function (callback) {
         let {options, config} = this._checkConfig();
         //创建
-        fs.readdir(options.outputPath, function (err, files) {
+        fs.readdir(options.outputPath, (err, files) => {
             if (files.length > 1) {
                 if (!confirm('此处已有一些文件或文件夹，是否仍然在此创建amWiki？')) {
                     return;

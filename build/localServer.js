@@ -3,11 +3,11 @@
  * @author Tevin
  */
 
-let fs = require('fs');
-let util = require('util');
-let child_process = require('child_process');
-let Sever = require('./server.class');
-let mngWiki = require('./manageWiki');
+const fs = require('fs');
+const util = require('util');
+const child_process = require('child_process');
+const Sever = require('./server.class');
+const mngWiki = require('./manageWiki');
 
 module.exports = {
     //web服务器

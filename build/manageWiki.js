@@ -3,8 +3,8 @@
  * @author Tevin
  */
 
-let fs = require('fs');
-let mngFolder = require('./manageFolder');
+const fs = require('fs');
+const mngFolder = require('./manageFolder');
 
 module.exports = {
     //绑定文库记录
@@ -50,23 +50,23 @@ module.exports = {
     //判断文库是否加入记录，未加入则补录
     checkAddWiki: function (path) {
         if (path.indexOf('library') > 0) {
-            this.addWiki(this._wikis, path.split('library')[0]);
+            this.addWiki(path.split('library')[0]);
         } else {
-            let id = this.createWikiId(path);
+            let wId = this.createWikiId(path);
             //不包含library路径时，需要判断是否为amWiki项目
-            if (typeof this._wikis[id] === 'undefined' && mngFolder.isAmWiki(path)) {
-                this.addWiki(this._wikis, path, id);
+            if (typeof this._wikis[wId] === 'undefined' && mngFolder.isAmWiki(path)) {
+                this.addWiki(path, wId);
             }
         }
     },
     //检查文库是否仍然有效，失效则标记弃用
-    checkWikiValid: function (id) {
-        if (typeof this._wikis[id] !== 'undefined') {
-            let root = this._wikis[id];
+    checkWikiValid: function (wId) {
+        if (typeof this._wikis[wId] !== 'undefined') {
+            let root = this._wikis[wId];
             //当文件夹不存在或者文件夹不为amWiki时，标记弃用
             //从atom目录树删除项目，并不会标记弃用，必须删除文库本地文件和文件夹
             if (!fs.existsSync(root) || !mngFolder.isAmWiki(root)) {
-                this._wikis[id].deprecated = true;
+                this._wikis[wId].deprecated = true;
             }
         }
     }

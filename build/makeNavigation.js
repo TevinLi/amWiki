@@ -3,20 +3,19 @@
  * @author Tevin
  */
 
-let fs = require("fs");
-let mngFolder = require('./manageFolder');
+const fs = require("fs");
+const mngFolder = require('./manageFolder');
 
 module.exports = {
     //刷新导航（创建wiki时）
     refresh: function (editorPath, callback) {
-        let that = this;
         let path = editorPath.replace(/\\/g, '/').split('library')[0] + 'library/';
         callback && callback(path);
-        mngFolder.readLibraryDir(path, function (err, tree) {
+        mngFolder.readLibraryTree(path, (err, tree) => {
             if (err) {
                 console.warn(err);
             } else {
-                that.make(path, tree);
+                this.make(path, tree);
             }
         });
     },
@@ -26,7 +25,7 @@ module.exports = {
             return;
         }
         let hsErrId = false;
-        let checkId = function (name, path) {
+        let checkId = (name, path) => {
             if (/^\d+(\.\d+)?[-_](.*?)$/.test(name)) {
                 return true
             } else {
@@ -38,7 +37,7 @@ module.exports = {
                 return false;
             }
         };
-        let checkFileName = function (name, path) {
+        let checkFileName = (name, path) => {
             if (/^\d+(\.\d+)?[-_](.*?)\.md$/.test(name)) {
                 return true
             } else {
@@ -88,7 +87,7 @@ module.exports = {
     //检查重复id
     hasDuplicateId: function (data) {
         //单层检查
-        let check = function (obj, path) {
+        let check = (obj, path) => {
             let hash = {};
             for (let name in obj) {
                 if (obj.hasOwnProperty(name)) {
