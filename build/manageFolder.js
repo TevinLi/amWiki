@@ -99,6 +99,9 @@ module.exports = {
     },
     //判断一个文件夹是否为amWiki文库项目
     isAmWiki: function (path) {
+        if (!path && typeof path !== 'string') {
+            return false;
+        }
         path = path.indexOf('library') < 0 ? path : path.split('library')[0];
         path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
         path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];

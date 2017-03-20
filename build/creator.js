@@ -271,7 +271,7 @@ module.exports = {
                     this._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
                 }
             }
-            callback();
+            callback(options.outputPath);
         });
     }
 };

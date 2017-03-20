@@ -33,11 +33,11 @@ class Server {
 
     constructor(wikis) {
         this._wikis = wikis;
-        this.localIP = this.getLocalIP();
+        this._localIP = this.getLocalIP();
         this.server = http.createServer((req, res) => {
             this.parse(req, res);
         }).listen(5171);
-        console.info('Server running at http://' + this.localIP + ':5171/');
+        console.info('Server running at http://' + this._localIP + ':5171/');
     }
 
     //404未找到页面
@@ -65,6 +65,9 @@ class Server {
 
     //获取本地ip
     getLocalIP() {
+        if (this._localIP) {
+            return this._localIP;
+        }
         const iFaces = os.networkInterfaces();
         let ip = '';
         for (let dev in iFaces) {
@@ -82,13 +85,13 @@ class Server {
     //解析请求
     parse(req, res) {
         const pathname = url.parse(req.url).pathname;
-        let wikiId = '';
+        let wId = '';
         let filePath = pathname.replace(/^\/wiki(\d{3,}?)\//g, function (match, $1) {
-            wikiId = $1;
+            wId = $1;
             return '';
         });
         //如果文库不存在或已弃用，返回404
-        if (typeof this._wikis[wikiId] === 'undefined' || this._wikis[wikiId].deprecated) {
+        if (typeof this._wikis[wId] === 'undefined' || this._wikis[wId].deprecated) {
             return Server.page404(req, res, pathname);
         }
         //编码切换
@@ -98,7 +101,7 @@ class Server {
             filePath = gbk.decode(filePath);
         }
         //真实地址
-        const realPath = this._wikis[wikiId].root + filePath;
+        const realPath = this._wikis[wId].root + filePath;
         //解析文件
         fs.exists(realPath, (exists) => {
             if (!exists) {
@@ -116,6 +119,8 @@ class Server {
             }
         });
     }
+
+
 
 }
 

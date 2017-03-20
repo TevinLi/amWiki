@@ -62,12 +62,10 @@ module.exports = {
     //检查文库是否仍然有效，失效则标记弃用
     checkWikiValid: function (wId) {
         if (typeof this._wikis[wId] !== 'undefined') {
-            const root = this._wikis[wId];
+            const root = this._wikis[wId].root;
             //当文件夹不存在或者文件夹不为amWiki时，标记弃用
-            //从atom目录树删除项目，并不会标记弃用，必须删除文库本地文件和文件夹
-            if (!fs.existsSync(root) || !mngFolder.isAmWiki(root)) {
-                this._wikis[wId].deprecated = true;
-            }
+            //也就是说，从atom目录树删除项目，并不会标记弃用，必须删除文库本地文件和文件夹
+            this._wikis[wId].deprecated = !fs.existsSync(root) || !mngFolder.isAmWiki(root)
         }
     }
 };
