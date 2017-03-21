@@ -102,6 +102,7 @@ module.exports = {
         if (!path && typeof path !== 'string') {
             return false;
         }
+        path = path.replace(/\\/g, '/');
         path = path.indexOf('library') < 0 ? path : path.split('library')[0];
         path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
         path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];

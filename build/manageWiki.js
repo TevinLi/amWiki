@@ -52,10 +52,10 @@ module.exports = {
         if (path.indexOf('library') > 0) {
             this.addWiki(path.split('library')[0]);
         } else {
-            const wId = this.createWikiId(path);
-            //不包含library路径时，需要判断是否为amWiki项目
-            if (typeof this._wikis[wId] === 'undefined' && mngFolder.isAmWiki(path)) {
-                this.addWiki(path, wId);
+            //验证转换 path 为 wiki 根目录
+            const root = mngFolder.isAmWiki(path);
+            if (root) {
+                this.addWiki(root);
             }
         }
     },
