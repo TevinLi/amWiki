@@ -11,6 +11,10 @@ GitHub:
 Apm:  
 [![apm](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "Apm Version") [![apm](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "Apm Downloads") [![apm](https://img.shields.io/apm/l/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")
 
+	公告：  
+	目前正在开发 v1.0 版本，有大量代码重构，请从下文推荐的三个途径下载安装 v0.8.0 版本。  
+	不要在 github 项目首页直接下载 zip！
+
 ### amWiki优势
 - 文档系统采用 markdown 语法
 - 不用数据库，文档使用 `.md` 格式保存本地文件
@@ -32,7 +36,7 @@ Apm:
 2. 安装Atom插件amWiki，并重启Atom
     - Atom菜单，File -> Setting -> Install -> 搜索`amWiki`
     - 或者，运行cmd：`apm install amWiki`
-    - 或者，从Github的 [amWiki版本发布](https://github.com/TevinLi/amWiki/releases) 下载zip，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
+    - 或者，前往Github的 [amWiki版本发布](https://github.com/TevinLi/amWiki/releases) 下载压缩包，解压到`C:\Users\Administrator\.atom\packages`，并将文件夹名`amWiki-master`改为`amWiki`
 
 3. (在本地服务器静态目录)创建一个文件夹
 
