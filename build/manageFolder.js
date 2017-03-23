@@ -90,12 +90,25 @@ module.exports = {
             }
         }
     },
+    //获取上一级目录
+    getParentFolder: function (path) {
+        return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
+    },
     //创建文件夹
     createFolder: function (path, callback) {
-        if (!fs.existsSync(path)) {
-            fs.mkdirSync(path, 0o777);
+        //先判断父级文件夹是否存在，不存在先创建父级文件夹
+        const parentPath = this.getParentFolder(path);
+        if (!fs.existsSync(parentPath)) {
+            this.createFolder(parentPath);      //向上递归创建父级
+            this.createFolder(path, callback);  //创建完父级后再创建本级
         }
-        callback && callback();
+        //如果父级已存在，直接创建本级
+        else {
+            if (!fs.existsSync(path)) {
+                fs.mkdirSync(path, 0o777);
+            }
+            callback && callback();
+        }
     },
     //判断一个文件夹是否为amWiki文库项目
     isAmWiki: function (path) {
