@@ -131,22 +131,14 @@ module.exports = {
         return colours;
     },
     //配置检查
-    _checkConfig: function () {
+    _checkConfig: function (paths) {
         const options = {};
-        const editor = atom.workspace.getActiveTextEditor();
-        if (!editor) {
-            return;
-        }
-        options.editorPath = editor.getPath();
-        if (options.editorPath.indexOf('config.json') < 0) {
-            alert('当前不是"config.json"文件！');
-            return;
-        }
         //创建路径
-        options.filesPath = atom.configDirPath.replace(/\\/g, '/') + '/packages/amWiki/files/';
-        options.outputPath = options.editorPath.split('config.json')[0].replace(/\\/g, '/');
+        options.editePath = paths[0];
+        options.filesPath = paths[1];
+        options.outputPath = options.editePath.split('config.json')[0].replace(/\\/g, '/');
         //读取配置
-        let configStr = fs.readFileSync(options.editorPath, 'utf-8') || '';
+        let configStr = fs.readFileSync(options.editePath, 'utf-8') || '';
         if (configStr.length === 0) {
             if (!confirm('没有读取到任何配置，继续创建么？')) {
                 return;
@@ -182,8 +174,8 @@ module.exports = {
         };
     },
     //创建amWiki本地文件
-    create: function (callback) {
-        const {options, config} = this._checkConfig();
+    create: function (paths, callback) {
+        const {options, config} = this._checkConfig(paths);
         //创建
         fs.readdir(options.outputPath, (err, files) => {
             if (files.length > 1) {

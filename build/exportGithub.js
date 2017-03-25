@@ -3,7 +3,6 @@
  * @author Tevin
  */
 
-const {dialog} = require('electron').remote;
 const fs = require("fs");
 const mngFolder = require('./manageFolder');
 
@@ -228,18 +227,12 @@ module.exports = {
         return '/' + urlArr[1] + '/' + urlArr[2] + '/';
     },
     //导出
-    export: function (editPath) {
+    export: function (editPath, outputPath) {
         //检测 GitHub 项目地址
         this._githubUrl = this._parseGithubUrl(editPath.split('library')[0]);
         if (!this._githubUrl) {
             return;
         }
-        //选取导出地址
-        dialog.showOpenDialog({properties: ['openDirectory']}, (data) => {
-            if (data && data.length) {
-                //开始导出
-                this._toPrepare(editPath, data[0]);
-            }
-        });
+        this._toPrepare(editPath, outputPath);
     }
 };
