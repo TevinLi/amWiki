@@ -63,7 +63,10 @@ class Server {
         res.write('<pre>' + util.inspect(error) + '</pre>');
     }
 
-    //获取本地ip
+    /**
+     * 获取本地ip
+     * @returns {string} 本地ip地址
+     */
     getLocalIP() {
         if (this._localIP) {
             return this._localIP;
@@ -82,7 +85,11 @@ class Server {
         return ip === '' ? '127.0.0.1' : ip;
     }
 
-    //解析请求
+    /**
+     * 解析请求
+     * @param req {object} 请求体的引用
+     * @param res {object} 响应体的引用
+     */
     parse(req, res) {
         const pathname = url.parse(req.url).pathname;
         let wId = '';
@@ -92,7 +99,8 @@ class Server {
         });
         //如果文库不存在或已弃用，返回404
         if (typeof this._wikis[wId] === 'undefined' || this._wikis[wId].deprecated) {
-            return Server.page404(req, res, pathname);
+            Server.page404(req, res, pathname);
+            return;
         }
         //编码切换
         try {

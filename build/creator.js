@@ -178,7 +178,12 @@ module.exports = {
             });
         });
     },
-    //创建amWiki本地文件
+    /**
+     * 创建amWiki本地文件
+     * @param configPath {string} config.json文件的路径
+     * @param filesPath {string} 项目包files文件夹路径
+     * @returns {Promise}
+     */
     create: function (configPath, filesPath) {
         const that = this;
         return new Promise((resolve, reject) => {

@@ -7,19 +7,26 @@ const fs = require('fs');
 const mngFolder = require('./manageFolder');
 
 module.exports = {
-    //绑定文库记录
+    /**
+     * 绑定文库记录
+     * @param wikis {object} 文库记录列表的引用
+     */
     linkWikis: function (wikis) {
         this._wikis = wikis;
     },
-    //添加文库
-    addWiki: function (root, id = this.createWikiId(root), deprecated = false) {
+    /**
+     * 添加一个文库到记录
+     * @param root {string} 文库根目录
+     * @param [id] {number} 文库的计算id
+     */
+    addWiki: function (root, id = this.createWikiId(root)) {
         if (typeof root === 'undefined') {
             return;
         }
         if (typeof this._wikis[id] !== 'undefined') {
             return;
         }
-        /**
+        /*
          * 文库信息
          * 一个文库通常包括以下属性
          * id：文库id，由真实地址计算而来，也就是说文库是基于不同地址来管理的
@@ -32,10 +39,14 @@ module.exports = {
             id: id,
             root: root,
             path: root + 'library/',
-            deprecated: deprecated
+            deprecated: false
         };
     },
-    //创建文库id
+    /**
+     * 计算文库id
+     * @param root {string} 需要计算id的文库根目录
+     * @returns {number} 文库id，由根目录路径字符串计算而来
+     */
     createWikiId: function (root) {
         root = root.replace(/\\/g, '/').replace(/\/$/, '');
         //累加地址字符串每个字符Unicode值与此字符序号的乘积
@@ -47,7 +58,10 @@ module.exports = {
         code = parseInt(root.length + '' + code);
         return code;
     },
-    //判断文库是否加入记录，未加入则补录
+    /**
+     * 判断文库是否加入记录，未加入则补录
+     * @param path {string} 需要判断的路径
+     */
     checkAddWiki: function (path) {
         if (path.indexOf('library') > 0) {
             this.addWiki(path.split('library')[0]);
@@ -59,7 +73,10 @@ module.exports = {
             }
         }
     },
-    //检查文库是否仍然有效，失效则标记弃用
+    /**
+     * 检查文库是否仍然有效，失效则标记弃用
+     * @param wId {number} 需要判断的文库id
+     */
     checkWikiValid: function (wId) {
         if (typeof this._wikis[wId] !== 'undefined') {
             const root = this._wikis[wId].root;

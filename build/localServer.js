@@ -11,15 +11,20 @@ const Sever = require('./server.class');
 const mngWiki = require('./manageWiki');
 
 module.exports = {
-    //web服务器
-    _server: null,
-    //启动服务器
+    /**
+     * 启动服务器
+     * @param wikis {object} 文库记录列表的引用
+     */
     run: function (wikis) {
         if (!this._server) {
             this._server = new Sever(wikis);
         }
     },
-    //浏览当前文档
+    /**
+     * 浏览当前文档
+     * @param editPath {string} 当前文档的路径
+     * @param wikis {object} 文库记录列表的引用
+     */
     browser: function (editPath, wikis) {
         co(function* () {
             //判断服务器
@@ -60,7 +65,9 @@ module.exports = {
             child_process.exec(cmd + ' ' + url);
         });
     },
-    //关闭服务器
+    /**
+     * 关闭服务器
+     */
     destroy: function () {
         this.server && this.server.close();
     }

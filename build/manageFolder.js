@@ -6,7 +6,11 @@
 const fs = require('fs');
 
 module.exports = {
-    //读取文库文件夹
+    /**
+     * 读取文库library文件夹树形数据
+     * @param path {string} 文库library文件夹路径
+     * @returns {object} 树形数据、文件列表数据、文件夹列表数据
+     */
     readLibraryTree: function (path) {
         if (!/library[\\\/]$/.test(path)) {
             console.warn('The path is not a library.');
@@ -74,7 +78,10 @@ module.exports = {
         }
         return [tree, files, folders];
     },
-    //清空文件夹
+    /**
+     * 清空文件夹
+     * @param path {string} 要清空的文件夹
+     */
     cleanFolder: function(path) {
         const list = fs.readdirSync(path);
         let path2;
@@ -90,11 +97,18 @@ module.exports = {
             }
         }
     },
-    //获取上一级目录
+    /**
+     * 获取上一级目录
+     * @param path {string} 需要计算的文件夹路径
+     * @returns {string} 父级文件夹路径
+     */
     getParentFolder: function (path) {
         return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
     },
-    //创建文件夹
+    /**
+     * 创建文件夹
+     * @param path {string} 需要创建的文件夹路径
+     */
     createFolder: function (path) {
         //先判断父级文件夹是否存在，不存在先创建父级文件夹
         const parentPath = this.getParentFolder(path);
@@ -109,7 +123,11 @@ module.exports = {
             }
         }
     },
-    //判断一个文件夹是否为amWiki文库项目
+    /**
+     * 判断一个文件夹是否为amWiki文库项目
+     * @param path {string} 需要判断的文件夹路径
+     * @returns {boolean|string} 否定时返回false，肯定时返回项目根目录的路径
+     */
     isAmWiki: function (path) {
         if (!path && typeof path !== 'string') {
             return false;

@@ -7,7 +7,7 @@ const [nodePath, mainPath, command, ...argument] = process.argv;
 //co模块，异步函数编程
 const co = require('../modules/co');
 
-//在全局变量上绑定 alert、confirm2、prompt2 方法，作为命令行输出
+//在全局变量上绑定 alert、confirm2、prompt2 方法，作为命令行输出与交互
 ({alert: global.alert, confirm2: global.confirm2, prompt2: global.prompt2} = require('./messageBox'));
 //命令行彩色输出简化，command line color
 const clc = (colorId, text) => `\x1b[${colorId}m${text}\x1b[0m`;
@@ -25,7 +25,9 @@ const localServer = require('../build/localServer');
 //项目导出模块
 const exportGithub = require('../build/exportGithub');
 
-
+//创建wiki
+const createWiki = () => {
+};
 
 //显示帮助
 const showHelp = require('./showHelp');
@@ -41,6 +43,7 @@ const showVersion = () => {
 switch (command) {
     case 'create':
     case '-c':
+        createWiki();
         break;
     case 'update':
     case '-u':

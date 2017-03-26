@@ -7,9 +7,13 @@ const fs = require('fs');
 const mngFolder = require('./manageFolder');
 
 module.exports = {
-    //刷新导航（创建wiki时）
-    refresh: function (editorPath) {
-        const path = editorPath.replace(/\\/g, '/').split('library')[0] + 'library/';
+    /**
+     * 刷新导航（创建wiki时）
+     * @param editPath {string} 当前文档的路径
+     * @returns {string} library文件夹路径
+     */
+    refresh: function (editPath) {
+        const path = editPath.replace(/\\/g, '/').split('library')[0] + 'library/';
         const [tree] = mngFolder.readLibraryTree(path);
         if (!tree) {
             return;
@@ -17,9 +21,13 @@ module.exports = {
         this.make(path, tree);
         return path
     },
-    //创建md导航文件
+    /**
+     * 创建md导航文件
+     * @param path {string} 文库library文件夹路径
+     * @param data {object} 导航列表数据
+     */
     make: function (path, data) {
-        if (this.hasDuplicateId(data)) {
+        if (this._hasDuplicateId(data)) {
             return;
         }
         let errIdHas = false;
@@ -83,7 +91,7 @@ module.exports = {
         }
     },
     //检查重复id
-    hasDuplicateId: function (data) {
+    _hasDuplicateId: function (data) {
         //单层检查
         const check = (obj, path) => {
             const hash = {};

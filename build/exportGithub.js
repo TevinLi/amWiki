@@ -136,6 +136,7 @@ module.exports = {
     },
     //开始导出
     _toExport: function (pathFrom, pathTo, fileList, duplicates) {
+        const that = this;
         co(function* () {
             if (fs.readdirSync(pathTo).length > 0 && (yield confirm2('所选文件夹不为空，是否需要清空？'))) {
                 mngFolder.cleanFolder(pathTo);
@@ -160,18 +161,19 @@ module.exports = {
                 fileList2 = fileList;
             }
             //开始拷贝
-            this._exportNormal(fileList2, pathTo);
-            this._exportDuplicate(duplicate2, pathTo);
-            this._exportImage(pathFrom, pathTo);
-            this._exportHome(pathFrom, pathTo);
-            this._exportNavigation(fileList2, duplicate2, pathFrom, pathTo);
+            that._exportNormal(fileList2, pathTo);
+            that._exportDuplicate(duplicate2, pathTo);
+            that._exportImage(pathFrom, pathTo);
+            that._exportHome(pathFrom, pathTo);
+            that._exportNavigation(fileList2, duplicate2, pathFrom, pathTo);
         });
     },
     //导出准备
     _toPrepare: function (pathFrom, pathTo) {
+        const that = this;
         co(function*() {
             const fileList = [];
-            pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
+            pathFrom += /[\\\/]$/.test(pathFrom) ? 'library/' : '/library/';
             //读取文件夹
             const [tree, files] = mngFolder.readLibraryTree(pathFrom);
             if (!tree) {
@@ -188,7 +190,7 @@ module.exports = {
                 ]);
             }
             //重名检查
-            const duplicate = this._checkDuplicate(fileList);
+            const duplicate = that._checkDuplicate(fileList);
             //重名文件单独处理
             if (duplicate.length > 0) {
                 const dups = [];
@@ -201,10 +203,10 @@ module.exports = {
                 message += '点击确认将自动处理（追加额外空格）并继续导出；\n' +
                     '点击取消将退出导出，您可以在改名后再次重新导出。';
                 if (yield confirm2(message)) {
-                    return this._toExport(pathFrom, pathTo, fileList, dups);
+                    return that._toExport(pathFrom, pathTo, fileList, dups);
                 }
             } else {
-                return this._toExport(pathFrom, pathTo, fileList);
+                return that._toExport(pathFrom, pathTo, fileList);
             }
         });
     },
@@ -229,13 +231,17 @@ module.exports = {
         }
         return '/' + urlArr[1] + '/' + urlArr[2] + '/';
     },
-    //导出
-    export: function (editPath, outputPath) {
+    /**
+     * 导出为github-wiki
+     * @param root {string} 文库项目根目录
+     * @param outputPath {string} 输出路径
+     */
+    export: function (root, outputPath) {
         //检测 GitHub 项目地址
         this._githubUrl = this._parseGithubUrl(editPath.split('library')[0]);
         if (!this._githubUrl) {
             return;
         }
-        this._toPrepare(editPath, outputPath);
+        this._toPrepare(root, outputPath);
     }
 };
