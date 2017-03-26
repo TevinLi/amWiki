@@ -3,7 +3,8 @@
  * @author Tevin
  */
 
-const fs = require("fs");
+const fs = require('fs');
+const co = require('../modules/co');
 const mngFolder = require('./manageFolder');
 
 module.exports = {
@@ -135,73 +136,75 @@ module.exports = {
     },
     //开始导出
     _toExport: function (pathFrom, pathTo, fileList, duplicates) {
-        if (fs.readdirSync(pathTo).length > 0 && confirm('所选文件夹不为空，是否需要清空？')) {
-            mngFolder.cleanFolder(pathTo);
-        }
-        let fileList2 = [];
-        const duplicate2 = [];
-        if (typeof duplicates !== 'undefined') {
-            for (let file of fileList) {
-                let fileDup = false;
-                for (let dup of duplicates) {
-                    if (file[0] === dup) {
-                        fileDup = true;
-                        duplicate2.push(file);
-                        break;
+        co(function* () {
+            if (fs.readdirSync(pathTo).length > 0 && (yield confirm2('所选文件夹不为空，是否需要清空？'))) {
+                mngFolder.cleanFolder(pathTo);
+            }
+            let fileList2 = [];
+            const duplicate2 = [];
+            if (typeof duplicates !== 'undefined') {
+                for (let file of fileList) {
+                    let fileDup = false;
+                    for (let dup of duplicates) {
+                        if (file[0] === dup) {
+                            fileDup = true;
+                            duplicate2.push(file);
+                            break;
+                        }
+                    }
+                    if (!fileDup) {
+                        fileList2.push(file);
                     }
                 }
-                if (!fileDup) {
-                    fileList2.push(file);
-                }
+            } else {
+                fileList2 = fileList;
             }
-        } else {
-            fileList2 = fileList;
-        }
-        //开始拷贝
-        this._exportNormal(fileList2, pathTo);
-        this._exportDuplicate(duplicate2, pathTo);
-        this._exportImage(pathFrom, pathTo);
-        this._exportHome(pathFrom, pathTo);
-        this._exportNavigation(fileList2, duplicate2, pathFrom, pathTo);
+            //开始拷贝
+            this._exportNormal(fileList2, pathTo);
+            this._exportDuplicate(duplicate2, pathTo);
+            this._exportImage(pathFrom, pathTo);
+            this._exportHome(pathFrom, pathTo);
+            this._exportNavigation(fileList2, duplicate2, pathFrom, pathTo);
+        });
     },
     //导出准备
     _toPrepare: function (pathFrom, pathTo) {
-        const fileList = [];
-        pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
-        //读取文件夹
-        mngFolder.readLibraryTree(pathFrom, (err, tree, files) => {
-            if (err) {
-                console.warn(err);
+        co(function*() {
+            const fileList = [];
+            pathFrom += pathFrom.substr(pathFrom.length - 1, 1) === '\\' ? 'library\\' : '\\library\\';
+            //读取文件夹
+            const [tree, files] = mngFolder.readLibraryTree(pathFrom);
+            if (!tree) {
+                return;
+            }
+            //console.log(tree, files);
+            let fileName = '';
+            //提取文件名
+            for (let item of files) {
+                fileName = item.split(/[\\\/]/);
+                fileList.push([
+                    item,
+                    fileName[fileName.length - 1].replace(/^\d+(\.\d+)?[-_](.*?)$/, '$2')
+                ]);
+            }
+            //重名检查
+            const duplicate = this._checkDuplicate(fileList);
+            //重名文件单独处理
+            if (duplicate.length > 0) {
+                const dups = [];
+                let message = '以下文件脱离文件夹偏平化时将会重名：\n\n';
+                for (let j = 0, dup; dup = duplicate[j]; j++) {
+                    message += dup[0][0].replace(/\//g, '\\') + '\n' +
+                        dup[1][0].replace(/\//g, '\\') + '\n\n';
+                    dups.push(dup[0][0], dup[1][0]);
+                }
+                message += '点击确认将自动处理（追加额外空格）并继续导出；\n' +
+                    '点击取消将退出导出，您可以在改名后再次重新导出。';
+                if (yield confirm2(message)) {
+                    return this._toExport(pathFrom, pathTo, fileList, dups);
+                }
             } else {
-                //console.log(tree, files);
-                let fileName = '';
-                //提取文件名
-                for (let item of files) {
-                    fileName = item.split(/[\\\/]/);
-                    fileList.push([
-                        item,
-                        fileName[fileName.length - 1].replace(/^\d+(\.\d+)?[-_](.*?)$/, '$2')
-                    ]);
-                }
-                //重名检查
-                const duplicate = this._checkDuplicate(fileList);
-                //重名文件单独处理
-                if (duplicate.length > 0) {
-                    const dups = [];
-                    let message = '以下文件脱离文件夹偏平化时将会重名：\n\n';
-                    for (let j = 0, dup; dup = duplicate[j]; j++) {
-                        message += dup[0][0].replace(/\//g, '\\') + '\n' +
-                            dup[1][0].replace(/\//g, '\\') + '\n\n';
-                        dups.push(dup[0][0], dup[1][0]);
-                    }
-                    message += '点击确认将自动处理（追加额外空格）并继续导出；\n' +
-                        '点击取消将退出导出，您可以在改名后再次重新导出。';
-                    if (confirm(message)) {
-                        this._toExport(pathFrom, pathTo, fileList, dups);
-                    }
-                } else {
-                    this._toExport(pathFrom, pathTo, fileList);
-                }
+                return this._toExport(pathFrom, pathTo, fileList);
             }
         });
     },

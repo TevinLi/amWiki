@@ -1,8 +1,17 @@
 /**
  * messageBox
  * @desc 命令行模拟浏览器 alert、confirm、prompt 交互信息框
- * @notice 此三个方法只是模拟，其执行时不会像浏览器端一样冻结后续js执行
  * @author Tevin
+ *
+ * @example
+ *    co(function* () {
+ *        const c = yield confirm2('测试confirm2');
+ *        console.log(c);
+ *        const p = yield prompt2('测试prompt2');
+ *        console.log(p);
+ *        process.stdin.end();
+ *    });
+ *
  */
 
 //模拟消息框
@@ -12,41 +21,51 @@ const alert = (msg) => {
 };
 
 //模拟确认框，回调传参为用户选择的布尔值
-const confirm = (msg, callback) => {
-    msg = typeof msg !== 'string' ? String(msg) : msg;
-    process.stdout.write(msg + '(y/n) ');
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('readable', () => {
-        let chunk = process.stdin.read();
-        if (chunk !== null) {
-            process.stdin.end();
-            chunk = chunk.replace(/[\n\r\u0004]*$/, '');
-            if (/^(y|yes|ok)$/i.test(chunk)) {
-                callback && callback(true);
-            } else {
-                callback && callback(false);
+const confirm2 = (msg) => {
+    return new Promise((resolve, reject) => {
+        msg = typeof msg !== 'string' ? String(msg) : msg;
+        let readStdin = () => {
+            let chunk = process.stdin.read();
+            if (chunk !== null) {
+                chunk = chunk.replace(/[\n\r\u0004]*$/, '');
+                if (/^(y|yes|ok)$/i.test(chunk)) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+                readStdin = null;
             }
-        }
+        };
+        process.stdout.write(msg + '(y/n) ');
+        process.stdin.setEncoding('utf8');
+        process.stdin.on('readable', () => {
+            readStdin && readStdin();
+        });
     });
 };
 
 //模拟输入框，回调传参为用户输入的字符串
-const prompt = (msg, callback) => {
-    msg = typeof msg !== 'string' ? String(msg) : msg;
-    process.stdout.write(msg + ' ');
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('readable', () => {
-        let chunk = process.stdin.read();
-        if (chunk !== null) {
-            process.stdin.end();
-            chunk = chunk.replace(/[\n\r\u0004]*$/, '');
-            callback && callback(chunk);
-        }
+const prompt2 = (msg) => {
+    return new Promise((resolve, reject) => {
+        msg = typeof msg !== 'string' ? String(msg) : msg;
+        let readStdin = () => {
+            let chunk = process.stdin.read();
+            if (chunk !== null) {
+                chunk = chunk.replace(/[\n\r\u0004]*$/, '');
+                resolve(chunk);
+                readStdin = null;
+            }
+        };
+        process.stdout.write(msg + ' ');
+        process.stdin.setEncoding('utf8');
+        process.stdin.on('readable', () => {
+            readStdin && readStdin();
+        });
     });
 };
 
 module.exports = {
     alert: alert,
-    confirm: confirm,
-    prompt: prompt
+    confirm2: confirm2,
+    prompt2: prompt2
 };

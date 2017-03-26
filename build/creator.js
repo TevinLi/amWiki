@@ -3,7 +3,8 @@
  * @author Tevin
  */
 
-const fs = require("fs");
+const fs = require('fs');
+const co = require('../modules/co');
 const makeNav = require('./makeNavigation');
 
 
@@ -131,139 +132,147 @@ module.exports = {
         return colours;
     },
     //配置检查
-    _checkConfig: function (paths) {
-        const options = {};
-        //创建路径
-        options.editePath = paths[0];
-        options.filesPath = paths[1];
-        options.outputPath = options.editePath.split('config.json')[0].replace(/\\/g, '/');
-        //读取配置
-        let configStr = fs.readFileSync(options.editePath, 'utf-8') || '';
-        if (configStr.length === 0) {
-            if (!confirm('没有读取到任何配置，继续创建么？')) {
-                return;
-            } else {
-                configStr = "{}";
-            }
-        }
-        //解析默认配置
-        let parseOk = true,
-            config = null;
-        try {
-            config = JSON.parse(configStr);
-        } catch (e) {
-            alert('配置解析失败，请检查您的 config.json 是否有严格按 Json 格式书写！\n错误消息：' + e.message);
-            parseOk = false;
-        }
-        if (!parseOk) {
-            return;
-        }
-        //库名称
-        config.name = config.name || 'amWiki轻文库系统';
-        //库版本号
-        config.version = typeof config.ver === 'string' ? config.ver : 'by Tevin';
-        //logo地址
-        config.logo = config.logo || 'amWiki/images/logo.png';
-        //是否开启接口测试
-        config.testing = config.testing || false;
-        //设置自定义颜色
-        config.colour = config.colour ? this._clacWikiColour(config.colour) : this._clacWikiColour('#4296eb');
-        return {
-            options: options,
-            config: config
-        };
-    },
-    //创建amWiki本地文件
-    create: function (paths, callback) {
-        const {options, config} = this._checkConfig(paths);
-        //创建
-        fs.readdir(options.outputPath, (err, files) => {
-            if (files.length > 1) {
-                if (!confirm('此处已有一些文件或文件夹，是否仍然在此创建amWiki？')) {
+    _checkConfig: function (configPath, filesPath) {
+        const that = this;
+        return new Promise((resolve, reject) => {
+            co(function*() {
+                const options = {};
+                //创建路径
+                options.filesPath = filesPath;
+                options.outputPath = configPath.split('config.json')[0].replace(/\\/g, '/');
+                //读取配置
+                let configStr = fs.readFileSync(configPath, 'utf-8') || '';
+                if (configStr.length === 0) {
+                    if (yield confirm2('没有读取到任何配置，继续创建么？')) {
+                        configStr = '{}';
+                    } else {
+                        return;
+                    }
+                }
+                //解析默认配置
+                let parseOk = true,
+                    config = null;
+                try {
+                    config = JSON.parse(configStr);
+                } catch (e) {
+                    alert('配置解析失败，请检查您的 config.json 是否有严格按 Json 格式书写！\n错误消息：' + e.message);
+                    parseOk = false;
+                }
+                if (!parseOk) {
                     return;
                 }
-            }
-            //创建index.html
-            let indexPage = fs.readFileSync(options.filesPath + 'amWiki.tpl', 'utf-8');
-            indexPage = indexPage.replace(/\{\{name\}\}/g, config.name)
-                .replace('{{version}}', config.version)
-                .replace('{{logo}}', config.logo);
-            if (config.testing) {
-                const testingTpl = fs.readFileSync(options.filesPath + 'amWiki.testing.tpl', 'utf-8');
-                const testingScript = '<script src="amWiki/js/amWiki.testing.js"></script>';
-                indexPage = indexPage
-                    .replace('{{amWiki.testing.tpl}}', testingTpl)
-                    .replace('{{amWiki.testing.js}}', testingScript);
-            } else {
-                indexPage = indexPage
-                    .replace('{{amWiki.testing.tpl}}', '')
-                    .replace('{{amWiki.testing.js}}', '');
-            }
-            fs.writeFileSync(options.outputPath + 'index.html', indexPage, 'utf-8');
-            //创建文件夹
-            const hasLibrary = this._createWikiFolder(options.outputPath);
-            //创建amWiki.css
-            let wikiCss = fs.readFileSync(options.filesPath + 'amWiki.css', 'utf-8');
-            if (config.testing) {
-                wikiCss += fs.readFileSync(options.filesPath + 'amWiki.testing.css', 'utf-8');
-            }
-            wikiCss += fs.readFileSync(options.filesPath + 'amWiki.print.css', 'utf-8');
-            wikiCss += fs.readFileSync(options.filesPath + 'amWiki.search.css', 'utf-8');
-            wikiCss = wikiCss
-                .replace(/@colour-base/g, config.colour.base)
-                .replace(/@colour-light/g, config.colour.light)
-                .replace(/@colour-dark/g, config.colour.dark);
-            fs.writeFileSync(options.outputPath + 'amWiki/css/amWiki.css', wikiCss, 'utf-8');
-            //拷贝页面资源
-            const fileList = [
-                ['markdownbody.github.css', 'amWiki/css/markdownbody.github.css'],
-                ['lhjs.github-gist.css', 'amWiki/css/lhjs.github-gist.css'],
-                ['gbk.js', 'amWiki/js/gbk.js'],
-                ['flowchart.min.js', 'amWiki/js/flowchart.min.js'],
-                ['raphael-min.js', 'amWiki/js/raphael-min.js'],
-                ['jquery-compat-3.1.0.min.js', 'amWiki/js/jquery-compat-3.1.0.min.js'],
-                ['marked.min.js', 'amWiki/js/marked.min.js'],
-                ['highlight.min.js', 'amWiki/js/highlight.min.js'],
-                ['amWiki.js', 'amWiki/js/amWiki.js'],
-                ['amWiki.scrollbar.js', 'amWiki/js/amWiki.scrollbar.js'],
-                ['amWiki.testing.js', 'amWiki/js/amWiki.testing.js'],
-                ['amWiki.tools.js', 'amWiki/js/amWiki.tools.js'],
-                ['amWiki.storage.js', 'amWiki/js/amWiki.storage.js'],
-                ['amWiki.docs.js', 'amWiki/js/amWiki.docs.js'],
-                ['amWiki.search.js', 'amWiki/js/amWiki.search.js'],
-                ['amWiki.search.worker.js', 'amWiki/js/amWiki.search.worker.js'],
-                ['icons.svg', 'amWiki/images/icons.svg'],
-                ['logo.png', 'amWiki/images/logo.png'],
-                ['menubar_bg.png', 'amWiki/images/menubar_bg.png']
-            ];
-            for (let file of fileList) {
-                this._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
-            }
-            //如果没有library则复制一套默认文档
-            if (!hasLibrary) {
-                //首页文档
-                const home = fs.readFileSync(options.filesPath + 'doc.home.md', 'utf-8').replace('{{name}}', config.name);
-                fs.writeFileSync(options.outputPath + 'library/首页.md', home, 'utf-8');
-                //其他页面文档
-                let fileList2 = [
-                    ['doc.amwiki-introduce.md', 'library/001-学习amWiki/01-amWiki轻文库简介.md'],
-                    ['doc.amwiki-mind-map.md', 'library/001-学习amWiki/02-amWiki功能导图.md'],
-                    ['doc.amwiki-new.md', 'library/001-学习amWiki/03-如何开始一个新amWiki轻文库.md'],
-                    ['doc.amwiki-edit.md', 'library/001-学习amWiki/04-如何编辑amWiki轻文库.md'],
-                    ['doc.amwiki-testing.md', 'library/001-学习amWiki/06-使用测试模块测试接口.md'],
-                    ['doc.amwiki-test-cross.md', 'library/001-学习amWiki/07-amWiki转接到任意域名进行接口测试.md'],
-                    ['doc.md-start.md', 'library/001-学习amWiki/05-学习markdown/01-Markdown快速开始.md'],
-                    ['doc.md-high-lighting.md', 'library/001-学习amWiki/05-学习markdown/02-amWiki与语法高亮.md'],
-                    ['doc.md-flow-chart.md', 'library/001-学习amWiki/05-学习markdown/03-amWiki与流程图.md'],
-                    ['doc.md-atom.md', 'library/001-学习amWiki/05-学习markdown/05-Atom对Markdown的原生支持.md'],
-                    ['doc.demo-api.md', 'library/002-文档示范/001-通用API接口文档示例.md'],
-                    ['doc.demo-long-article.md', 'library/002-文档示范/002-超长文档页内目录示例.md']
-                ];
-                for (let file of fileList2) {
-                    this._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
+                //库名称
+                config.name = config.name || 'amWiki轻文库系统';
+                //库版本号
+                config.version = typeof config.ver === 'string' ? config.ver : 'by Tevin';
+                //logo地址
+                config.logo = config.logo || 'amWiki/images/logo.png';
+                //是否开启接口测试
+                config.testing = config.testing || false;
+                //设置自定义颜色
+                config.colour = config.colour ? that._clacWikiColour(config.colour) : that._clacWikiColour('#4296eb');
+                resolve({
+                    options: options,
+                    config: config
+                });
+            });
+        });
+    },
+    //创建amWiki本地文件
+    create: function (configPath, filesPath) {
+        const that = this;
+        return new Promise((resolve, reject) => {
+            co(function*() {
+                const {options, config} = yield that._checkConfig(configPath, filesPath);
+                //创建
+                const files = fs.readdirSync(options.outputPath);
+                if (files.length > 1) {
+                    if (!(yield confirm2('此处已有一些文件或文件夹，是否仍然在此创建amWiki？'))) {
+                        return reject(false);
+                    }
                 }
-            }
-            callback(options.outputPath);
+                //创建index.html
+                let indexPage = fs.readFileSync(options.filesPath + 'amWiki.tpl', 'utf-8');
+                indexPage = indexPage.replace(/\{\{name\}\}/g, config.name)
+                    .replace('{{version}}', config.version)
+                    .replace('{{logo}}', config.logo);
+                if (config.testing) {
+                    const testingTpl = fs.readFileSync(options.filesPath + 'amWiki.testing.tpl', 'utf-8');
+                    const testingScript = '<script src="amWiki/js/amWiki.testing.js"></script>';
+                    indexPage = indexPage
+                        .replace('{{amWiki.testing.tpl}}', testingTpl)
+                        .replace('{{amWiki.testing.js}}', testingScript);
+                } else {
+                    indexPage = indexPage
+                        .replace('{{amWiki.testing.tpl}}', '')
+                        .replace('{{amWiki.testing.js}}', '');
+                }
+                fs.writeFileSync(options.outputPath + 'index.html', indexPage, 'utf-8');
+                //创建文件夹
+                const hasLibrary = that._createWikiFolder(options.outputPath);
+                //创建amWiki.css
+                let wikiCss = fs.readFileSync(options.filesPath + 'amWiki.css', 'utf-8');
+                if (config.testing) {
+                    wikiCss += fs.readFileSync(options.filesPath + 'amWiki.testing.css', 'utf-8');
+                }
+                wikiCss += fs.readFileSync(options.filesPath + 'amWiki.print.css', 'utf-8');
+                wikiCss += fs.readFileSync(options.filesPath + 'amWiki.search.css', 'utf-8');
+                wikiCss = wikiCss
+                    .replace(/@colour-base/g, config.colour.base)
+                    .replace(/@colour-light/g, config.colour.light)
+                    .replace(/@colour-dark/g, config.colour.dark);
+                fs.writeFileSync(options.outputPath + 'amWiki/css/amWiki.css', wikiCss, 'utf-8');
+                //拷贝页面资源
+                const fileList = [
+                    ['markdownbody.github.css', 'amWiki/css/markdownbody.github.css'],
+                    ['lhjs.github-gist.css', 'amWiki/css/lhjs.github-gist.css'],
+                    ['gbk.js', 'amWiki/js/gbk.js'],
+                    ['flowchart.min.js', 'amWiki/js/flowchart.min.js'],
+                    ['raphael-min.js', 'amWiki/js/raphael-min.js'],
+                    ['jquery-compat-3.1.0.min.js', 'amWiki/js/jquery-compat-3.1.0.min.js'],
+                    ['marked.min.js', 'amWiki/js/marked.min.js'],
+                    ['highlight.min.js', 'amWiki/js/highlight.min.js'],
+                    ['amWiki.js', 'amWiki/js/amWiki.js'],
+                    ['amWiki.scrollbar.js', 'amWiki/js/amWiki.scrollbar.js'],
+                    ['amWiki.testing.js', 'amWiki/js/amWiki.testing.js'],
+                    ['amWiki.tools.js', 'amWiki/js/amWiki.tools.js'],
+                    ['amWiki.storage.js', 'amWiki/js/amWiki.storage.js'],
+                    ['amWiki.docs.js', 'amWiki/js/amWiki.docs.js'],
+                    ['amWiki.search.js', 'amWiki/js/amWiki.search.js'],
+                    ['amWiki.search.worker.js', 'amWiki/js/amWiki.search.worker.js'],
+                    ['icons.svg', 'amWiki/images/icons.svg'],
+                    ['logo.png', 'amWiki/images/logo.png'],
+                    ['menubar_bg.png', 'amWiki/images/menubar_bg.png']
+                ];
+                for (let file of fileList) {
+                    that._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
+                }
+                //如果没有library则复制一套默认文档
+                if (!hasLibrary) {
+                    //首页文档
+                    const home = fs.readFileSync(options.filesPath + 'doc.home.md', 'utf-8').replace('{{name}}', config.name);
+                    fs.writeFileSync(options.outputPath + 'library/首页.md', home, 'utf-8');
+                    //其他页面文档
+                    let fileList2 = [
+                        ['doc.amwiki-introduce.md', 'library/001-学习amWiki/01-amWiki轻文库简介.md'],
+                        ['doc.amwiki-mind-map.md', 'library/001-学习amWiki/02-amWiki功能导图.md'],
+                        ['doc.amwiki-new.md', 'library/001-学习amWiki/03-如何开始一个新amWiki轻文库.md'],
+                        ['doc.amwiki-edit.md', 'library/001-学习amWiki/04-如何编辑amWiki轻文库.md'],
+                        ['doc.amwiki-testing.md', 'library/001-学习amWiki/06-使用测试模块测试接口.md'],
+                        ['doc.amwiki-test-cross.md', 'library/001-学习amWiki/07-amWiki转接到任意域名进行接口测试.md'],
+                        ['doc.md-start.md', 'library/001-学习amWiki/05-学习markdown/01-Markdown快速开始.md'],
+                        ['doc.md-high-lighting.md', 'library/001-学习amWiki/05-学习markdown/02-amWiki与语法高亮.md'],
+                        ['doc.md-flow-chart.md', 'library/001-学习amWiki/05-学习markdown/03-amWiki与流程图.md'],
+                        ['doc.md-atom.md', 'library/001-学习amWiki/05-学习markdown/05-Atom对Markdown的原生支持.md'],
+                        ['doc.demo-api.md', 'library/002-文档示范/001-通用API接口文档示例.md'],
+                        ['doc.demo-long-article.md', 'library/002-文档示范/002-超长文档页内目录示例.md']
+                    ];
+                    for (let file of fileList2) {
+                        that._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
+                    }
+                }
+                resolve(options.outputPath);
+            });
         });
     }
 };
