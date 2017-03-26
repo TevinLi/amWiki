@@ -22,11 +22,11 @@ const MimeType = {
     'gif': 'image/gif',
     'png': 'image/png',
     'svg': 'image/svg+xml',
-    "swf": "application/x-shockwave-flash",
-    "tiff": "image/tiff",
-    "wav": "audio/x-wav",
-    "wma": "audio/x-ms-wma",
-    "wmv": "video/x-ms-wmv"
+    'swf': 'application/x-shockwave-flash',
+    'tiff': 'image/tiff',
+    'wav': 'audio/x-wav',
+    'wma': 'audio/x-ms-wma',
+    'wmv': 'video/x-ms-wmv'
 };
 
 class Server {

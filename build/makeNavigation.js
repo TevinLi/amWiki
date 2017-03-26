@@ -3,21 +3,19 @@
  * @author Tevin
  */
 
-const fs = require("fs");
+const fs = require('fs');
 const mngFolder = require('./manageFolder');
 
 module.exports = {
     //刷新导航（创建wiki时）
-    refresh: function (editorPath, callback) {
+    refresh: function (editorPath) {
         const path = editorPath.replace(/\\/g, '/').split('library')[0] + 'library/';
-        callback && callback(path);
-        mngFolder.readLibraryTree(path, (err, tree) => {
-            if (err) {
-                console.warn(err);
-            } else {
-                this.make(path, tree);
-            }
-        });
+        const [tree] = mngFolder.readLibraryTree(path);
+        if (!tree) {
+            return;
+        }
+        this.make(path, tree);
+        return path
     },
     //创建md导航文件
     make: function (path, data) {

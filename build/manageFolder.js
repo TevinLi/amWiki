@@ -7,10 +7,10 @@ const fs = require('fs');
 
 module.exports = {
     //读取文库文件夹
-    readLibraryTree: function (path, callback) {
+    readLibraryTree: function (path) {
         if (!/library[\\\/]$/.test(path)) {
-            callback('The path is not a library.');
-            return;
+            console.warn('The path is not a library.');
+            return [];
         }
         const tree = {};
         const folders = [];
@@ -54,8 +54,8 @@ module.exports = {
                                         }
                                     }
                                 } catch (err) {
-                                    callback(err);
-                                    return;
+                                    console.warn(err);
+                                    return [];
                                 }
                             } else {
                                 tree[files1[i]][files2[j]] = false;
@@ -63,16 +63,16 @@ module.exports = {
                             }
                         }
                     } catch (err) {
-                        callback(err);
-                        return;
+                        console.warn(err);
+                        return [];
                     }
                 }
             }
         } catch (err) {
-            callback(err);
-            return;
+            console.warn(err);
+            return [];
         }
-        callback(null, tree, files, folders);
+        return [tree, files, folders];
     },
     //清空文件夹
     cleanFolder: function(path) {
@@ -95,19 +95,18 @@ module.exports = {
         return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
     },
     //创建文件夹
-    createFolder: function (path, callback) {
+    createFolder: function (path) {
         //先判断父级文件夹是否存在，不存在先创建父级文件夹
         const parentPath = this.getParentFolder(path);
         if (!fs.existsSync(parentPath)) {
             this.createFolder(parentPath);      //向上递归创建父级
-            this.createFolder(path, callback);  //创建完父级后再创建本级
+            this.createFolder(path);  //创建完父级后再创建本级
         }
         //如果父级已存在，直接创建本级
         else {
             if (!fs.existsSync(path)) {
                 fs.mkdirSync(path, 0o777);
             }
-            callback && callback();
         }
     },
     //判断一个文件夹是否为amWiki文库项目
