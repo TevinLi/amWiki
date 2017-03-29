@@ -1,19 +1,18 @@
 # amWiki 轻文库
 
 ![amWiki logo](https://amwiki.xf09.net/docs/assets/logo.png)  
-amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。  
+amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器或 Npm 命令行、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。  
 amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库系统！  
 
 [[view amWiki on Github](https://github.com/TevinLi/amWiki)]  
 
 GitHub:  
-[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars") [![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks") [![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues") [![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues") [![](https://img.shields.io/github/contributors/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Contributors")  
-Apm:  
-[![apm](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "Apm Version") [![apm](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "Apm Downloads") [![apm](https://img.shields.io/apm/l/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")
-
-	公告：  
-	目前正在开发 v1.0 版本，有大量代码重构，请从下文推荐的三个途径下载安装 v0.8.0 版本。  
-	不要在 github 项目首页直接下载 zip！
+[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars") [![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks") [![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues") [![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues")  
+[![GitHub Tag](https://img.shields.io/github/tag/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Tag") [![apm](https://img.shields.io/github/license/TevinLi/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")  
+APM:  
+[![APM Version](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "APM Version") [![APM Downloads](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "APM Downloads")  
+NPM:  
+[![NPM Version](https://img.shields.io/npm/v/amwiki.svg)](https://www.npmjs.com/package/amwiki "NPM Version") [![APM Downloads](https://img.shields.io/npm/dt/amWiki.svg)](https://www.npmjs.com/package/amwiki "APM Downloads")
 
 ### amWiki优势
 - 文档系统采用 markdown 语法
