@@ -13,7 +13,7 @@ const mngWiki = require('./manageWiki');
 module.exports = {
     /**
      * 启动服务器
-     * @param wikis {object} 文库记录列表的引用
+     * @param {object} wikis - 文库记录列表的引用
      */
     run: function (wikis) {
         if (!this._server) {
@@ -22,11 +22,12 @@ module.exports = {
     },
     /**
      * 浏览当前文档
-     * @param editPath {string} 当前文档的路径
-     * @param wikis {object} 文库记录列表的引用
+     * @param {string} editPath - 当前文档的路径
+     * @param {object} wikis - 文库记录列表的引用
+     * @returns {promise}
      */
     browser: function (editPath, wikis) {
-        co(function* () {
+        return co(function* () {
             //判断服务器
             if (!this._server) {
                 if (yield confirm2('本地服务器还未启动，您需要启动服务器么？')) {
@@ -63,6 +64,8 @@ module.exports = {
                 cmd = 'open';
             }
             child_process.exec(cmd + ' ' + url);
+        }).catch((e) => {
+            console.error(e);
         });
     },
     /**

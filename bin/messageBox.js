@@ -1,16 +1,15 @@
 /**
- * messageBox
  * @desc 命令行模拟浏览器 alert、confirm、prompt 交互信息框
  * @author Tevin
  *
  * @example
- *    co(function* () {
- *        const c = yield confirm2('测试confirm2');
- *        console.log(c);
- *        const p = yield prompt2('测试prompt2');
- *        console.log(p);
- *        process.stdin.end();
- *    });
+ *   co(function* () {
+ *     const c = yield confirm2('测试confirm2');
+ *     console.log(c);
+ *     const p = yield prompt2('测试prompt2');
+ *     console.log(p);
+ *     process.stdin.end();
+ *   });
  *
  */
 

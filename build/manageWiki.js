@@ -9,15 +9,15 @@ const mngFolder = require('./manageFolder');
 module.exports = {
     /**
      * 绑定文库记录
-     * @param wikis {object} 文库记录列表的引用
+     * @param {object} wikis - 文库记录列表的引用
      */
     linkWikis: function (wikis) {
         this._wikis = wikis;
     },
     /**
      * 添加一个文库到记录
-     * @param root {string} 文库根目录
-     * @param [id] {number} 文库的计算id
+     * @param {string} root - 文库根目录
+     * @param {number} [id] - 文库的计算id
      */
     addWiki: function (root, id = this.createWikiId(root)) {
         if (typeof root === 'undefined') {
@@ -44,7 +44,7 @@ module.exports = {
     },
     /**
      * 计算文库id
-     * @param root {string} 需要计算id的文库根目录
+     * @param {string} root - 需要计算id的文库根目录
      * @returns {number} 文库id，由根目录路径字符串计算而来
      */
     createWikiId: function (root) {
@@ -60,7 +60,7 @@ module.exports = {
     },
     /**
      * 判断文库是否加入记录，未加入则补录
-     * @param path {string} 需要判断的路径
+     * @param {string} path - 需要判断的路径
      */
     checkAddWiki: function (path) {
         if (path.indexOf('library') > 0) {
@@ -75,7 +75,7 @@ module.exports = {
     },
     /**
      * 检查文库是否仍然有效，失效则标记弃用
-     * @param wId {number} 需要判断的文库id
+     * @param {number} wId - 需要判断的文库id
      */
     checkWikiValid: function (wId) {
         if (typeof this._wikis[wId] !== 'undefined') {

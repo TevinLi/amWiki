@@ -9,7 +9,7 @@ const mngFolder = require('./manageFolder');
 module.exports = {
     /**
      * 刷新导航（创建wiki时）
-     * @param editPath {string} 当前文档的路径
+     * @param {string} editPath - 当前文档的路径
      * @returns {string} library文件夹路径
      */
     refresh: function (editPath) {
@@ -23,8 +23,8 @@ module.exports = {
     },
     /**
      * 创建md导航文件
-     * @param path {string} 文库library文件夹路径
-     * @param data {object} 导航列表数据
+     * @param {string} path - 文库library文件夹路径
+     * @param {object} data - 导航列表数据
      */
     make: function (path, data) {
         if (this._hasDuplicateId(data)) {

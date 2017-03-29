@@ -137,7 +137,7 @@ module.exports = {
     //开始导出
     _toExport: function (pathFrom, pathTo, fileList, duplicates) {
         const that = this;
-        co(function* () {
+        return co(function* () {
             if (fs.readdirSync(pathTo).length > 0 && (yield confirm2('所选文件夹不为空，是否需要清空？'))) {
                 mngFolder.cleanFolder(pathTo);
             }
@@ -166,12 +166,14 @@ module.exports = {
             that._exportImage(pathFrom, pathTo);
             that._exportHome(pathFrom, pathTo);
             that._exportNavigation(fileList2, duplicate2, pathFrom, pathTo);
+        }).catch((e) => {
+            console.error(e);
         });
     },
     //导出准备
     _toPrepare: function (pathFrom, pathTo) {
         const that = this;
-        co(function*() {
+        return co(function*() {
             const fileList = [];
             pathFrom += /[\\\/]$/.test(pathFrom) ? 'library/' : '/library/';
             //读取文件夹
@@ -208,6 +210,8 @@ module.exports = {
             } else {
                 return that._toExport(pathFrom, pathTo, fileList);
             }
+        }).catch((e) => {
+            console.error(e);
         });
     },
     //GitHub地址
@@ -221,27 +225,31 @@ module.exports = {
         }
         const url = config['github-url'];
         if (url.indexOf('github.com') === 0 || url.split('github.com')[1] === '') {
-            alert('导出失败！\n请配置完整 github 项目地址！');
+            alert('导出失败！\n请以https开头，配置完整的 github URL！');
             return false;
         }
         const urlArr = url.split('github.com')[1].split('/');
         if (urlArr.length < 3) {
-            alert('导出失败！\n请配置完整 github 项目地址！');
+            alert('导出失败！\n请配置完整 github 项目路径！');
             return false;
         }
         return '/' + urlArr[1] + '/' + urlArr[2] + '/';
     },
     /**
      * 导出为github-wiki
-     * @param root {string} 文库项目根目录
-     * @param outputPath {string} 输出路径
+     * @param {string} root - 文库项目根目录
+     * @param {string} outputPath - 输出路径
+     * @returns {promise}
      */
     export: function (root, outputPath) {
-        //检测 GitHub 项目地址
-        this._githubUrl = this._parseGithubUrl(editPath.split('library')[0]);
-        if (!this._githubUrl) {
-            return;
-        }
-        this._toPrepare(root, outputPath);
+        const that = this;
+        return co(function* () {
+            //检测 GitHub 项目地址
+            that._githubUrl = that._parseGithubUrl(root.split('library')[0]);
+            if (!that._githubUrl) {
+                return;
+            }
+            yield that._toPrepare(root, outputPath);
+        });
     }
 };

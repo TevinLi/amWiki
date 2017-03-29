@@ -8,7 +8,7 @@ const fs = require('fs');
 module.exports = {
     /**
      * 读取文库library文件夹树形数据
-     * @param path {string} 文库library文件夹路径
+     * @param {string} path - 文库library文件夹路径
      * @returns {object} 树形数据、文件列表数据、文件夹列表数据
      */
     readLibraryTree: function (path) {
@@ -80,7 +80,7 @@ module.exports = {
     },
     /**
      * 清空文件夹
-     * @param path {string} 要清空的文件夹
+     * @param {string} path - 要清空的文件夹
      */
     cleanFolder: function(path) {
         const list = fs.readdirSync(path);
@@ -99,7 +99,7 @@ module.exports = {
     },
     /**
      * 获取上一级目录
-     * @param path {string} 需要计算的文件夹路径
+     * @param {string} path - 需要计算的文件夹路径
      * @returns {string} 父级文件夹路径
      */
     getParentFolder: function (path) {
@@ -107,7 +107,7 @@ module.exports = {
     },
     /**
      * 创建文件夹
-     * @param path {string} 需要创建的文件夹路径
+     * @param {string} path - 需要创建的文件夹路径
      */
     createFolder: function (path) {
         //先判断父级文件夹是否存在，不存在先创建父级文件夹
@@ -125,7 +125,7 @@ module.exports = {
     },
     /**
      * 判断一个文件夹是否为amWiki文库项目
-     * @param path {string} 需要判断的文件夹路径
+     * @param {string} path - 需要判断的文件夹路径
      * @returns {boolean|string} 否定时返回false，肯定时返回项目根目录的路径
      */
     isAmWiki: function (path) {
@@ -136,6 +136,7 @@ module.exports = {
         path = path.indexOf('library') < 0 ? path : path.split('library')[0];
         path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
         path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
+        path += /\/$/.test(path) ? '' : '/';
         let states = [
             fs.existsSync(path + '/library/'),
             fs.existsSync(path + '/amWiki/'),

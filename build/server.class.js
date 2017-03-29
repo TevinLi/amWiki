@@ -87,8 +87,8 @@ class Server {
 
     /**
      * 解析请求
-     * @param req {object} 请求体的引用
-     * @param res {object} 响应体的引用
+     * @param {object} req - 请求体的引用
+     * @param {object} res - 响应体的引用
      */
     parse(req, res) {
         const pathname = url.parse(req.url).pathname;
