@@ -138,7 +138,7 @@ module.exports = {
     _toExport: function (pathFrom, pathTo, fileList, duplicates) {
         const that = this;
         return co(function* () {
-            if (fs.readdirSync(pathTo).length > 0 && (yield confirm2('所选文件夹不为空，是否需要清空？'))) {
+            if (fs.readdirSync(pathTo).length > 0 && (yield confirm2('所选导出文件夹不为空，是否需要清空？'))) {
                 mngFolder.cleanFolder(pathTo);
             }
             let fileList2 = [];
