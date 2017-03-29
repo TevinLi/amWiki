@@ -55,10 +55,10 @@ co(function*() {
             }
             const type = parameters[0];
             //更新导航
-            if (type === 'nav' || type === 'navigation') {
+            if (type === 'nav') {
                 makeNav.refresh(root);
             }
-            //更新植入文库数据
+            //更新文库嵌入数据
             else if (type === 'embed') {
             }
             //更新 SEO 模块
@@ -123,16 +123,18 @@ co(function*() {
             outPath = outPath.replace(/\\/g, '/');
             yield exportGithub.export(root, outPath);
             break;
-        //显示帮助
-        case 'help':
-        case '-h':
-            printFn.help();
-            break;
         //显示版本号
         case 'version':
         case '-v':
-            printFn.ver();
+            printFn.ver(mainPath);
             break;
+        //显示帮助
+        case 'help':
+        case '-h':
+        default:
+            printFn.help();
+            break;
+
     }
 
     //关闭用户输入
