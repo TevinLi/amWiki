@@ -42,6 +42,7 @@ $(function () {
         $filter = $('#menuFilter'),
         $filterClean = $filter.next('i'),
         $main = $('#main'),
+        $mainInner = $main.children('.main-inner'),
         $mainSibling = $('#mainSibling'),      //其他文章
         $contents = $('#contents');            //目录
 
@@ -186,7 +187,7 @@ $(function () {
         //开启滚动条
         $('.scroller').scrollbar();
         $('#backTop').on('click', function () {
-            $main.children('.main-inner').scrollTop(0);
+            $mainInner.scrollTop(0);
         });
         //全局点击
         $(document).on('click', function (e) {
@@ -274,13 +275,13 @@ $(function () {
     };
 
     //改变页面
-    var changePage = function (path, withOutPushState) {
+    var changePage = function (path, withOutPushState, callback) {
         //第一步，从本地缓存读取并渲染页面
         var localDoc = storage.read(path);
         docs.renderDoc(localDoc);
         testing && testing.crawlContent();
         $main.trigger('scrollbar');
-        $main.children('.main-inner').scrollTop(0);  //返回顶部
+        $mainInner.scrollTop(0);  //返回顶部
         //更新history记录
         if (!withOutPushState && HISTORY_STATE) {
             history.pushState({path: path}, '', '?file=' + path);
@@ -306,6 +307,7 @@ $(function () {
                 else {
                     //记录文档打开数
                     storage.increaseOpenedCount(path);
+                    callback && callback();
                 }
             }
             //读取服务器文档成功时
@@ -322,6 +324,7 @@ $(function () {
                 }
                 //记录文档打开数
                 storage.increaseOpenedCount(path);
+                callback && callback();
             }
         });
     };
@@ -365,6 +368,26 @@ $(function () {
         }, 'text');
     };
 
+    //根据hash改变滚动位置
+    var changeScrollByHash = function () {
+        var hash = location.hash.split('#')[1];
+        //当不存在hash
+        if (!hash || hash.length == '') {
+            //检测是否在顶部，不在顶部滚动至顶部
+            if ($mainInner.scrollTop() != 0) {
+                $mainInner.scrollTop(0);
+            }
+            return;
+        }
+        //获取hash指向的元素
+        var $hash = $('.anchor[name="' + hash + '"]');
+        if ($hash.length == 0) {
+            return
+        }
+        //滚动至元素
+        $mainInner.scrollTop($hash.position().top + $mainInner.scrollTop() - 10);
+    };
+
     /*
      启动应用
      */
@@ -380,7 +403,7 @@ $(function () {
         //首次打开改变导航
         changeNav(curPath);
         //首次打开改变页面
-        changePage(curPath, true);
+        changePage(curPath, true, changeScrollByHash);
     });
 
     //history api 浏览器前进后退操作响应
@@ -393,18 +416,22 @@ $(function () {
                 //改变导航
                 changeNav(path);
                 //改变页面
-                changePage(path, true);
+                changePage(path, true, changeScrollByHash);
             }
             //当没有状态记录时
             else {
                 path = tools.getURLParameter('file');
                 path = !path ? '首页' : decodeURI(path);
-                //判断url是否和当前一样，不一样才跳转（同页hash变化不跳转）
+                //判断 url 路径是否和当前一样，不一样才跳转
                 if (path != curPath) {
                     //改变导航
                     changeNav(path);
                     //改变页面
-                    changePage(path, true);
+                    changePage(path, true, changeScrollByHash);
+                }
+                //相同时不跳转，根据 hash 变化改变位置
+                else {
+                    changeScrollByHash();
                 }
             }
         });

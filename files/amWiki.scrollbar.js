@@ -8,8 +8,9 @@
 
     'use strict';
 
+    //定时检测内容高度作为补充
     var list = [];
-    setInterval(function(){
+    setInterval(function () {
         for (var i = 0, item; item = list[i]; i++) {
             item.checkHeight();
         }
@@ -136,7 +137,7 @@
     };
 
     //检查高度
-    Scroller.prototype.checkHeight = function(){
+    Scroller.prototype.checkHeight = function () {
         var that = this;
         this.data.contentH = 0;
         this.$e.inner.children('.scroller-content').each(function () {
