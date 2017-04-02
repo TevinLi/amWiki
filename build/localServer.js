@@ -4,7 +4,6 @@
  */
 
 const fs = require('fs');
-const util = require('util');
 const child_process = require('child_process');
 const co = require('../modules/co');
 const Sever = require('./server.class');
@@ -15,9 +14,9 @@ module.exports = {
      * 启动服务器
      * @param {object} wikis - 文库记录列表的引用
      */
-    run: function (wikis) {
+    run: function (wikis, port) {
         if (!this._server) {
-            this._server = new Sever(wikis);
+            this._server = new Sever(wikis, port);
         }
     },
     /**

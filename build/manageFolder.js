@@ -58,7 +58,7 @@ module.exports = {
                                         }
                                     }
                                 } catch (err) {
-                                    console.warn(err);
+                                    console.error(err);
                                     return [];
                                 }
                             } else {
@@ -67,13 +67,13 @@ module.exports = {
                             }
                         }
                     } catch (err) {
-                        console.warn(err);
+                        console.error(err);
                         return [];
                     }
                 }
             }
         } catch (err) {
-            console.warn(err);
+            console.error(err);
             return [];
         }
         return [tree, files, folders];

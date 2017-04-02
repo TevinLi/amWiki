@@ -4,6 +4,7 @@
  */
 
 const fs = require('fs');
+const util = require('util');
 const http = require('http');
 const url = require('url');
 const os = require('os');
@@ -31,13 +32,14 @@ const MimeType = {
 
 class Server {
 
-    constructor(wikis) {
+    constructor(wikis, port = 5171) {
         this._wikis = wikis;
+        this._port = port;
         this._localIP = this.getLocalIP();
         this.server = http.createServer((req, res) => {
             this.parse(req, res);
-        }).listen(5171);
-        console.info('Server running at http://' + this._localIP + ':5171/');
+        }).listen(this._port);
+        console.info('Server running at http://' + this._localIP + ':' + this._port + '/');
     }
 
     //404未找到页面

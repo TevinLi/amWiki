@@ -44,7 +44,9 @@ co(function*() {
             //项目 files 文件夹路径
             const filesPath = mainPath.replace(/\\/g, '/').split('bin')[0] + 'files/';
             //开始创建
-            yield creator.create(configPath, filesPath);
+            const root2 = yield creator.create(configPath, filesPath);
+            //更新导航
+            makeNav.refresh(root2 + 'library/');
             break;
         //更新 wiki
         case 'update':
@@ -80,7 +82,8 @@ co(function*() {
             mngWiki.addWiki(root);
             const port = parameters[0];
             //有输入端口且合法
-            if (typeof port === 'undefined' && /^\d+$/.test(port)) {
+            if (typeof port !== 'undefined' && /^\d+$/.test(port)) {
+                localServer.run(wikis, port);
             }
             //没输入端口号
             else {
