@@ -72,7 +72,7 @@ const helpWords = `
                   ${clc(90, '(eg: amwik update nav)')}
   -s, server      启动本地服务器
                   默认本地服务器使用端口5171，添加参数可以修改端口
-                      [5171]  修改端口(待开发)
+                      [8080]  修改端口
                   ${clc(90, '(eg: amwiki server 8080)')}
   -b, browser     本地浏览文档
                   默认访问文库首页，添加参数可以打开指定页面
@@ -107,7 +107,7 @@ module.exports = {
         alert(helpWords);
     },
     ver: function (mainPath) {
-        const packageStr = fs.readFileSync(mainPath.replace(/bin[\\\/]main$/, '') + 'package.json', 'utf-8');
+        const packageStr = fs.readFileSync(mainPath.split(/bin[\\\/]main/)[0] + 'package.json', 'utf-8');
         const packageConf = JSON.parse(packageStr);
         const text = [
             'Package:   amWiki',
