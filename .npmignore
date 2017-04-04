@@ -15,4 +15,6 @@ $RECYCLE.BIN/
 npm-debug.log
 node_modules
 
-.project
+*.project
+*.temp
+*.log
