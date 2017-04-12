@@ -13,6 +13,7 @@ module.exports = {
     /**
      * 启动服务器
      * @param {object} wikis - 文库记录列表的引用
+     * @param {number} port - 服务器端口号
      */
     run: function (wikis, port) {
         if (!this._server) {
