@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-
 //获取命令内容
 const [nodePath, mainPath, command, ...parameters] = process.argv;
 // co 模块，异步函数编程
