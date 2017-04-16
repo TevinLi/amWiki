@@ -18,12 +18,15 @@
     var Docs = function () {
         this.$e = {
             win: $(win),
-            //markdown文档内容容器
+            //markdown 文档内容容器
             view: $('#view'),
+            //网页 title 标签
             title: $('title'),
+            //目录悬浮窗标题
             contentsTitle: $('#contentsTitle')
         };
         this.data = {
+            //记录页面宽度
             pageWidth: 0
         };
         this.initUrlEncode();
@@ -101,7 +104,7 @@
                 contentsMd += '\t1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
             }
             //设置描记
-            $this.prepend(anchorHtml.replace(/\{title\}/g, text2));
+            $this.prepend(anchorHtml.replace(/{title}/g, text2));
             //首次打开页面滚动位置修正
             if (hash == $this.text().replace(/"/g, '')) {
                 if (that.data.pageWidth <= 720) {
@@ -115,6 +118,57 @@
             contentsMd = '1. &#12288;\n' + contentsMd;
         }
         return contentsMd;
+    };
+
+    //创建脚注
+    Docs.prototype.createFootnote = function (text) {
+        var footnotes = [];
+        var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
+        var noteReg = /\[\^([ a-zA-Z\d]+)]/g;
+        var noteTmp = '<sup><a href="#fn:foot{index}" name="#fn:note{index}">[{index}]</a></sup>';
+        var html = '';
+        text = text.replace(footReg, function (match, s1, s2, index) {
+            //console.log(match, s1, index);
+            footnotes.push({
+                index: index,
+                note: s1,
+                content: s2,
+                used: false
+            });
+            //从页面上删除底部脚注内容
+            return '';
+        });
+        //将脚注的标记转为序号
+        text = text.replace(noteReg, function (match, s1) {
+            console.log(s1);
+            for (var i = 0, foot; foot = footnotes[i]; i++) {
+                if (foot.note == s1) {
+                    foot.used = true;
+                    return noteTmp.replace(/{index}/g, i + 1 + '');
+                }
+            }
+            //当脚注的正文不存在，视标记文本为正文
+            var length = footnotes.push({
+                index: 0,
+                note: s1,
+                content: s1,
+                used: true
+            });
+            return noteTmp.replace(/{index}/g, length + '');
+        });
+        //生成底部脚注html
+        if (footnotes.length >= 1) {
+            html += '<ol class="footnote">';
+            for (var i = 0, foot; foot = footnotes[i]; i++) {
+                if (foot.used) {
+                    html += '<li id="fn:foot' + (i + 1) + '">' + foot.content + '</li>';
+                } else {
+                    html += '<li style="width:0;height:0;overflow:hidden;">' + foot.content + '</li>'
+                }
+            }
+            html += '</ol>';
+        }
+        return text + html;
     };
 
     //设置js注释隐藏
@@ -196,35 +250,41 @@
      */
     Docs.prototype.renderDoc = function (content) {
         var that = this;
+        var html = '';
         this.cleanView();
-        var html = marked(content)
+        //创建脚注
+        content = this.createFootnote(content);
+        //编译 markdown
+        html = marked(content)
+        //创建目录标记，和悬浮窗格式统一
             .replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
+        //功能化代码块
         this.$e.view
             .html(html)
             .find('pre code').each(function (i, element) {
-                var $elm = $(element);
-                var className = $elm.attr('class') || '';
-                //流程图
-                if (className.indexOf('lang-flow') >= 0) {
-                    that.createFlowChart($elm);
-                }
-                //语法高亮
-                else if (className.indexOf('lang') >= 0) {
-                    hljs.highlightBlock(element);
-                }
-                //js注释开关
-                className = $elm.attr('class') || '';
-                if (className.indexOf('javascript') >= 0) {
-                    that.setJSCommentDisable($elm);
-                }
-            });
+            var $elm = $(element);
+            var className = $elm.attr('class') || '';
+            //创建流程图
+            if (className.indexOf('lang-flow') >= 0) {
+                that.createFlowChart($elm);
+            }
+            //创建语法高亮
+            else if (className.indexOf('lang') >= 0) {
+                hljs.highlightBlock(element);
+            }
+            //创建js注释开关
+            className = $elm.attr('class') || '';
+            if (className.indexOf('javascript') >= 0) {
+                that.setJSCommentDisable($elm);
+            }
+        });
         //设置网页title
         var title = this.$e.view.find('h1').eq(0).text();
         this.$e.title.text(title);
         this.$e.contentsTitle.text(title).attr('href', '#' + title.replace(/"/g, ''));
-        //设置描点
+        //创建描点
         var contents = this._setTitlesAnchor();
-        //设置目录
+        //创建目录
         $('.markdown-contents').html(marked(contents));
     };
 
