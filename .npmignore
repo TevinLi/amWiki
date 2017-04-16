@@ -18,3 +18,4 @@ node_modules
 *.project
 *.temp
 *.log
+*.cmd

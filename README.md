@@ -14,6 +14,7 @@ APM:
 NPM:  
 [![NPM Version](https://img.shields.io/npm/v/amwiki.svg)](https://www.npmjs.com/package/amwiki "NPM Version") [![APM Downloads](https://img.shields.io/npm/dt/amWiki.svg)](https://www.npmjs.com/package/amwiki "APM Downloads")
 
+<br>
 ## amWiki 的优势
 - 文档系统采用 markdown 语法
 - 不用数据库，文档使用 `.md` 格式保存本地文件
@@ -26,7 +27,7 @@ NPM:
 - 无需服务端的全文库标题内容搜索与计分排序
 - ... (更多内容期待您的发现)
 
-
+<br>
 ## 安装 amWiki
 amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工作，两个平台的工作相互独立，但所创建的文库却可以相互共用  
 （注意，对这两个平台的依赖是编辑需求而不是服务器需求，amWiki 创建的文库是纯静态 html，可以随意放置）
@@ -47,11 +48,13 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 3. cd 到某个文件夹，通过命令 `amwiki create` 创建文库
 4. 通过命令 `amwiki help` 查看帮助
 
+<br>
 ## amWiki 文档 & 文库 Demo
-amWiki 的文档由项目自身创建与维护，更多详细功能与使用介绍请前往：  
+amWiki 的文档由项目自身创建与维护  
+更多详细功能与使用介绍请前往 amWiki 的 github pages 查阅：  
 [ [文档中心：https://tevinli.github.io/amWiki/](https://tevinli.github.io/amWiki/index.html?file=001-学习amWiki/01-amWiki轻文库简介) ]
 
-
+<br>
 ## 更新日志
 ### 如何获取最新版本信息与动态？
 - QQ群 **347125653**
