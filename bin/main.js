@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
+
 //获取命令内容
-const [nodePath, mainPath, command, ...parameters] = process.argv;
+let [nodePath, mainPath, command, ...parameters] = process.argv;
+//转换 linux 下软链接路径为真实路径
+mainPath = fs.realpathSync(mainPath);
+
 // co 模块，异步函数编程
 const co = require('../modules/co');
 
