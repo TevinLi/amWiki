@@ -145,7 +145,8 @@ co(function*() {
     }
 
     //关闭用户输入
-    process.stdin.end();
+    //process.stdin.end();
+    process.exit();
 
 }).catch((e) => {
     console.error(e);
