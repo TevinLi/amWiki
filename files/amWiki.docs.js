@@ -123,16 +123,22 @@
     //创建脚注
     Docs.prototype.createFootnote = function (text) {
         var footnotes = [];
-        var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
         var noteReg = /\[\^([ a-zA-Z\d]+)]/g;
-        var noteTmp = '<sup><a href="#fn:foot{index}" name="#fn:note{index}">[{index}]</a></sup>';
+        var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
+        var templates = $.trim($('#template\\:footnote').text()).split(/[\r\n]+\s*/g);
         var html = '';
+        //提取脚注内容
         text = text.replace(footReg, function (match, s1, s2, index) {
-            //console.log(match, s1, index);
+            var title = '';
+            s2 = s2.replace(/"(.*?)"\s*$/, function (m, ss1) {
+                title = ss1;
+                return '';
+            });
             footnotes.push({
                 index: index,
                 note: s1,
                 content: s2,
+                title: title,
                 used: false
             });
             //从页面上删除底部脚注内容
@@ -140,11 +146,10 @@
         });
         //将脚注的标记转为序号
         text = text.replace(noteReg, function (match, s1) {
-            console.log(s1);
             for (var i = 0, foot; foot = footnotes[i]; i++) {
                 if (foot.note == s1) {
                     foot.used = true;
-                    return noteTmp.replace(/{index}/g, i + 1 + '');
+                    return templates[0].replace(/{{index}}/g, i + 1 + '').replace('{{title}}', foot.title);
                 }
             }
             //当脚注的正文不存在，视标记文本为正文
@@ -154,19 +159,21 @@
                 content: s1,
                 used: true
             });
-            return noteTmp.replace(/{index}/g, length + '');
+            return templates[0].replace(/{{index}}/g, length + '');
         });
         //生成底部脚注html
         if (footnotes.length >= 1) {
-            html += '<ol class="footnote">';
             for (var i = 0, foot; foot = footnotes[i]; i++) {
                 if (foot.used) {
-                    html += '<li id="fn:foot' + (i + 1) + '">' + foot.content + '</li>';
+                    html += templates[2]
+                        .replace('{{index}}', i + 1)
+                        .replace('{{content}}', foot.content)
+                        .replace('{{back}}', templates[4].replace('{{index}}', i + 1));
                 } else {
-                    html += '<li style="width:0;height:0;overflow:hidden;">' + foot.content + '</li>'
+                    html += templates[3].replace('{{content}}', foot.content);
                 }
             }
-            html += '</ol>';
+            html = templates[1].replace('{{list}}', html);
         }
         return text + html;
     };

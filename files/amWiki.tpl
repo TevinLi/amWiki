@@ -51,7 +51,15 @@
             </div>
             <div class="main scroller" id="main">
                 <div class="main-inner scroller-inner">
+                    <!-- 正文 -->
                     <article class="markdown-body scroller-content" id="view"></article>
+                    <script id="template:footnote" type="text/html">
+                        <sup><a href="#fn:foot{{index}}" name="fn:note{{index}}" title="{{title}}">[{{index}}]</a></sup>
+                        <ol class="footnote"><i>[参考资料]：</i>{{list}}</ol>
+                        <li id="fn:foot{{index}}">{{content}} {{back}}</li>
+                        <li class="footnote-none" data-msg="匹配缺失">{{content}}</li>
+                        <a href="#fn:note{{index}}"><svg><use xlink:href="#icon:footnoteBack"></use></svg></a>
+                    </script>
                     <!-- 上下翻页 -->
                     <div class="main-sibling scroller-content" id="mainSibling">
                         <p><span>上一篇：</span>

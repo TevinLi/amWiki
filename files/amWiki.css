@@ -101,6 +101,13 @@ body{position:relative;background:#e7e8eb;}
 
 .main{position:relative;height:100%;margin-left:250px;}
 .main .markdown-body{padding:45px;}
+
+.main .footnote{position:relative;padding-top:35px;border-top:#ddd 1px solid;}
+.main .footnote i{position:absolute;top:5px;left:10px;font-size:15px;font-style:normal;color:#999;}
+.main .footnote li:focus{background:#EAFFEA;}
+.main .footnote svg{display:inline-block;width:14px;height:14px;margin-bottom:-1px;}
+.main .footnote-none{width:0;height:0;overflow:hidden;}
+
 .main-sibling{display:none;width:100%;padding:30px 45px 20px;font-size:14px;border-top:1px solid #e7e7eb;}
 .main-sibling.on{display:block;}
 .main-sibling p{position:relative;height:22px;}
