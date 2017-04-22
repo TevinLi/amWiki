@@ -125,47 +125,6 @@ $(function () {
         $menuBar.on('click', 'h4', function () {
             $nav.removeClass('on');
         });
-        //页面筛选
-        $filter.on('input propertychange', function () {
-            var value = $filter.val();
-            if (value != '') {
-                $filterClean.removeClass('off');
-                $menuBar.find('h5').removeClass('on').next('ul').hide();
-                $menuBar.find('a').each(function () {
-                    var $this = $(this);
-                    if ($this.text().indexOf(value) >= 0) {
-                        $this.html($this.text().replace(value, '<mark>' + value + '</mark>'));
-                        var $prev = $this.parent().removeClass('off').parent().show().prev();
-                        //一级目录
-                        if ($prev.is('h5')) {
-                            $prev.addClass('on');
-                        }
-                        //二级目录
-                        else if ($prev.is('strong')) {
-                            $prev.addClass('on').parent().removeClass('off').parent().show().prev().addClass('on');
-                        }
-                    } else {
-                        if ($this.find('mark').length > 0) {
-                            $this.text($this.text());
-                        }
-                        $this.parent().addClass('off');
-                    }
-                });
-            } else {
-                $filterClean.addClass('off');
-                $menuBar.find('a').each(function () {
-                    var $this = $(this);
-                    if ($this.find('mark').length > 0) {
-                        $this.text($this.text());
-                    }
-                });
-                $menuBar.find('a').parent().removeClass('off');
-            }
-            $menuBar.trigger('scrollbar');
-        });
-        $filterClean.on('click', function () {
-            $filter.val('').trigger('change');
-        });
         //显示svg图标
         if (sessionStorage['AMWikiIconsSvg']) {
             $('#svgSymbols').append(sessionStorage['AMWikiIconsSvg']);
@@ -199,6 +158,135 @@ $(function () {
                     $contents.removeClass('on').removeClass('on');
                 }
             }
+        });
+    })();
+    //导航栏筛选操作
+    (function () {
+        /**
+         * @desc 向下递归进行导航筛选
+         * 当类型为筛选时，必定有正则，执行完全筛选
+         *     当文件夹匹配时，本级与子级显示全部且显示匹配
+         *     当文件夹不匹配时，仅显示匹配
+         * 当类型为打开时，如果有正则，显示全部且显示匹配
+         * 当类型为打开时，如果无正则，显示全部
+         */
+        var filterNav = function (type, $title, valReg) {
+            var $ul = $title.next('ul');
+            //如果是一级文件夹，区分对待
+            //  换个角度，文本操作用　$span，其他操作用 $title
+            //  显示上 strong 带 on 加粗显示，h5 加 off 隐藏
+            var $span = $title.is('h5') ? $title.find('span') : $title;
+            //筛选
+            if (type == 'filter' && valReg) {
+                //当文件夹标题匹配时
+                if (valReg.test($span.text())) {
+                    $span.html($span.text().replace(valReg, '<mark>$1</mark>'));
+                    $title.addClass('on').removeClass('off');
+                    //链接全部显示，但显示匹配
+                    $ul.show().find('> li > a').each(function () {
+                        var $this = $(this);
+                        $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
+                        //父级显示
+                        showParents($this.parent().removeClass('off').parent().show().prev());
+                    });
+                    //子级文件和文件夹全部显示，但显示匹配
+                    $ul.find('> li > strong').each(function () {
+                        filterNav('open', $(this), valReg);
+                    });
+                }
+                //文件夹标题不匹配时
+                else {
+                    $span.text($span.text());
+                    $title.removeClass('on');
+                    //隐藏父级或h5
+                    if ($title == $span) {
+                        $title.parent().addClass('off');
+                    } else {
+                        $title.addClass('off');
+                    }
+                    //链接仅显示匹配的
+                    $ul.hide().find('> li > a').each(function () {
+                        var $this = $(this);
+                        if (valReg.test($this.text())) {
+                            $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
+                            //父级显示
+                            showParents($this.parent().removeClass('off').parent().show().prev());
+                        } else {
+                            $this.text($this.text()).parent().addClass('off');
+                        }
+                    });
+                    //子级继续完全筛选
+                    $ul.find('> li > strong').each(function () {
+                        filterNav('filter', $(this), valReg);
+                    });
+                }
+            }
+            //还原，显示全部链接和文件夹
+            else {
+                $title.removeClass('off');
+                if ($title.hasClass('on')) {
+                    $ul.show();
+                } else {
+                    $ul.hide();
+                }
+                //当存在正则时，显示匹配
+                if (!!valReg) {
+                    $span.html($span.text().replace(valReg, '<mark>$1</mark>'));
+                    $ul.find('> li > a').each(function () {
+                        var $this = $(this);
+                        $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
+                        //父级显示
+                        showParents($this.parent().removeClass('off').parent().show().prev());
+                    });
+                    $ul.find('> li > strong').each(function () {
+                        filterNav('open', $(this), valReg);
+                    });
+                }
+                //当正则不存在，不显示匹配
+                else {
+                    $span.text($span.text());
+                    $ul.find('> li > a').each(function () {
+                        var $this = $(this);
+                        $this.text($this.text());
+                    });
+                    $ul.children('li').removeClass('off').children('strong').each(function () {
+                        filterNav('open', $(this), null);
+                    });
+                }
+            }
+        };
+        //向上递归显示父级
+        var showParents = function ($title) {
+            $title.addClass('on').removeClass('off');
+            //一级目录
+            if (!$title.is('h5')) {
+                var $prev2 = $title.parent().removeClass('off').parent().show().prev();
+                showParents($prev2);
+            }
+        };
+        //操作触发
+        $filter.on('input propertychange input2', function () {
+            var value = $filter.val().replace(/([\(\)\[\]\^\$\+])/g, '\\$1');
+            var valReg = new RegExp('(' + $.trim($filter.val()).split(/[ ,]/).join('|') + ')', 'ig');
+            if (value != '' && !/^\s$/g.test(value)) {
+                console.log(valReg);
+                $filterClean.removeClass('off');
+                $menuBar.find('h5').each(function () {
+                    filterNav('filter', $(this), valReg);
+                });
+                storage.setStates('navFilterKey', value);
+            } else {
+                $filterClean.addClass('off');
+                $menuBar.find('h5').each(function () {
+                    filterNav('open', $(this), null);
+                });
+                storage.setStates('navFilterKey');
+            }
+            $menuBar.trigger('scrollbar');
+        });
+        //清空
+        $filterClean.on('click', function () {
+            $filter.val('').trigger('input2');
         });
     })();
 
@@ -335,7 +423,10 @@ $(function () {
             $menuBar.find('.scroller-content').html(marked(data));
             $menuBar
                 .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
-                .find('h5').prepend('<svg><use xlink:href="#icon:navArrow"></use></svg>');
+                .find('h5').each(function () {
+                var $this = $(this);
+                $this.html('<svg><use xlink:href="#icon:navArrow"></use></svg><span>' + $this.text() + '</span>')
+            });
             $menuBar.trigger('scrollbar');
             var pathList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
@@ -364,6 +455,12 @@ $(function () {
                     return false;
                 }
             });
+            //设置导航筛选初始值
+            var filterVal = storage.getStates('navFilterKey');
+            if (typeof filterVal != 'undefined' && filterVal != '') {
+                $filter.val(filterVal).trigger('input2');
+            }
+            //回调
             callback && callback(pathList);
         }, 'text');
     };

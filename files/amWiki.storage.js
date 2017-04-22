@@ -11,12 +11,14 @@
     var tools = win.tools;
     var wikiPath = tools.simString(win.location.pathname.replace('/', '').replace(/\//g, '_')).toUpperCase();
     var LOCAL_STORAGE_NAME = 'AMWikiDataBase@' + wikiPath;  //本地数据localStorage键名
+    var LOCAL_STATES = 'AMWikiStates@' + wikiPath;  //本地状态集键名
 
     /**
      * @class 创建一个本地存储管理对象
      */
     var Storage = function () {
         this._db = null;  //内存中的文库缓存
+        this._states = null;  //内存中的状态集
         this.elm = {
             $win: $(win),
             //更新全部缓存按钮
@@ -203,6 +205,25 @@
     //获取缓存最后重建时间
     Storage.prototype.getLastBuildTs = function () {
         return this._db.lastBuild;
+    };
+
+    Storage.prototype.getStates = function (name) {
+        if (!this._states) {
+            this._states = JSON.parse(win.localStorage[LOCAL_STATES] || '{}');
+        }
+        return this._states[name];
+    };
+
+    Storage.prototype.setStates = function (name, value) {
+        if (!this._states) {
+            this._states = JSON.parse(win.localStorage[LOCAL_STATES] || '{}');
+        }
+        if (typeof value == 'undefined') {
+            delete this._states[name];
+        } else {
+            this._states[name] = value;
+        }
+        win.localStorage[LOCAL_STATES] = JSON.stringify(this._states);
     };
 
     return win.AWStorage = Storage;
