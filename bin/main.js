@@ -145,8 +145,12 @@ co(function*() {
     }
 
     //关闭用户输入
-    //process.stdin.end();
-    process.exit();
+    process.stdin.on('error', (e) => {
+        if (e.code !== 'EPIPE' || e.syscall !== 'shutdown') {
+            throw e;
+        }
+    });
+    process.stdin.end();
 
 }).catch((e) => {
     console.error(e);

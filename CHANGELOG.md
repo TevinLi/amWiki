@@ -3,7 +3,7 @@
 ### v1.0.3
 _2017-04-22_
 
-- 基础 Markdown 语法扩展，支持 footnote 脚注 ([#39](https://github.com/TevinLi/amWiki/issues/39))
+- 基础 Markdown 语法扩展，支持 footnote 脚注 ([#37](https://github.com/TevinLi/amWiki/issues/37))
 - 修复 Windows 平台下 gitbash 执行命令结束报错的问题
 - 修复 Linux 平台下 `/usr/bin/env` 解释器调用失败的问题
 - 修复 Linux 平台下 create、version 报错的问题
