@@ -12,7 +12,7 @@ GitHub:
 APM:  
 [![APM Version](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "APM Version") [![APM Downloads](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "APM Downloads")  
 NPM:  
-[![NPM Version](https://img.shields.io/npm/v/amwiki.svg)](https://www.npmjs.com/package/amwiki "NPM Version") [![APM Downloads](https://img.shields.io/npm/dt/amWiki.svg)](https://www.npmjs.com/package/amwiki "APM Downloads")
+[![NPM Version](https://img.shields.io/npm/v/amwiki.svg)](https://www.npmjs.com/package/amwiki "NPM Version") [![APM Downloads](https://img.shields.io/npm/dt/amwiki.svg)](https://www.npmjs.com/package/amwiki "APM Downloads") [![npm](https://img.shields.io/npm/dm/amwiki.svg)](https://www.npmjs.com/package/amwiki)
 
 <br>
 
@@ -32,7 +32,7 @@ NPM:
 
 ## 安装 amWiki
 amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工作，两个平台的工作相互独立，但所创建的文库却可以相互共用  
-（注意，对这两个平台的依赖是编辑需求而不是服务器需求，amWiki 创建的文库是纯静态 html，可以随意放置）
+（PS：对这两个平台的依赖都是编辑需求而不是服务器需求，amWiki 创建的文库是纯静态 html，可以随意布置到任何服务器）
 
 ### 作为 Atom 插件安装
 1. 下载 Github 开源文本编辑器 [Atom](https://atom.io/ "Atom官网")，并安装  

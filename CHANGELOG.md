@@ -1,5 +1,15 @@
 # 版本日志
 
+### v1.0.3
+_2017-04-22_
+
+- 基础 Markdown 语法扩展，支持 footnote 脚注 ([#39](https://github.com/TevinLi/amWiki/issues/39))
+- 修复 Windows 平台下 gitbash 执行命令结束报错的问题
+- 修复 Linux 平台下 `/usr/bin/env` 解释器调用失败的问题
+- 修复 Linux 平台下 create、version 报错的问题
+- 释放快捷键绑定 Ctrl+D、Ctrl+H ([#38](https://github.com/TevinLi/amWiki/issues/38))
+- 取消 readme 单篇长文介绍，仅保留安装方法，详细介绍引导至文档中心
+
 ### v1.0.2
 _2017-04-04_
 
