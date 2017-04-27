@@ -335,7 +335,9 @@ $(function () {
         };
         setSiblingNav(0, getDocLink('prev', $item));
         setSiblingNav(1, getDocLink('next', $item));
-        $mainSibling.addClass('on');
+        if (!testing.isOpen()) {
+            $mainSibling.addClass('on');
+        }
     };
 
     //改变导航显示

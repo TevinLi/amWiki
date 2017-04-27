@@ -19,6 +19,8 @@
             $testingBox: $('#testingBox'),
             //md文档渲染处
             $view: $('#view'),
+            //上一篇下一篇切换
+            $sibling: $('#mainSibling'),
             //面板显示隐藏按钮
             $testingShow: null,
             //参数列表的容器
@@ -187,8 +189,8 @@
             this.elm.$testingBox.css({
                 'position': 'absolute'
             });
-            this.elm.$view.show().addClass('scroller-content')
-                .next('#mainSibling').addClass('scroller-content').addClass('on');
+            this.elm.$view.show().addClass('scroller-content');
+            this.elm.$sibling.addClass('scroller-content').addClass('on');
             this.elm.$testingBox.removeClass('scroller-content').stop().animate({
                 'width': '30%',
                 'opacity': 0
@@ -208,8 +210,8 @@
                     'width': '100%',
                     'opacity': 1
                 }, 300, 'swing', function () {
-                    that.elm.$view.hide().removeClass('scroller-content')
-                        .next('#mainSibling').removeClass('scroller-content').removeClass('on');
+                    that.elm.$view.hide().removeClass('scroller-content');
+                    that.elm.$sibling.removeClass('scroller-content').removeClass('on');
                     that.elm.$testingBox.addClass('scroller-content').css({
                         'position': 'relative'
                     });
@@ -411,6 +413,11 @@
                 }
             });
         });
+    };
+
+    //判断测试面板是否处于打开状态
+    Testing.prototype.isOpen = function () {
+        return this.elm.$testingShow.hasClass('on');
     };
 
     return win.AWTesting = Testing;
