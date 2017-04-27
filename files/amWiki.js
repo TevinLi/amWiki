@@ -110,19 +110,18 @@ $(function () {
         $menuIcon.on('click', function () {
             var $this = $(this);
             if ($this.hasClass('close')) {
-                $this.removeClass('close');
-                $menuIcon.find('use').attr('xlink:href', '#icon:navStart');
+                $this.removeClass('close')
+                    .find('use').attr('xlink:href', '#icon:navStart');
                 $nav.removeClass('on');
             } else {
-                $this.addClass('close');
-                $menuIcon.find('use').attr('xlink:href', '#icon:navClose');
+                $this.addClass('close')
+                    .find('use').attr('xlink:href', '#icon:navClose');
                 $nav.addClass('on');
             }
         });
-        $menuBar.on('click', 'li a', function () {
-            $nav.removeClass('on');
-        });
-        $menuBar.on('click', 'h4', function () {
+        $menuBar.on('click2', 'a', function (e) {
+            $menuIcon.removeClass('close')
+                .find('use').attr('xlink:href', '#icon:navStart');
             $nav.removeClass('on');
         });
         //筛选操作
@@ -267,8 +266,8 @@ $(function () {
                 }
                 $ul.find('> li > a').each(function () {
                     var $this = $(this);
+                    $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
                     if (valReg.test($this.text())) {
-                        $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
                         $ul.show();  //当链接名称命中，展开文件夹
                     }
                     $this.parent().removeClass('off');
@@ -448,6 +447,7 @@ $(function () {
                         search.displayBox('off'); //关闭搜索面板
                         changeNav(path);
                         changePage(path);
+                        $this.trigger('click2');
                         return false;
                     });
                 }
