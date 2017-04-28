@@ -9,6 +9,9 @@
         'label': '提取 h2,h3 标题为页内目录',
         'command': 'amWiki:catalogue'
     }, {
+       'label': '从剪切板粘贴截图',
+       'command': 'amWiki:paste'
+    }, {
         'label': '手动更新当前文库导航文件',
         'command': 'amWiki:makeNav'
     }, {
