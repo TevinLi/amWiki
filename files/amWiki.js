@@ -119,7 +119,7 @@ $(function () {
                 $nav.addClass('on');
             }
         });
-        $menuBar.on('click2', 'a', function (e) {
+        $nav.on('navchange searchon searchoff', function (e) {
             $menuIcon.removeClass('close')
                 .find('use').attr('xlink:href', '#icon:navStart');
             $nav.removeClass('on');
@@ -449,7 +449,7 @@ $(function () {
                         search.displayBox('off'); //关闭搜索面板
                         changeNav(path);
                         changePage(path);
-                        $this.trigger('click2');
+                        $this.trigger('navchange');
                         return false;
                     });
                 }
@@ -462,6 +462,7 @@ $(function () {
                         var path = href.split('file=')[1];
                         changeNav(path);
                         changePage(path);
+                        $this.trigger('navchange');
                     }
                     return false;
                 }

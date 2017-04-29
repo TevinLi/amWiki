@@ -53,10 +53,12 @@
         this.elm.$searchShow.on('click', function () {
             if (that.elm.$searchBox.hasClass('on')) {
                 that.displayBox('off');
+                that.elm.$searchShow.trigger('searchoff');
             } else {
                 that.displayBox('on', function () {
                     resetResHeight();
                 });
+                that.elm.$searchShow.trigger('searchon');
             }
         });
         //设置结果区域高度
