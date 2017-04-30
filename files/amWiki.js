@@ -200,8 +200,8 @@ $(function () {
         var $ul = $title.next('ul');
         //因为一级文件夹和子级文件夹DOM结构不同，所以区分对待
         //  显示上，strong 带 on 加粗显示，h5 加 off 隐藏
-        //  换个角度，通过：文本操作使用变量 $span，其他操作使用变量 $title，来实现调用方法统一
-        var $span = $title.is('h5') ? $title.find('span') : $title;
+        //  文本操作使用变量 $span，其他操作使用变量 $title
+        var $span = $title.find('span');
         //当类型为筛选时
         if (type == 'filter' && valReg) {
             //当文件夹标题匹配时
@@ -211,8 +211,9 @@ $(function () {
                 //所属链接全部显示，且显示匹配
                 $ul.show().find('> li > a').each(function () {
                     var $this = $(this);
-                    $this.html($this.text().replace(valReg, '<mark>$1</mark>'))
-                        .parent().removeClass('off');
+                    var $span2 = $this.find('span');
+                    $span2.html($span2.text().replace(valReg, '<mark>$1</mark>'));
+                    $this.parent().removeClass('off');
                 });
                 //父级显示
                 showNavParents($title);
@@ -226,7 +227,7 @@ $(function () {
                 $span.text($span.text());
                 $title.removeClass('on');
                 //隐藏父级或隐藏h5
-                if ($title == $span) {
+                if ($title.is('h5')) {
                     $title.parent().addClass('off');
                 } else {
                     $title.addClass('off');
@@ -234,14 +235,15 @@ $(function () {
                 //所属链接仅显示匹配的
                 $ul.hide().find('> li > a').each(function () {
                     var $this = $(this);
+                    var $span2 = $this.find('span');
                     if (valReg.test($this.text())) {
-                        $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
+                        $span2.html($span2.text().replace(valReg, '<mark>$1</mark>'));
                         $this.parent().removeClass('off');
                         //存在匹配时父级才显示
                         showNavParents($ul.show().prev());
                     } else {
-                        $this.text($this.text())
-                            .parent().addClass('off');
+                        $span2.text($span2.text());
+                        $this.parent().addClass('off');
                     }
                 });
                 //下一级继续完全筛选
@@ -266,7 +268,8 @@ $(function () {
                 }
                 $ul.find('> li > a').each(function () {
                     var $this = $(this);
-                    $this.html($this.text().replace(valReg, '<mark>$1</mark>'));
+                    var $span2 = $this.find('span');
+                    $span2.html($span2.text().replace(valReg, '<mark>$1</mark>'));
                     if (valReg.test($this.text())) {
                         $ul.show();  //当链接名称命中，展开文件夹
                     }
@@ -283,8 +286,8 @@ $(function () {
             else {
                 $span.text($span.text());
                 $ul.find('> li > a').each(function () {
-                    var $this = $(this);
-                    $this.text($this.text());
+                    var $span2 = $(this).find('span');
+                    $span2.text($span2.text());
                 });
                 $ul.children('li').removeClass('off').children('strong').each(function () {
                     filterNav('open', null, $(this));
@@ -441,8 +444,9 @@ $(function () {
             var pathList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
+                var $this = $(this);
+                $this.html('<span>' + $this.text() + '</span>');
                 if (HISTORY_STATE) {
-                    var $this = $(this);
                     var path = $this.attr('href').split('file=')[1];
                     pathList.push(path);
                     $this.on('click', function () {
@@ -466,6 +470,10 @@ $(function () {
                     }
                     return false;
                 }
+            });
+            $menuBar.find('strong').each(function () {
+                var $this = $(this);
+                $this.html('<span>' + $this.text() + '</span>');
             });
             //设置导航筛选初始值
             var filterVal = storage.getStates('navFilterKey');
