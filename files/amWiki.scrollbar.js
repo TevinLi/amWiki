@@ -109,7 +109,7 @@
                     that.$e.body.attr('onselectstart', 'return false');
                     that.$e.barX.addClass('active');
                     _x = e.pageX;
-                    left = parseFloat(that.$e.sliderX.css('top'));
+                    left = parseFloat(that.$e.sliderX.css('left'));
                 }
             });
         }
@@ -231,7 +231,7 @@
         });
         //修正 webkit 中滚动条本身占位
         if (/webkit/.test(navigator.userAgent.toLowerCase())) {
-            that._data.contentH += 11;
+            that._data.contentH += 15;
         }
         //如果高度未改变不进行操作
         if (this._data.contentH == this._data.contentHLast && this._data.contentW == this._data.contentWLast) {
