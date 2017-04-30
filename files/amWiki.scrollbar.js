@@ -29,6 +29,7 @@
         };
         this._data = {
             xRolling: this.$e.container.attr('data-x-rolling') == 'true',
+            maxTop: 0,              //最大top值
             barH: 0,                //滚动条高度
             sliderH: 0,             //滑块高度
             contentH: 0,            //内容高度
@@ -161,6 +162,8 @@
         this._data.barH = this.$e.boxY.height();
         this._data.sliderH = this._data.containerH / that._data.contentH * this._data.barH;
         this.$e.sliderY.height(this._data.sliderH);
+        //计算最大高度
+        this._data.maxTop = (this._data.barH - this._data.sliderH) / this._data.barH * this._data.contentH + 1;
         //水平方向
         if (this._data.xRolling) {
             this._data.containerW = this.$e.inner.width();
@@ -187,17 +190,7 @@
         if (barTop + this._data.sliderH >= this._data.barH) {
             barTop = this._data.barH - this._data.sliderH;
             this.$e.sliderY.css('top', barTop);
-            //当向下滑动过界时，节流过滤，动画滚回 (修复webkit显示上过界的问题)
-            var top2 = barTop / this._data.barH * this._data.contentH;
-            if (top1 > top2 + 2) {
-                if (this._reScrollTimer) {
-                    clearTimeout(this._reScrollTimer);
-                    this._reScrollTimer = 0;
-                }
-                this._reScrollTimer = setTimeout(function () {
-                    that.$e.inner.stop().animate({'scrollTop': top2}, 130);
-                }, 100);
-            }
+            this.$e.inner.scrollTop(this._data.maxTop);
         } else {
             this.$e.sliderY.css('top', barTop);
         }
@@ -236,6 +229,10 @@
             that._data.contentH += $(this).outerHeight();
             that._data.contentW += $(this).outerWidth();
         });
+        //修正 webkit 中滚动条本身占位
+        if (/webkit/.test(navigator.userAgent.toLowerCase())) {
+            that._data.contentH += 11;
+        }
         //如果高度未改变不进行操作
         if (this._data.contentH == this._data.contentHLast && this._data.contentW == this._data.contentWLast) {
             return;
