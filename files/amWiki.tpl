@@ -43,7 +43,7 @@
                         <use xlink:href="#icon:search"></use>
                     </svg>
                 </div>
-                <nav class="menubar scroller" id="menuBar">
+                <nav class="menubar scroller" id="menuBar" data-x-rolling="true">
                     <div class="scroller-inner">
                         <div class="scroller-content"></div>
                     </div>
@@ -58,7 +58,11 @@
                         <ol class="footnote"><i>[参考资料]：</i>{{list}}</ol>
                         <li id="fn:foot{{index}}">{{content}} {{back}}</li>
                         <li class="footnote-none" data-msg="匹配缺失">{{content}}</li>
-                        <a href="#fn:note{{index}}"><svg><use xlink:href="#icon:footnoteBack"></use></svg></a>
+                        <a href="#fn:note{{index}}">
+                            <svg>
+                                <use xlink:href="#icon:footnoteBack"></use>
+                            </svg>
+                        </a>
                     </script>
                     <!-- 上下翻页 -->
                     <div class="main-sibling scroller-content" id="mainSibling">
