@@ -80,7 +80,7 @@ body{position:relative;background:#e7e8eb;}
 .menubar h5 svg{position:absolute;top:12px;left:12px;width:13px;height:13px;color:#acacac;-webkit-transform:rotate(-90deg);-moz-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);}
 .menubar h5.on svg{color:@colour-base;-webkit-transform:rotate(0);-moz-transform:rotate(0);-ms-transform:rotate(0);transform:rotate(0);}
 .menubar ul{display:none;margin:0;padding:0;list-style:none;}
-.menubar ul li{min-width:250px;padding-left:23px;}
+.menubar ul li{padding-left:23px;}
 .menubar .scroller-content > ul > li{padding-left:45px;}
 .menubar ul li.off{display:none;}
 .menubar ul li > a,.menubar ul li > strong{display:block;height:30px;padding:0 55px 0 0;font-weight:normal;white-space:nowrap;line-height:30px;font-size:12px;color:#333;text-decoration:none;cursor:pointer;}
@@ -160,7 +160,7 @@ body[onselectstart]{cursor:pointer;-moz-user-select:none;-webkit-user-select:non
 .scroller .scrollbar.scrollbar-y:active i{left:0;width:10px;}
 /* scrollbar-x */
 .scroller[data-x-rolling="true"] .scroller-inner.on{overflow-x:scroll;}
-.scroller[data-x-rolling="true"] .scroller-content{display:inline-block;position:relative;white-space:nowrap;padding-bottom:10px;}
+.scroller[data-x-rolling="true"] .scroller-content{display:inline-block;position:relative;padding-bottom:10px;white-space:nowrap;min-width:250px;}
 .scroller .scrollbar.scrollbar-x{bottom:0;left:0;width:100%;height:10px;padding-right:10px;}
 .scroller .scrollbar.scrollbar-x div{width:100%;height:100%;}
 .scroller .scrollbar.scrollbar-x i{bottom:0;top:4px;height:3px;width:100%;}
