@@ -7,6 +7,44 @@ const fs = require('fs');
 
 module.exports = {
     /**
+     * 递归分析指定文件夹下的目录结构
+     * @param {string} dirPath - 指定要分析的目录
+     * @param {number} [depth=0] - 文件夹深度
+     * @param {object} [tree={}] - 当前深度文件树
+     * @param {string[]} [folders=[]] - 当前文件夹的子文件夹列表
+     * @param {string[]} [files=[]] - 当前文件夹文件列表
+     */
+    _listSubFolder: function (dirPath, depth = 0, tree = {}, folders = [], files = []) {
+        try {
+            let filePath;
+            for (let fileName of fs.readdirSync(dirPath)) {
+                //文件路径
+                filePath = dirPath + (depth > 0 ? '/' : '') + fileName;
+                //跳过点开头的系统保留文件
+                if (/^\./.test(fileName)) {
+                    continue;
+                }
+                //文件夹及其递归处理
+                if (fs.statSync(filePath).isDirectory(filePath)) {
+                    let [tempTree, tempFolders, tempFiles] = this._listSubFolder(filePath, depth + 1);
+                    tree[fileName] = tempTree;
+                    folders.push(filePath, ...tempFolders);
+                    files.push(...tempFiles);
+                }
+                //第二层以下深度才允许使用文件（第一层仅允许为文件夹）
+                else {
+                    if (depth > 0) {
+                        tree[fileName] = false;
+                        files.push(filePath);
+                    }
+                }
+            }
+        } catch (err) {
+            console.error(err);
+        }
+        return [tree, folders, files];
+    },
+    /**
      * 读取文库library文件夹树形数据
      * @param {string} path - 文库library文件夹路径
      * @returns {object} 树形数据、文件列表数据、文件夹列表数据
@@ -16,6 +54,7 @@ module.exports = {
             console.warn('The path is not a library.');
             return [];
         }
+        //this._listSubFolder(path);
         const tree = {};
         const folders = [];
         const files = [];
@@ -82,7 +121,7 @@ module.exports = {
      * 清空文件夹
      * @param {string} path - 要清空的文件夹
      */
-    cleanFolder: function(path) {
+    cleanFolder: function (path) {
         const list = fs.readdirSync(path);
         let path2;
         for (let item of list) {
@@ -126,7 +165,7 @@ module.exports = {
     /**
      * 判断一个文件夹是否为amWiki文库项目
      * @param {string} path - 需要判断的文件夹路径
-     * @returns {boolean|string} 否定时返回false，肯定时返回项目根目录的路径
+     * @returns {boolean|string} 判断为否时返回false，判断为真时返回项目根目录的路径
      */
     isAmWiki: function (path) {
         if (!path && typeof path !== 'string') {
