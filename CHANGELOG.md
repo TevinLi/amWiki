@@ -4,19 +4,21 @@
 ## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
 _2017_
 - 实现导航水平滚动条，调和水平垂直两滚动条冲突 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
-- 实现导航栏无限级梯度的层级显示 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
+- 实现PC、Mobi端导航栏无限级梯度的层级显示 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
 - 实现目录无限级深度树形分析 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
+- 
 ---
 -->
 
-## [v1.0.6](https://github.com/TevinLi/amWiki/releases/tag/v1.0.6)
+### v1.0.6
 _2017-05-05_
 
-- 移动端点击搜索按钮时关闭导航层 ([#40](https://github.com/TevinLi/amWiki/issues/40))
 - 修复未开启测试模块的文库web端无内容显示的问题
-- 修复上一版本 npm 失误的发布问题 
+- 修复导航未展开目录时显示不全只有一边的问题
+- 修复上一版本 npm 失误的发布造成 Linux 平台命令无效的问题
+- 移动端点击搜索按钮时关闭导航层 ([#40](https://github.com/TevinLi/amWiki/issues/40))
 
-## [v1.0.5](https://github.com/TevinLi/amWiki/releases/tag/v1.0.5) 
+### v1.0.5
 _2017-04-28_
 
 - 导航筛选功能增强
@@ -29,12 +31,12 @@ _2017-04-28_
 - 修复web端测试面板在不关闭的条件下跳转文档后的一个显示问题
 - 菜单栏增加 `从剪切板粘贴截图` 项，调和与其他插件快捷键冲突 ([#41](https://github.com/TevinLi/amWiki/issues/41))
 
-## [v1.0.4](https://github.com/TevinLi/amWiki/releases/tag/v1.0.4)
+### v1.0.4
 _2017-04-22_
 
 - 紧急修复命令行本地服务器不能启动的问题
 
-## [v1.0.3](https://github.com/TevinLi/amWiki/releases/tag/v1.0.3)
+### v1.0.3
 _2017-04-22_
 
 - 基础 Markdown 语法扩展，支持 footnote 脚注 ([#37](https://github.com/TevinLi/amWiki/issues/37))
@@ -44,7 +46,7 @@ _2017-04-22_
 - 释放快捷键绑定 Ctrl+D、Ctrl+H ([#38](https://github.com/TevinLi/amWiki/issues/38))
 - 取消 readme 单篇长文介绍，仅保留安装方法，详细介绍引导至文档中心
 
-## [v1.0.2](https://github.com/TevinLi/amWiki/releases/tag/v1.0.2)
+### v1.0.2
 _2017-04-04_
 
 - 命令行启动服务器允许使用自定义端口参数
@@ -54,13 +56,13 @@ _2017-04-04_
 - 修复 web 端打开带 hash 地址链接时，hash 无效的问题
 - 修复命令行显示版本号报错问题
 
-## [v1.0.1](https://github.com/TevinLi/amWiki/releases/tag/v1.0.1)
+### v1.0.1
 _2017-03-30_
 
 - 修复 npm 渠道安装失败的问题
 - readme 添加 npm icon
 
-## [v1.0.0](https://github.com/TevinLi/amWiki/releases/tag/v1.0.0)
+### v1.0.0
 _2017-03-30_
 
 - [ _祝贺 amWiki 项目一周岁_ ]

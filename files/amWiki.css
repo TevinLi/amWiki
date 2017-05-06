@@ -214,11 +214,16 @@ body[onselectstart]{cursor:pointer;-moz-user-select:none;-webkit-user-select:non
 	.menubar h4 a{color:#f5f5f5;}
 	.menubar h4.on a{color:#fff;}
 	.menubar ul li a{color:#f5f5f5;}
-	.menubar ul li a.on{color:#fff;background:#8c8888;}
-	.menubar ul li a:hover{color:#fff;background:#8c8888;}
+	.menubar ul li > a.on{color:#fff;}
+	.menubar ul li > a:hover{color:#fff;}
+	.menubar ul li > a.on:before{width:3px;}
+	.menubar ul li > a.on:after{background:#8c8888;}
+	.menubar ul li > a:hover:after,.menubar ul li > strong:hover:after{background:none;}
 	.menubar ul li > strong{color:#fff;}
     .menubar ul li > strong:hover{background:none;}
-    .menubar .scroller-inner{overflow-x:scroll;}
+    .scroller .scroller-inner{overflow-x:scroll;}
+    .scroller[data-x-rolling="true"] .scroller-content{min-width:100%;}
+    .scroller .scrollbar{display:none;}
 
 	.main{width:100%;height:auto;margin-left:0;overflow:visible;box-sizing:border-box;}
 	.main article.markdown-body{padding:25px;}
