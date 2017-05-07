@@ -95,6 +95,34 @@ body{position:relative;background:#e7e8eb;}
 .menubar ul li > strong.on:before{background:@colour-base;}
 .menubar mark{color:red;background:#f5f5f5;}
 
+/* ---------- scroller ---------- */
+body[onselectstart]{cursor:pointer;-moz-user-select:none;-webkit-user-select:none;user-select:none;}
+.scroller{height:100%;overflow:hidden;}
+.scroller .scroller-inner{box-sizing:content-box;width:100%;height:100%;-webkit-overflow-scrolling:touch;overflow-scrolling:touch;}
+.scroller .scroller-inner.on{overflow-y:scroll;}
+.scroller .scrollbar{position:absolute;opacity:0;transition-duration:.5s;-moz-user-select:none;-webkit-user-select:none;user-select:none;cursor:pointer;}
+.scroller:hover .scrollbar{opacity:1;transition-duration:.3s;}
+.scroller .scrollbar.active{opacity:1;}
+.scroller .scrollbar.off{opacity:0;}
+.scroller .scrollbar div{position:relative;transition-duration:.1s;}
+.scroller .scrollbar i{position:absolute;background:rgba(50,50,50,.25);border-radius:2px;transition-duration:.1s;}
+.scroller .scrollbar:active{padding:0;}
+.scroller .scrollbar:active div{background:rgba(50,50,50,.07);}
+.scroller .scrollbar:active i{border-radius:0;}
+/* scrollbar-y */
+.container .nav .scrollbar.scrollbar-y,.container .nav .scrollbar.scrollbar-y:active{padding-top:38px;padding-bottom:10px;}
+.scroller .scrollbar.scrollbar-y{top:0;right:0;width:10px;height:100%;}
+.scroller .scrollbar.scrollbar-y div{height:100%;}
+.scroller .scrollbar.scrollbar-y i{top:0;left:4px;width:3px;height:100%;}
+.scroller .scrollbar.scrollbar-y:active i{left:0;width:10px;}
+/* scrollbar-x */
+.scroller[data-x-rolling="true"] .scroller-inner.on{overflow-x:scroll;}
+.scroller[data-x-rolling="true"] .scroller-content{display:inline-block;position:relative;padding-bottom:10px;white-space:nowrap;min-width:250px;}
+.scroller .scrollbar.scrollbar-x{bottom:0;left:0;width:100%;height:10px;padding-right:10px;}
+.scroller .scrollbar.scrollbar-x div{width:100%;height:100%;}
+.scroller .scrollbar.scrollbar-x i{bottom:0;top:4px;height:3px;width:100%;}
+.scroller .scrollbar.scrollbar-x:active i{top:0;height:10px;}
+
 /* ---------- main ---------- */
 .main{position:relative;height:100%;margin-left:250px;}
 .main .markdown-body{padding:45px;}
@@ -138,34 +166,6 @@ aside .back-top:hover .back-text{display:block;color:#aaa;}
 footer{position:relative;width:100%;}
 footer .signature{position:absolute;right:20px;bottom:-5px;color:#999;}
 
-/* ---------- scroller ---------- */
-body[onselectstart]{cursor:pointer;-moz-user-select:none;-webkit-user-select:none;user-select:none;}
-.scroller{height:100%;overflow:hidden;}
-.scroller .scroller-inner{box-sizing:content-box;width:100%;height:100%;-webkit-overflow-scrolling:touch;overflow-scrolling:touch;}
-.scroller .scroller-inner.on{overflow-y:scroll;}
-.scroller .scrollbar{position:absolute;opacity:0;transition-duration:.5s;-moz-user-select:none;-webkit-user-select:none;user-select:none;cursor:pointer;}
-.scroller:hover .scrollbar{opacity:1;transition-duration:.3s;}
-.scroller .scrollbar.active{opacity:1;}
-.scroller .scrollbar.off{opacity:0;}
-.scroller .scrollbar div{position:relative;transition-duration:.1s;}
-.scroller .scrollbar i{position:absolute;background:rgba(50,50,50,.25);border-radius:2px;transition-duration:.1s;}
-.scroller .scrollbar:active{padding:0;}
-.scroller .scrollbar:active div{background:rgba(50,50,50,.07);}
-.scroller .scrollbar:active i{border-radius:0;}
-/* scrollbar-y */
-.container .nav .scrollbar.scrollbar-y,.container .nav .scrollbar.scrollbar-y:active{padding-top:38px;padding-bottom:10px;}
-.scroller .scrollbar.scrollbar-y{top:0;right:0;width:10px;height:100%;}
-.scroller .scrollbar.scrollbar-y div{height:100%;}
-.scroller .scrollbar.scrollbar-y i{top:0;left:4px;width:3px;height:100%;}
-.scroller .scrollbar.scrollbar-y:active i{left:0;width:10px;}
-/* scrollbar-x */
-.scroller[data-x-rolling="true"] .scroller-inner.on{overflow-x:scroll;}
-.scroller[data-x-rolling="true"] .scroller-content{display:inline-block;position:relative;padding-bottom:10px;white-space:nowrap;min-width:250px;}
-.scroller .scrollbar.scrollbar-x{bottom:0;left:0;width:100%;height:10px;padding-right:10px;}
-.scroller .scrollbar.scrollbar-x div{width:100%;height:100%;}
-.scroller .scrollbar.scrollbar-x i{bottom:0;top:4px;height:3px;width:100%;}
-.scroller .scrollbar.scrollbar-x:active i{top:0;height:10px;}
-
 /* ---------- lowBrowser ---------- */
 #lowBrowser{position:fixed;top:0;left:0;z-index:9999999;width:100%;height:100%;}
 #lowBrowser div{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#000000;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=50);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(opacity=50)";zoom:1;}
@@ -204,6 +204,7 @@ body[onselectstart]{cursor:pointer;-moz-user-select:none;-webkit-user-select:non
 	.menu-search{height:37px;}
 	.menu-search:hover{background-color:transparent;}
 	.menu-search:active{background-color:#f4f5f9;}
+	
 	.menubar{width:100%;height:auto;padding-bottom:50px;border-right:none;}
 	.menubar i{border-top:1px solid #999;}
 	.menubar i:hover{background-color:transparent;}

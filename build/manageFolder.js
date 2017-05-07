@@ -10,39 +10,58 @@ module.exports = {
      * 递归分析指定文件夹下的目录结构
      * @param {string} dirPath - 指定要分析的目录
      * @param {number} [depth=0] - 文件夹深度
-     * @param {object} [tree={}] - 当前深度文件树
-     * @param {string[]} [folders=[]] - 当前文件夹的子文件夹列表
-     * @param {string[]} [files=[]] - 当前文件夹文件列表
+     * @param {object} [tree={}] - 当前深度结构的树形
+     * @param {object[]} [list=[]] - 当前深度结构的列表
+     * @param {string[]} [files=[]] - 当前深度文件的列表
      */
-    _listSubFolder: function (dirPath, depth = 0, tree = {}, folders = [], files = []) {
+    _listSubFolder: function (dirPath, depth = 0, tree = {}, list = [], files = []) {
         try {
             let filePath;
             for (let fileName of fs.readdirSync(dirPath)) {
                 //文件路径
                 filePath = dirPath + (depth > 0 ? '/' : '') + fileName;
-                //跳过点开头的系统保留文件
+                //跳过点号开头的系统保留文件
                 if (/^\./.test(fileName)) {
                     continue;
                 }
                 //文件夹及其递归处理
                 if (fs.statSync(filePath).isDirectory(filePath)) {
-                    let [tempTree, tempFolders, tempFiles] = this._listSubFolder(filePath, depth + 1);
+                    //读取下一级数据
+                    const [tempTree, tempList, tempFiles] = this._listSubFolder(filePath, depth + 1);
+                    //记录子级的树形
                     tree[fileName] = tempTree;
-                    folders.push(filePath, ...tempFolders);
+                    //将此文件夹和其所有子级文件(夹)加入结构列表
+                    list.push({
+                        depth: depth,
+                        type: 'folder',
+                        name: fileName,
+                        path: dirPath
+                    }, ...tempList);
+                    //将所有子级文件加入文件列表
                     files.push(...tempFiles);
                 }
                 //第二层以下深度才允许使用文件（第一层仅允许为文件夹）
                 else {
                     if (depth > 0) {
+                        //类型为文件时，树形标记为否
                         tree[fileName] = false;
+                        //将此文件加入结构列表
+                        list.push({
+                            depth: depth,
+                            type: 'file',
+                            name: fileName,
+                            path: dirPath
+                        });
+                        //将此文件加入文件列表
                         files.push(filePath);
                     }
                 }
             }
         } catch (err) {
+            //readdirSync读取失败时仅抛错
             console.error(err);
         }
-        return [tree, folders, files];
+        return [tree, list, files];
     },
     /**
      * 读取文库library文件夹树形数据
@@ -54,71 +73,10 @@ module.exports = {
             console.warn('The path is not a library.');
             return [];
         }
-        //this._listSubFolder(path);
-        const tree = {};
-        const folders = [];
-        const files = [];
-        try {
-            let files1 = fs.readdirSync(path),
-                files2, files3,
-                path2, path3, path4;
-            folders.push(path);
-            //第一层，files1，library直接子级，仅允许为文件夹
-            for (let i = 0; i < files1.length; i++) {
-                path2 = path + files1[i];
-                if (/^\./.test(files1[i])) {
-                    continue;
-                }
-                if (fs.statSync(path2).isDirectory(path2)) {
-                    try {
-                        files2 = fs.readdirSync(path2);
-                        folders.push(path2);
-                        tree[files1[i]] = {};
-                        //第二层，files2，允许为文件夹和文件
-                        for (let j = 0; j < files2.length; j++) {
-                            path3 = path2 + '/' + files2[j];
-                            if (/^\./.test(files2[j])) {
-                                continue;
-                            }
-                            if (fs.statSync(path3).isDirectory(path3)) {
-                                try {
-                                    files3 = fs.readdirSync(path3);
-                                    folders.push(path3);
-                                    tree[files1[i]][files2[j]] = {};
-                                    //第三层，files3，仅允许为文件夹，不再深入
-                                    for (let k = 0; k < files3.length; k++) {
-                                        path4 = path3 + '/' + files3[k];
-                                        if (/^\./.test(files3[k])) {
-                                            continue;
-                                        }
-                                        if (!fs.statSync(path4).isDirectory(path4)) {
-                                            tree[files1[i]][files2[j]][files3[k]] = false;
-                                            files.push(path4);
-                                        }
-                                    }
-                                } catch (err) {
-                                    console.error(err);
-                                    return [];
-                                }
-                            } else {
-                                tree[files1[i]][files2[j]] = false;
-                                files.push(path3);
-                            }
-                        }
-                    } catch (err) {
-                        console.error(err);
-                        return [];
-                    }
-                }
-            }
-        } catch (err) {
-            console.error(err);
-            return [];
-        }
-        return [tree, files, folders];
+        return this._listSubFolder(path);
     },
     /**
-     * 清空文件夹
+     * 清空文件夹(递归)
      * @param {string} path - 要清空的文件夹
      */
     cleanFolder: function (path) {
@@ -145,7 +103,7 @@ module.exports = {
         return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
     },
     /**
-     * 创建文件夹
+     * 创建文件夹(递归)
      * @param {string} path - 需要创建的文件夹路径
      */
     createFolder: function (path) {
