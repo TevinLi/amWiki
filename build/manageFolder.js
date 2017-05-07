@@ -76,7 +76,7 @@ module.exports = {
         return this._listSubFolder(path);
     },
     /**
-     * 清空文件夹(递归)
+     * 递归清空文件夹
      * @param {string} path - 要清空的文件夹
      */
     cleanFolder: function (path) {
@@ -103,7 +103,7 @@ module.exports = {
         return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
     },
     /**
-     * 创建文件夹(递归)
+     * 递归创建文件夹
      * @param {string} path - 需要创建的文件夹路径
      */
     createFolder: function (path) {

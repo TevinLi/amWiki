@@ -32,13 +32,14 @@ module.exports = {
         if (this._checkDuplicateId(tree)) {
             return;
         }
-        let markdown = '';
+        let errorHas = false;
         //编码导航数据为 Markdown 文本
-        markdown += '\n#### [首页](?file=首页 "返回首页")\n';
+        let markdown = '\n#### [首页](?file=首页 "返回首页")\n';
         for (let item of list) {
             //检查 id 合法性
-            if (!this._checkFileId(item.name, item.path)){
-                return;
+            if (!this._checkFileId(item.name, item.path)) {
+                errorHas = true;
+                continue;
             }
             //一级目录
             if (item.depth === 0) {
@@ -58,7 +59,8 @@ module.exports = {
                 } else if (item.type === 'file') {
                     //检查名称合法性
                     if (!this._checkFileName(item.name, item.path)) {
-                        return;
+                        errorHas = true;
+                        continue;
                     }
                     const name = item.name.match(/^\d+(\.\d+)?[-_](.*?)\.md$/)[2];
                     const path = item.path.split('library/')[1] + '/' + item.name.split('.md')[0];
@@ -66,7 +68,9 @@ module.exports = {
                 }
             }
         }
-        fs.writeFileSync(path + '$navigation.md', markdown, 'utf-8');
+        if (!errorHas) {
+            fs.writeFileSync(path + '$navigation.md', markdown, 'utf-8');
+        }
     },
     //检查id合法性
     _checkFileId: function (name, path) {
@@ -92,52 +96,39 @@ module.exports = {
             return false;
         }
     },
-    //检查重复id
-    _checkDuplicateId: function (data) {
-        //单层检查
-        const check = (obj, path) => {
-            const hash = {};
-            for (let name in obj) {
-                if (obj.hasOwnProperty(name)) {
-                    if (!hash[name.split('-')[0]]) {
-                        hash[name.split('-')[0]] = name;
-                    } else {
-                        alert('重复的文件ID！\n同级目录下存在相同的ID(' + name.split('-')[0] + ')，请更改为不同的ID\n' +
-                            '    at path "library/' + path + '"\n' +
-                            '    at file1 "' + hash[name.split('-')[0]] + '"\n' +
-                            '    at file2 "' + name + '"');
-                        return false;
+    /**
+     * 递归检查(某一目录下的同级文件和文件夹的)ID是否存在重复
+     * @param {object} tree - 当前层级的目录结构
+     * @param {string} path - 当前目录所在路径
+     * @return {boolean} 如果返回为true，则说明存在重复ID
+     */
+    _checkDuplicateId: function (tree, path = '') {
+        let duplicate = false;
+        let idList = {};
+        for (let name in tree) {
+            if (tree.hasOwnProperty(name)) {
+                if (!idList[name.split(/[-_]/)[0]]) {
+                    idList[name.split(/[-_]/)[0]] = name;
+                } else {
+                    alert('重复的排序ID！\n同级目录下存在相同的排序ID(' + name.split('-')[0] + ')，请更改为不同的ID\n' +
+                        '    at path "library/' + path + '"\n' +
+                        '    at file1 "' + idList[name.split('-')[0]] + '"\n' +
+                        '    at file2 "' + name + '"');
+                    duplicate = true;
+                }
+                //文件夹
+                if (tree[name]) {
+                    // duplicate 为真后，不再改变其值
+                    if (duplicate) {
+                        this._checkDuplicateId(tree[name], path + name + '/')
+                    }
+                    // duplicate 为否时，接收子级真假值
+                    else {
+                        duplicate = this._checkDuplicateId(tree[name], path + name + '/');
                     }
                 }
             }
-            return true;
-        };
-        //是否存在重复id
-        let duplicate = 'none';
-        //第一层，library直接子级
-        if (check(data, '')) {
-            for (let p1 in data) {
-                if (data.hasOwnProperty(p1) && data[p1]) {
-                    //第二层，可能是文件夹也可能是文件
-                    if (check(data[p1], p1 + '/')) {
-                        for (let p2 in data[p1]) {
-                            if (data[p1].hasOwnProperty(p2) && data[p1][p2]) {
-                                //第三层，只有文件
-                                if (!check(data[p1][p2], p1 + '/' + p2 + '/')) {
-                                    duplicate = 'yes';
-                                    break;
-                                }
-                            }
-                        }
-                    } else {
-                        duplicate = 'yes';
-                        break;
-                    }
-                }
-            }
-        } else {
-            duplicate = 'yes';
         }
-        return duplicate === 'yes';
+        return duplicate;
     }
 };
