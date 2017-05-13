@@ -13,6 +13,7 @@ module.exports = {
      * @param {object} [tree={}] - 当前深度结构的树形
      * @param {object[]} [list=[]] - 当前深度结构的列表
      * @param {string[]} [files=[]] - 当前深度文件的列表
+     * @private
      */
     _listSubFolder: function (dirPath, depth = 0, tree = {}, list = [], files = []) {
         try {
@@ -95,6 +96,19 @@ module.exports = {
         }
     },
     /**
+     * 获取项目文件夹
+     * @param path - 需要计算的文件夹路径
+     * @return {strong|boolean} 放回当前文库项目的路径，如果非文库返回 false
+     */
+    getProjectFoloder: function (path) {
+        path = this.getLibraryFolder(path);
+        if (path) {
+            return path.split('library')[0];
+        } else {
+            return false;
+        }
+    },
+    /**
      * 获取 library 目录路径 (通过反向查找，而不是 split 截断)
      * @param {string} path - 需要计算的文件夹路径
      * @returns {string|boolean} 返回当前文库 library 目录的路径，如果非文库则返回 false
@@ -125,12 +139,20 @@ module.exports = {
         }
     },
     /**
-     * 获取上一级目录路径
+     * 获取当前文件(夹)所属上级目录的路径
      * @param {string} path - 需要计算的文件夹路径
      * @returns {string} 父级文件夹路径
      */
     getParentFolder: function (path) {
         return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
+    },
+    /**
+     * 获取当前文件(夹)的名称
+     * @param {string} path - 需要计算的路径
+     * @return {string} 文件(夹)名称
+     */
+    getBaseName: function (path) {
+        return path.replace(/\\/g, '/').replace(/\/$/, '').match(/\/([^\/]*?)$/)[1];
     },
     /**
      * 递归创建文件夹
@@ -163,13 +185,12 @@ module.exports = {
         path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
         path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
         //获取 library 路径
-        path = this.getLibraryFolder(path);
+        path = this.getProjectFoloder(path);
         if (!path) {
             return false;
         }
         //通过识别文件夹子项来判定
         else {
-            path = path.split('library')[0];
             let states = [
                 fs.existsSync(path + 'library/'),
                 fs.existsSync(path + 'amWiki/'),
