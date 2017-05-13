@@ -95,7 +95,37 @@ module.exports = {
         }
     },
     /**
-     * 获取上一级目录
+     * 获取 library 目录路径 (通过反向查找，而不是 split 截断)
+     * @param {string} path - 需要计算的文件夹路径
+     * @returns {string|boolean} 返回当前文库 library 目录的路径，如果非文库则返回 false
+     */
+    getLibraryFolder: function (path) {
+        //如果太短直接返回 false
+        if (path.length < 2) {
+            return false;
+        }
+        //如果当前路径不存在 library 字眼，则判断路径下是否存在 library 文件夹
+        if (path.indexOf('library') < 0) {
+            //存在返回拼合路径
+            if (fs.existsSync(path + '/library/')) {
+                return path.replace(/\/$/, '') + '/library/';
+            }
+            //不存在继续检查上一级
+            else {
+                return this.getLibraryFolder(this.getParentFolder(path));
+            }
+        }
+        //存在 library 字眼，反向层层识别，直到 library/ 为止
+        else {
+            if (/library\/?$/.test(path)) {
+                return path.replace(/\/?$/, '/');
+            } else {
+                return this.getLibraryFolder(this.getParentFolder(path));
+            }
+        }
+    },
+    /**
+     * 获取上一级目录路径
      * @param {string} path - 需要计算的文件夹路径
      * @returns {string} 父级文件夹路径
      */
@@ -110,8 +140,8 @@ module.exports = {
         //先判断父级文件夹是否存在，不存在先创建父级文件夹
         const parentPath = this.getParentFolder(path);
         if (!fs.existsSync(parentPath)) {
-            this.createFolder(parentPath);      //向上递归创建父级
-            this.createFolder(path);  //创建完父级后再创建本级
+            this.createFolder(parentPath);  //向上递归创建父级
+            this.createFolder(path);        //创建完父级后再创建本级
         }
         //如果父级已存在，直接创建本级
         else {
@@ -121,25 +151,32 @@ module.exports = {
         }
     },
     /**
-     * 判断一个文件夹是否为amWiki文库项目
+     * 判断一个文件夹是否为 amWiki 文库项目
      * @param {string} path - 需要判断的文件夹路径
-     * @returns {boolean|string} 判断为否时返回false，判断为真时返回项目根目录的路径
+     * @returns {boolean|string} 判断为否时返回 false，判断为真时返回项目根目录的路径
      */
     isAmWiki: function (path) {
         if (!path && typeof path !== 'string') {
             return false;
         }
         path = path.replace(/\\/g, '/');
-        path = path.indexOf('library') < 0 ? path : path.split('library')[0];
         path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
         path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
-        path += /\/$/.test(path) ? '' : '/';
-        let states = [
-            fs.existsSync(path + '/library/'),
-            fs.existsSync(path + '/amWiki/'),
-            fs.existsSync(path + '/config.json'),
-            fs.existsSync(path + '/index.html')
-        ];
-        return states[0] && states[1] && states[2] && states[3] ? path : false;
+        //获取 library 路径
+        path = this.getLibraryFolder(path);
+        if (!path) {
+            return false;
+        }
+        //通过识别文件夹子项来判定
+        else {
+            path = path.split('library')[0];
+            let states = [
+                fs.existsSync(path + 'library/'),
+                fs.existsSync(path + 'amWiki/'),
+                fs.existsSync(path + 'config.json'),
+                fs.existsSync(path + 'index.html')
+            ];
+            return states[0] && states[1] && states[2] && states[3] ? path : false;
+        }
     }
 };
