@@ -3,7 +3,7 @@
 <!--
 ## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
 _2017_
-- 实现无限级导航 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
+- 实现无限级导航 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/pull/30))
     - 实现导航水平滚动条，调和水平垂直两滚动条冲突
     - 实现 PC、Mobi 端导航栏无限级梯度的层级显示
     - 实现目录无限级深度树形与列表数据读取
@@ -12,6 +12,7 @@ _2017_
     - 实现无限级图片粘贴、文件拖拽
     - 实现无限级 github-wiki 导出
 - 优化工作端查找 library 文件夹
+- 实现拖拽文件文件名汉字转拼音
 ---
 -->
 

@@ -228,6 +228,7 @@ footer .signature{position:absolute;right:20px;bottom:-5px;color:#999;}
 
 	.main{width:100%;height:auto;margin-left:0;overflow:visible;box-sizing:border-box;}
 	.main article.markdown-body{padding:25px;}
+	.main article iframe{border:0;}
     .main .search-results{height:auto !important;}
     .main-sibling{padding:30px 25px 25px;}
     .main-sibling p{height:22px;}
