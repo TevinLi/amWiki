@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·本地缓存模块
+ * @desc amWiki Web端 - 浏览器数据缓存模块
  * @author Tevin
  */
 

@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·主执行模块
+ * @desc amWiki Web端 - 入口模块
  * @author Tevin
  * @see {@link https://github.com/TevinLi/amWiki}
  * @license MIT - Released under the MIT license.

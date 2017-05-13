@@ -3,17 +3,22 @@
 <!--
 ## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
 _2017_
-- 实现导航水平滚动条，调和水平垂直两滚动条冲突 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
-- 实现PC、Mobi端导航栏无限级梯度的层级显示 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
-- 实现目录无限级深度树形分析 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
-- 
+- 实现无限级导航 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/issues/30))
+    - 实现导航水平滚动条，调和水平垂直两滚动条冲突
+    - 实现 PC、Mobi 端导航栏无限级梯度的层级显示
+    - 实现目录无限级深度树形与列表数据读取
+    - 实现无限级导航 Markdown 生成
+    - 实现无限级重复的排序 ID 检查
+    - 实现无限级图片粘贴、文件拖拽
+    - 实现无限级 github-wiki 导出
+- 优化工作端查找 library 文件夹
 ---
 -->
 
 ### v1.0.6
 _2017-05-05_
 
-- 修复未开启测试模块的文库web端无内容显示的问题
+- 修复未开启测试模块的文库 web 端无内容显示的问题
 - 修复导航未展开目录时显示不全只有一边的问题
 - 修复上一版本 npm 失误的发布造成 Linux 平台命令无效的问题
 - 移动端点击搜索按钮时关闭导航层 ([#40](https://github.com/TevinLi/amWiki/issues/40))
@@ -22,11 +27,11 @@ _2017-05-05_
 _2017-04-28_
 
 - 导航筛选功能增强
-	- 文件夹匹配
-	- 筛选多个词
-	- 忽略筛选词大小写
-	- 筛选条件非主动删除不消失
-	- 使用递归进行筛选，为无限级做准备 ([#5](https://github.com/TevinLi/amWiki/issues/5))
+    - 文件夹匹配
+    - 筛选多个词
+    - 忽略筛选词大小写
+    - 筛选条件非主动删除不消失
+    - 使用递归进行筛选，为无限级做准备 ([#5](https://github.com/TevinLi/amWiki/issues/5))
 - 修复web端在移动端点击导航导航不自动收起的问题 ([#40](https://github.com/TevinLi/amWiki/issues/40))
 - 修复web端测试面板在不关闭的条件下跳转文档后的一个显示问题
 - 菜单栏增加 `从剪切板粘贴截图` 项，调和与其他插件快捷键冲突 ([#41](https://github.com/TevinLi/amWiki/issues/41))

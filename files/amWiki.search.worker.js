@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·搜索子进程
+ * @desc amWiki Web端 - 搜索计算子进程模块
  * @author Tevin
  */
 

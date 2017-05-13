@@ -1,5 +1,5 @@
 /**
- * @desc 命令行模拟浏览器 alert、confirm、prompt 交互信息框
+ * 工作端 - 终端(命令行) - 模拟浏览器 alert、confirm、prompt 方法进行信息交互
  * @author Tevin
  *
  * @example

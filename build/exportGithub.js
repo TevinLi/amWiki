@@ -1,5 +1,5 @@
 /**
- * @desc 工作端·导出项目(github)模块
+ * 工作端 - 导出 github-wiki 模块
  * @author Tevin
  */
 
