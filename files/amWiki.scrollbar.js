@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·滚动条
+ * @desc amWiki Web端 - 滚动条模块
  * @author Tevin
  */
 

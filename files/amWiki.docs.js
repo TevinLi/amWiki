@@ -1,5 +1,5 @@
 /**
- * @desc 文档加载渲染模块
+ * @desc amWiki Web端 - 文档加载与渲染模块
  * @author Tevin
  */
 

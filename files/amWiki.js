@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·主执行模块
+ * @desc amWiki Web端 - 入口模块
  * @author Tevin
  * @see {@link https://github.com/TevinLi/amWiki}
  * @license MIT - Released under the MIT license.
@@ -195,6 +195,9 @@ $(function () {
      * 当类型为打开时，所属链接和子级一律全部显示不隐藏
      *     如果有正则，显示当前匹配
      *     如果无正则，清除匹配
+     * @param {string} type - 筛选类型，有 filter / open 两个值
+     * @param {regexp} valReg - 过滤筛选的正则
+     * @param {object} $title - jquery 对象，“标题-列表”DOM结构中的标题
      */
     var filterNav = function (type, valReg, $title) {
         var $ul = $title.next('ul');
@@ -298,7 +301,7 @@ $(function () {
     //向上递归显示父级
     var showNavParents = function ($title) {
         $title.addClass('on').removeClass('off');
-        //一级目录
+        //向上显示直到一级目录
         if (!$title.is('h5')) {
             var $prev2 = $title.parent().removeClass('off').parent().show().prev();
             showNavParents($prev2);
@@ -358,10 +361,9 @@ $(function () {
                     hsLink = true;
                     //本层加高亮
                     var $prev = $this.addClass('on').parent().parent().show().prev().addClass('on');
-                    //如果本层处于第二层，对应的第一层加高亮
-                    if ($prev[0].tagName.toLowerCase() == 'strong') {
-                        $prev.parent().parent().show().prev().addClass('on');
-                    }
+                    //父级高亮
+                    showNavParents($prev);
+                    //改变上下篇切换
                     changeSibling($this.parent());
                 } else {
                     $this.removeClass('on');
