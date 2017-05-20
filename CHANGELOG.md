@@ -2,7 +2,7 @@
 
 
 ## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
-_2017-xx-xx_
+_2017-05-20_
 
 - 实现无限级导航 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/pull/30))
     - 实现导航水平滚动条，调和水平垂直两滚动条冲突
