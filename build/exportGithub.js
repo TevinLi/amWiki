@@ -1,5 +1,5 @@
 /**
- * @desc 工作端·导出项目(github)模块
+ * 工作端 - 导出 github-wiki 模块
  * @author Tevin
  */
 
@@ -177,11 +177,10 @@ module.exports = {
             const fileList = [];
             pathFrom += /[\\\/]$/.test(pathFrom) ? 'library/' : '/library/';
             //读取文件夹
-            const [tree, files] = mngFolder.readLibraryTree(pathFrom);
-            if (!tree) {
+            const [, , files] = mngFolder.readLibraryTree(pathFrom);
+            if (files.length === 0) {
                 return;
             }
-            //console.log(tree, files);
             let fileName = '';
             //提取文件名
             for (let item of files) {

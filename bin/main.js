@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+/**
+ * 工作端 - 终端(命令行) - 入口模块
+ */
+
 const fs = require('fs');
 
 //获取命令内容

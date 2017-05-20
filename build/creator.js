@@ -1,5 +1,5 @@
 /**
- * @desc 工作端·输出web静态资源模块
+ * 工作端 - 输出 web 静态资源模块
  * @author Tevin
  */
 
@@ -240,6 +240,7 @@ module.exports = {
                 ['markdownbody.github.css', 'amWiki/css/markdownbody.github.css'],
                 ['lhjs.github-gist.css', 'amWiki/css/lhjs.github-gist.css'],
                 ['gbk.js', 'amWiki/js/gbk.js'],
+                ['pinyin.js', 'amWiki/js/pinyin.js'],
                 ['flowchart.min.js', 'amWiki/js/flowchart.min.js'],
                 ['raphael-min.js', 'amWiki/js/raphael-min.js'],
                 ['jquery-compat-3.1.0.min.js', 'amWiki/js/jquery-compat-3.1.0.min.js'],

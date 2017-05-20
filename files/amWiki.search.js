@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·全库搜索
+ * @desc amWiki Web端 - 全库搜索模块
  * @author Tevin
  */
 
