@@ -192,7 +192,7 @@ module.exports = {
             const files = fs.readdirSync(options.outputPath);
             if (files.length > 1) {
                 if (!(yield confirm2('此处已有一些文件或文件夹，是否仍然在此创建amWiki？'))) {
-                    return reject(false);
+                    return false;
                 }
             }
             //创建index.html
