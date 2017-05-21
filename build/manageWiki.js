@@ -84,5 +84,28 @@ module.exports = {
             //也就是说，从atom目录树删除项目，并不会标记弃用，必须删除文库本地文件和文件夹
             this._wikis[wId].deprecated = !fs.existsSync(root) || !mngFolder.isAmWiki(root)
         }
+    },
+    /**
+     * 更新文库记录中对应的 config.json 的内容
+     */
+    updateWikiConfig: function () {
+        for (let wId in this._wikis) {
+            if (this._wikis.hasOwnProperty(wId)) {
+                //读取 config
+                if (!this._wikis[wId].deprecated) {
+                    let configStr = fs.readFileSync(this._wikis[wId].root + 'config.json') || '{}';
+                    try {
+                        this._wikis[wId].config = JSON.parse(configStr);
+                    } catch (e) {
+                        console.warn('您位于 ' + this._wikis[wId].root +
+                            ' 的文库，config.json 内容格式不合法，请按照 json 格式书写！');
+                    }
+                }
+                //弃用的文库删除 config
+                else {
+                    this._wikis[wId].config = null;
+                }
+            }
+        }
     }
 };

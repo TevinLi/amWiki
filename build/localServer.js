@@ -16,9 +16,12 @@ module.exports = {
      * @param {number} port - 服务器端口号
      */
     run: function (wikis, port) {
-        if (!this._server) {
-            this._server = new Sever(wikis, port);
-        }
+        return co(function* () {
+            if (!this._server) {
+                this._server = new Sever(wikis, port);
+                yield this._server.run();
+            }
+        });
     },
     /**
      * 浏览当前文档
@@ -32,10 +35,13 @@ module.exports = {
             if (!this._server) {
                 if (yield confirm2('本地服务器还未启动，您需要启动服务器么？')) {
                     this._server = new Sever(wikis);
+                    yield this._server.run();
+                } else {
+                    return;
                 }
             }
             //解析地址
-            const host = 'http://' + this._server.getLocalIP() + ':5171';
+            const host = 'http://' + this._server.getLocalIP() + ':' + this._server.getPort();
             const wikiId = mngWiki.createWikiId(editPath.split('library')[0]);
             let url;
             if (editPath.indexOf('$navigation.md') >= 0) {
