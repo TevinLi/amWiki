@@ -115,7 +115,7 @@ module.exports = {
      */
     getLibraryFolder: function (path) {
         //如果太短直接返回 false
-        if (path.length < 2) {
+        if (path.length < 3) {
             return false;
         }
         //如果当前路径不存在 library 字眼，则判断路径下是否存在 library 文件夹
