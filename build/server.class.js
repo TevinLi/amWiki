@@ -33,13 +33,32 @@ const MimeType = {
 class Server {
 
     constructor(wikis, port = 5171) {
+        const that = this;
+        let portCount = 0;
         this._wikis = wikis;
         this._port = port;
         this._localIP = this.getLocalIP();
         this.server = http.createServer((req, res) => {
             this.parse(req, res);
-        }).listen(this._port);
-        console.info('Server running at http://' + this._localIP + ':' + this._port + '/');
+        });
+        this.server
+            .on('listening', () => {
+                console.info('Server running at http://' + this._localIP + ':' + this._port + '/');
+            })
+            .on('error', (e) => {
+                if (e.syscall === 'listen' && e.code === 'EADDRINUSE') {
+                    if (portCount < 12) {
+                        console.warn('端口 ' + that._port + ' 已被其他程序占用，尝试端口号+1，监听端口 ' + (that._port + 1));
+                        portCount++;
+                        that.server.listen(++this._port);
+                    } else {
+                        console.error('端口从 ' + (that._port - portCount) + ' 到 ' + that._port + ' 尽皆被占用，请使用其他段位的端口！');
+                    }
+                } else {
+                    throw e;
+                }
+            });
+        this.server.listen(this._port);
     }
 
     //404未找到页面
