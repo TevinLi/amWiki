@@ -1,6 +1,11 @@
 # amWiki 版本日志
 
 
+## [v1.1.1](https://github.com/TevinLi/amWiki/releases/tag/v1.1.1)
+_2017-05-20_
+
+- 紧急修复 win 平台 npm 创建报错的问题
+
 ## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
 _2017-05-20_
 
