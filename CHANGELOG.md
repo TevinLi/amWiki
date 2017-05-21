@@ -1,8 +1,23 @@
 # amWiki 版本日志
 
+<!--
+## [v1.1.2](https://github.com/TevinLi/amWiki/releases/tag/v1.1.2)
+_2017--_
+
+- 允许在 config.json 上使用 imports 将额外的 css 和 js 文件嵌入页面 ([#43](https://github.com/TevinLi/amWiki/issues/43))
+- 允许本地 server 多开，端口被占用时累加端口号
+- 新增本地 server 索引页，本地根 url 不再 404
+- 修复创建时取消创建操作的一个问题
+- 调整一些文案
+-->
+
+## [v1.1.1](https://github.com/TevinLi/amWiki/releases/tag/v1.1.1)
+_2017-05-21_
+
+- 紧急修复 win 平台 npm 创建报错的问题
 
 ## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
-_2017-xx-xx_
+_2017-05-20_
 
 - 实现无限级导航 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/pull/30))
     - 实现导航水平滚动条，调和水平垂直两滚动条冲突
