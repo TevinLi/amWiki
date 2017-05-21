@@ -193,14 +193,9 @@ class Server {
                 //文库链接
                 let link = 'http://' + this.getLocalIP() + ':' + this.getPort() + '/wiki' + wiki.id + '/index.html';
                 //文库 logo 地址
-                let logo = '';
-                if (wiki.config.log) {
-                    logo = wiki.config.log;
-                    if (logo.indexOf('http') < 0) {
-                        logo = '/wiki' + wiki.id + '/' + logo;
-                    }
-                } else {
-                    logo = '/wiki' + wiki.id + '/amWiki/images/logo.png';
+                let logo = wiki.config.logo;
+                if (logo.indexOf('http') < 0) {
+                    logo = '/wiki' + wiki.id + '/' + logo;
                 }
                 //文库详情
                 let content = '<span>ID: <b>' + wiki.id + '</b></span>' +
@@ -215,8 +210,8 @@ class Server {
                 }
                 //添加到列表
                 list += itemTp.replace('{{link}}', link)
-                    .replace('{{title}}', wiki.config.name || 'amWiki轻文库')
-                    .replace('{{version}}', wiki.config.ver || 'By Tevin')
+                    .replace('{{title}}', wiki.config.name)
+                    .replace('{{version}}', wiki.config.version)
                     .replace('{{logo}}', logo)
                     .replace('{{content}}', content);
             }
