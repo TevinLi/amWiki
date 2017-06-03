@@ -114,8 +114,7 @@ module.exports = {
      * @returns {string|boolean} 返回当前文库 library 目录的路径，如果非文库则返回 false
      */
     getLibraryFolder: function (path) {
-        //如果太短直接返回 false
-        if (path.length < 3) {
+        if (!path) {
             return false;
         }
         //如果当前路径不存在 library 字眼，则判断路径下是否存在 library 文件夹
@@ -141,10 +140,19 @@ module.exports = {
     /**
      * 获取当前文件(夹)所属上级目录的路径
      * @param {string} path - 需要计算的文件夹路径
-     * @returns {string} 父级文件夹路径
+     * @returns {string|boolean} 父级文件夹路径
      */
     getParentFolder: function (path) {
-        return path.replace(/\\/g, '/').replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
+        path = path.replace(/\\/g, '/');
+        // Win 平台，如果太短直接返回 false
+        if (/^[a-zA-Z]:/.test(path) && path.length < 3) {
+            return false;
+        }
+        // Linux 平台，如果斜杆数只有一个，返回 false
+        if (path.replace('/', '').indexOf('/') < 0) {
+            return false;
+        }
+        return path.replace(/\/$/, '').replace(/\/[^\/]+$/, '/');
     },
     /**
      * 获取当前文件(夹)的名称

@@ -53,6 +53,9 @@ co(function*() {
             const filesPath = mainPath.replace(/\\/g, '/').split('bin')[0] + 'files/';
             //开始创建
             const root2 = yield creator.create(configPath, filesPath);
+            if (!root2) {
+                break;
+            }
             //更新导航
             makeNav.refresh(root2 + 'library/');
             break;

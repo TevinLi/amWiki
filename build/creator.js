@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const co = require('../modules/co');
+const mngWiki = require('./manageWiki');
 const makeNav = require('./makeNavigation');
 
 
@@ -169,19 +170,9 @@ module.exports = {
             if (!parseOk) {
                 return;
             }
-            //库名称
-            config.name = config.name || 'amWiki轻文库系统';
-            //库版本号
-            config.version = typeof config.ver === 'string' ? config.ver : 'by Tevin';
-            //logo地址
-            config.logo = config.logo || 'amWiki/images/logo.png';
-            //是否开启接口测试
-            config.testing = config.testing || false;
-            //设置自定义颜色
-            config.colour = config.colour ? that._clacWikiColour(config.colour) : that._clacWikiColour('#4296eb');
             return {
                 options: options,
-                config: config
+                config: mngWiki.parseConfig(config)
             };
         }).catch((e) => {
             console.error(e);
@@ -201,7 +192,7 @@ module.exports = {
             const files = fs.readdirSync(options.outputPath);
             if (files.length > 1) {
                 if (!(yield confirm2('此处已有一些文件或文件夹，是否仍然在此创建amWiki？'))) {
-                    return reject(false);
+                    return false;
                 }
             }
             //创建index.html
@@ -209,6 +200,7 @@ module.exports = {
             indexPage = indexPage.replace(/\{\{name\}\}/g, config.name)
                 .replace('{{version}}', config.version)
                 .replace('{{logo}}', config.logo);
+            //测试模块
             if (config.testing) {
                 const testingTpl = fs.readFileSync(options.filesPath + 'amWiki.testing.tpl', 'utf-8');
                 const testingScript = '<script src="amWiki/js/amWiki.testing.js"></script>';
@@ -220,6 +212,25 @@ module.exports = {
                     .replace('{{amWiki.testing.tpl}}', '')
                     .replace('{{amWiki.testing.js}}', '');
             }
+            //自定义 css、js 嵌入
+            if (config.imports) {
+                let item,
+                    cssList = '',
+                    jsList = '';
+                for (item of config.imports.css) {
+                    cssList = '<link rel="stylesheet" type="text/css" href="' + item + '" />'
+                }
+                for (item of config.imports.js) {
+                    jsList = '<script type="text/javascript" src="' + item + '"></script>'
+                }
+                indexPage = indexPage
+                    .replace('{{custom.css}}', cssList)
+                    .replace('{{custom.js}}', jsList);
+            } else {
+                indexPage = indexPage
+                    .replace('{{custom.css}}', '')
+                    .replace('{{custom.js}}', '');
+            }
             fs.writeFileSync(options.outputPath + 'index.html', indexPage, 'utf-8');
             //创建文件夹
             const hasLibrary = that._createWikiFolder(options.outputPath);
@@ -230,10 +241,11 @@ module.exports = {
             }
             wikiCss += fs.readFileSync(options.filesPath + 'amWiki.print.css', 'utf-8');
             wikiCss += fs.readFileSync(options.filesPath + 'amWiki.search.css', 'utf-8');
+            let colors = that._clacWikiColour(config.colour);
             wikiCss = wikiCss
-                .replace(/@colour-base/g, config.colour.base)
-                .replace(/@colour-light/g, config.colour.light)
-                .replace(/@colour-dark/g, config.colour.dark);
+                .replace(/@colour-base/g, colors.base)
+                .replace(/@colour-light/g, colors.light)
+                .replace(/@colour-dark/g, colors.dark);
             fs.writeFileSync(options.outputPath + 'amWiki/css/amWiki.css', wikiCss, 'utf-8');
             //拷贝页面资源
             const fileList = [

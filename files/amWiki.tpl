@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="amWiki/css/markdownbody.github.css" />
         <link rel="stylesheet" type="text/css" href="amWiki/css/lhjs.github-gist.css" />
         <link rel="stylesheet" type="text/css" href="amWiki/css/amWiki.css" />
+        {{custom.css}}
     </head>
 
     <body>
@@ -161,6 +162,7 @@
             {{amWiki.testing.js}}
             <script type="text/javascript" src="amWiki/js/amWiki.scrollbar.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.js"></script>
+            {{custom.js}}
         </div>
         <!-- svg -->
         <div class="hidden" id="svgSymbols"></div>

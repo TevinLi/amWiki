@@ -1,7 +1,7 @@
 # amWiki 轻文库
 
 ![amWiki logo](https://amwiki.xf09.net/docs/assets/logo.png)  
-amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器或 Npm 命令行、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。  
+amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器或 Nodejs-npm 命令行、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。  
 amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库系统！  
 
 [[view amWiki on Github](https://github.com/TevinLi/amWiki)]  
@@ -22,6 +22,7 @@ NPM:
 - 无需服务端开发，只需支持 http 静态访问网页空间
 - 一键创建新的文库
 - 自动更新文库导航目录
+- 支持多级目录
 - 支持截图直接粘帖为本地 png 并插入当前 markdown
 - 文档web端自适应显示，适合所有平台
 - 支持接口文档自动抓取内容生成简单的ajax测试

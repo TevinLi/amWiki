@@ -5,6 +5,7 @@
 
 const fs = require('fs');
 const mngFolder = require('./manageFolder');
+const tools = require('./tools');
 
 module.exports = {
     /**
@@ -84,5 +85,64 @@ module.exports = {
             //也就是说，从atom目录树删除项目，并不会标记弃用，必须删除文库本地文件和文件夹
             this._wikis[wId].deprecated = !fs.existsSync(root) || !mngFolder.isAmWiki(root)
         }
+    },
+    /**
+     * 更新文库记录中对应的 config.json 的内容
+     */
+    updateWikiConfig: function () {
+        for (let wId in this._wikis) {
+            if (this._wikis.hasOwnProperty(wId)) {
+                //读取 config
+                if (!this._wikis[wId].deprecated) {
+                    let configStr = fs.readFileSync(this._wikis[wId].root + 'config.json') || '{}';
+                    try {
+                        this._wikis[wId].config = this.parseConfig(JSON.parse(configStr));
+                    } catch (e) {
+                        console.error('您位于 ' + this._wikis[wId].root +
+                            ' 的文库，config.json 内容格式不合法，请按照 json 格式书写！');
+                    }
+                }
+                //弃用的文库删除 config
+                else {
+                    this._wikis[wId].config = null;
+                }
+            }
+        }
+    },
+    /**
+     *
+     * @param {object} config - 配置对象
+     * @return {object} config
+     */
+    parseConfig: function (config) {
+        //库名称
+        config.name = config.name || 'amWiki轻文库';
+        //库版本号
+        config.version = config.ver || 'by Tevin';
+        //logo地址
+        config.logo = config.logo || 'amWiki/images/logo.png';
+        //是否开启接口测试
+        config.testing = config.testing || false;
+        //设置自定义颜色
+        config.colour = config.colour || '#4296eb';
+        //自定义 css、js 文件
+        if (tools.isArray(config.imports) && config.imports.length > 0) {
+            const imports2 = {
+                js: [],
+                css: []
+            };
+            for (let file of config.imports) {
+                let type = file.split(/[?#]/)[0].match(/((\.js)|(\.css))$/)[0];
+                if (type === '.js') {
+                    imports2.js.push(file);
+                } else if (type === '.css') {
+                    imports2.css.push(file);
+                }
+            }
+            config.imports = imports2;
+        } else {
+            delete config.imports;
+        }
+        return config;
     }
 };
