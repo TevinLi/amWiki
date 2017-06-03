@@ -277,7 +277,7 @@ module.exports = {
             if (!hasLibrary) {
                 //首页文档
                 const home = fs.readFileSync(options.filesPath + 'doc.home.md', 'utf-8').replace('{{name}}', config.name);
-                fs.writeFileSync(options.outputPath + 'library/首页.md', home, 'utf-8');
+                fs.writeFileSync(options.outputPath + 'library/home-首页.md', home, 'utf-8');
                 //其他页面文档
                 let fileList2 = [
                     ['doc.amwiki-introduce.md', 'library/001-学习amWiki/01-amWiki轻文库简介.md'],

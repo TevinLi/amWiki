@@ -348,7 +348,7 @@ $(function () {
 
     //改变导航显示
     var changeNav = function (path) {
-        if (path == '首页') {
+        if (/^home[-_].*?/.test(path) || path == '首页') {
             $menuBar.find('h4').addClass('on');
             $menuBar.find('a').removeClass('on');
             changeSibling(null);
@@ -395,15 +395,16 @@ $(function () {
             if (state == 'error') {
                 //如果本地缓存为空，且服务器文档读取失败时，跳回首页
                 if (localDoc == '') {
-                    docs.loadPage('首页', function (state, content) {
+                    docs.loadPage(homePage.path, function (state, content) {
                         if (state == 'success') {
+                            changeNav(homePage.path);
                             docs.renderDoc(content);
-                            storage.saveDoc('首页', content);
+                            storage.saveDoc(homePage.path, content);
                             $main.trigger('scrollbar');
                         }
                     });
                     if (HISTORY_STATE) {
-                        history.replaceState({path: '首页'}, '', '?file=首页');
+                        history.replaceState({path: homePage.path}, '', homePage.url);
                     }
                 }
                 //如果本地缓存不为空，但服务器文档读取失败时
@@ -433,12 +434,18 @@ $(function () {
     };
 
     //读取目录导航
+    var homePage = {};
     var loadNav = function (callback) {
         $.get('library/$navigation.md?t=' + Date.now(), function (data) {
             $menuBar.find('.scroller-content').html(marked(data));
-            $menuBar
-                .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
-                .find('h5').each(function () {
+            //首页
+            var menuBarHome = $menuBar.find('h4');
+            homePage.text = menuBarHome.text();
+            homePage.url = menuBarHome.find('a').attr('href');
+            homePage.path = homePage.url.split('file=')[1];
+            menuBarHome.prepend('<svg><use xlink:href="#icon:navHome"></use></svg>');
+            //列表
+            $menuBar.find('h5').each(function () {
                 var $this = $(this);
                 $this.html('<svg><use xlink:href="#icon:navArrow"></use></svg><span>' + $this.text() + '</span>')
             });

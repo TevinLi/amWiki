@@ -59,7 +59,7 @@ module.exports = {
                 }
             }
         } catch (err) {
-            //readdirSync读取失败时仅抛错
+            //readdirSync 读取失败时仅抛错
             console.error(err);
         }
         return [tree, list, files];
@@ -74,7 +74,14 @@ module.exports = {
             console.warn('The path is not a library.');
             return [];
         }
-        return this._listSubFolder(path);
+        const tree = {};
+        for (let fileName of fs.readdirSync(path)) {
+            if (/^home[-_].*?\.md$/.test(fileName) || fileName === '首页.md') {
+                tree[fileName] = false;
+                break;
+            }
+        }
+        return this._listSubFolder(path, 0, tree);
     },
     /**
      * 递归清空文件夹
