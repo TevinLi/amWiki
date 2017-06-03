@@ -341,7 +341,7 @@ $(function () {
         };
         setSiblingNav(0, getDocLink('prev', $item));
         setSiblingNav(1, getDocLink('next', $item));
-        if (testing && testing.isOpen()) {
+        if (testing && !testing.isOpen()) {
             $mainSibling.addClass('on');
         }
     };
