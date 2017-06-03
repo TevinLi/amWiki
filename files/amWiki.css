@@ -15,6 +15,7 @@
 .markdown-body h3 .anchor{position:relative;top:2px;}
 .markdown-body h1:hover .anchor svg,.markdown-body h2:hover .anchor svg,.markdown-body h3:hover .anchor svg{visibility:visible;}
 .markdown-body :not(.anchor)>img:hover{outline:rgba(0,0,0,.05) 1px solid;box-shadow:1px 1px 1px rgba(0,0,0,.1);}
+.markdown-body img[align="center"]{display:block;margin:0 auto;}
 .markdown-body tbody{word-break:initial;}
 .markdown-body pre{position:relative;}
 .markdown-body pre code{padding-top:0.15em;padding-bottom:0.15em;margin:0 1px;font-size:90%;color:#000;word-wrap:break-word;white-space:pre-wrap;}
