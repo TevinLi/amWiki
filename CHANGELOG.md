@@ -1,6 +1,8 @@
 # amWiki 版本日志
 
 <!--
+- 增加大图预览模式 ([#44](https://github.com/TevinLi/amWiki/issues/44))
+- Markdown 基础语法扩充，支持定义图片大小与对齐方式 ([#45](https://github.com/TevinLi/amWiki/issues/45))
 - 允许首页的文件名通过增加 `home-` 前缀来自定义
 - 修复图片拖拽丢失扩展名的问题 ([#58](https://github.com/TevinLi/amWiki/issues/58))
 - 修复测试面板切换文档时的一个显示问题
