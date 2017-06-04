@@ -140,6 +140,17 @@
                 <a class="back-text" href="#">返回顶部</a>
             </div>
         </aside>
+        <!-- 图片预览 -->
+        <section class="imgsv" id="imgsView">
+            <div class="imgsv-background"></div>
+            <div class="imgsv-view" id="imgsViewInner"><img src="assets/003/001-01a02027.png" alt="" /></div>
+            <ul class="imgsv-panel">
+                <li class="prev off">Prev</li>
+                <li class="next">Next</li>
+                <li class="original">1:1</li>
+                <li class="suit">适合</li>
+            </ul>
+        </section>
         <footer>
             <!-- 签名 -->
             <div class="signature">Powered by
@@ -161,6 +172,7 @@
             <script type="text/javascript" src="amWiki/js/amWiki.docs.js"></script>
             {{amWiki.testing.js}}
             <script type="text/javascript" src="amWiki/js/amWiki.scrollbar.js"></script>
+            <script type="text/javascript" src="amWiki/js/amWiki.imgsView.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.js"></script>
             {{custom.js}}
         </div>

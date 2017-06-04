@@ -260,6 +260,7 @@ module.exports = {
                 ['highlight.min.js', 'amWiki/js/highlight.min.js'],
                 ['amWiki.js', 'amWiki/js/amWiki.js'],
                 ['amWiki.scrollbar.js', 'amWiki/js/amWiki.scrollbar.js'],
+                ['amWiki.imgsView.js', 'amWiki/js/amWiki.imgsView.js'],
                 ['amWiki.testing.js', 'amWiki/js/amWiki.testing.js'],
                 ['amWiki.tools.js', 'amWiki/js/amWiki.tools.js'],
                 ['amWiki.storage.js', 'amWiki/js/amWiki.storage.js'],

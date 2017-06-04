@@ -170,6 +170,8 @@ $(function () {
         $('#backTop').on('click', function () {
             $mainInner.scrollTop(0);
         });
+        //图片放大
+        $main.imgsView();
         //全局点击
         $(document).on('click', function (e) {
             var $tag = $(e.target);
