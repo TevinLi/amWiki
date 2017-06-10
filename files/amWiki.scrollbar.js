@@ -62,7 +62,7 @@
         this.$e.inner = this.$e.container.children('.scroller-inner');
         //绑定事件
         this._onWinResize();
-        $(window).on('resize', function () {
+        $(win).on('resize', function () {
             that._onWinResize();
             that.checkHeightWidth();
         });
@@ -113,7 +113,7 @@
                 }
             });
         }
-        $(document).on({
+        $(win.document).on({
             'mousemove': function (e) {
                 if (onDrag == 'y') {
                     that.scrollYTo(top + e.pageY - _y);

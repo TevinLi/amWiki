@@ -1,15 +1,22 @@
 # amWiki 版本日志
 
 <!--
+- 增加大图预览模式 ([#44](https://github.com/TevinLi/amWiki/issues/44))
+- Markdown 基础语法扩充，支持定义图片大小与对齐方式 ([#45](https://github.com/TevinLi/amWiki/issues/45))
+- 允许首页的文件名通过增加 `home-` 前缀来自定义
+- 修复图片拖拽丢失扩展名的问题 ([#58](https://github.com/TevinLi/amWiki/issues/58))
+- 修复测试面板切换文档时的一个显示问题
+-->
+
 ## [v1.1.2](https://github.com/TevinLi/amWiki/releases/tag/v1.1.2)
-_2017--_
+_2017-06-03_
 
 - 允许在 config.json 上使用 imports 将额外的 css 和 js 文件嵌入页面 ([#43](https://github.com/TevinLi/amWiki/issues/43))
-- 允许本地 server 多开，端口被占用时累加端口号
+- 允许本地 server 多开，端口被占用时累加端口号 ([#46](https://github.com/TevinLi/amWiki/issues/46))
 - 新增本地 server 索引页，本地根 url 不再 404
 - 修复创建时取消创建操作的一个问题
 - 调整一些文案
--->
+
 
 ## [v1.1.1](https://github.com/TevinLi/amWiki/releases/tag/v1.1.1)
 _2017-05-21_

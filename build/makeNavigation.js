@@ -16,7 +16,7 @@ module.exports = {
         const path = editPath.replace(/\\/g, '/').split('library')[0] + 'library/';
         const [tree, list] = mngFolder.readLibraryTree(path);
         if (!tree) {
-            return;
+            return '';
         }
         this.make(path, tree, list);
         return path
@@ -33,8 +33,21 @@ module.exports = {
             return;
         }
         let errorHas = false;
-        //编码导航数据为 Markdown 文本
-        let markdown = '\n#### [首页](?file=首页 "返回首页")\n';
+        let markdown = '';
+        //首页链接输出为 Markdown 文本
+        for (let fileName in tree) {
+            if (tree.hasOwnProperty(fileName)) {
+                if (fileName === '首页.md') {
+                    break;
+                } else if (/^home[-_].*?\.md$/.test(fileName)) {
+                    const [, path, name] = fileName.match(/^(home[-_])(.*?)\.md$/);
+                    markdown += '\n#### [' + name + '](?file=' + path + name + ')\n';
+                    break;
+                }
+            }
+        }
+        markdown = (markdown === '') ? '\n#### [首页](?file=首页 "返回首页")\n' : markdown;
+        //导航数据输出为 Markdown 文本
         for (let item of list) {
             //检查 id 合法性
             if (!this._checkFileId(item.name, item.path)) {
