@@ -5,6 +5,7 @@
 - Markdown 基础语法扩充，支持定义图片大小与对齐方式 ([#45](https://github.com/TevinLi/amWiki/issues/45))
 - 允许首页的文件名通过增加 `home-` 前缀来自定义
 - 修复图片拖拽丢失扩展名的问题 ([#58](https://github.com/TevinLi/amWiki/issues/58))
+- 更改 highlight.js 为完整版，支持 176 种语言语法高亮
 - 修复测试面板切换文档时的一个显示问题
 -->
 
