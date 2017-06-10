@@ -257,7 +257,7 @@ module.exports = {
                 ['raphael-min.js', 'amWiki/js/raphael-min.js'],
                 ['jquery-compat-3.1.0.min.js', 'amWiki/js/jquery-compat-3.1.0.min.js'],
                 ['marked.min.js', 'amWiki/js/marked.min.js'],
-                ['highlight.min.js', 'amWiki/js/highlight.min.js'],
+                ['highlight.pack.js', 'amWiki/js/highlight.pack.js'],
                 ['amWiki.js', 'amWiki/js/amWiki.js'],
                 ['amWiki.scrollbar.js', 'amWiki/js/amWiki.scrollbar.js'],
                 ['amWiki.imgsView.js', 'amWiki/js/amWiki.imgsView.js'],

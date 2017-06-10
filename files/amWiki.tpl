@@ -163,7 +163,7 @@
             <script type="text/javascript" src="amWiki/js/pinyin.js"></script>
             <script type="text/javascript" src="amWiki/js/jquery-compat-3.1.0.min.js"></script>
             <script type="text/javascript" src="amWiki/js/marked.min.js"></script>
-            <script type="text/javascript" src="amWiki/js/highlight.min.js"></script>
+            <script type="text/javascript" src="amWiki/js/highlight.pack.js"></script>
             <script type="text/javascript" src="amWiki/js/raphael-min.js"></script>
             <script type="text/javascript" src="amWiki/js/flowchart.min.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.tools.js"></script>
