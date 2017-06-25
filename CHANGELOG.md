@@ -1,5 +1,6 @@
 # amWiki 版本日志
 
+
 <!--
 ## [v1.1.3](https://github.com/TevinLi/amWiki/releases/tag/v1.1.3)
 _2017-06-**_
@@ -11,6 +12,7 @@ _2017-06-**_
 - 更改 highlight.js 为完整版，支持 176 种语言语法高亮
 - 修复测试面板切换文档时的一个显示问题
 -->
+
 
 ## [v1.1.2](https://github.com/TevinLi/amWiki/releases/tag/v1.1.2)
 _2017-06-03_
