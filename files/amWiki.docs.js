@@ -221,6 +221,25 @@
         });
     };
 
+    //自定义图片大小与对齐方式
+    Docs.prototype.resizeImg = function (html) {
+        return html.replace(/<img(.*?)src="(.*?)=(\d*[-x×]\d*)(-[lrc])?"/g, function (m, s1, s2, s3, s4) {
+            var imgHtml = '<img' + s1 + 'src="' + s2 + '"';
+            var imgSize = s3.split(/[-x×]/);
+            var align = ({'-l': 'left', '-r': 'right', '-c': 'center'})[s4];
+            if (imgSize[0]) {
+                imgHtml += ' width="' + imgSize[0] + '"';
+            }
+            if (imgSize[1]) {
+                imgHtml += ' height="' + imgSize[1] + '"';
+            }
+            if (align) {
+                imgHtml += ' align="' + align + '"';
+            }
+            return imgHtml;
+        });
+    };
+
     //编码url
     Docs.prototype.encodeUrl = function (path, type) {
         var url = '';
@@ -262,13 +281,15 @@
         //创建脚注
         content = this.createFootnote(content);
         //编译 markdown
-        html = marked(content)
+        html = marked(content);
         //创建目录标记，和悬浮窗格式统一
-            .replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
+        html = html.replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
+        //自定义图片大小与对齐方式
+        html = this.resizeImg(html);
+        //填充到页面
+        this.$e.view.html(html);
         //功能化代码块
-        this.$e.view
-            .html(html)
-            .find('pre code').each(function (i, element) {
+        this.$e.view.find('pre code').each(function (i, element) {
             var $elm = $(element);
             var className = $elm.attr('class') || '';
             //创建流程图

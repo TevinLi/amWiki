@@ -18,7 +18,7 @@ Apm:
 [![apm](https://img.shields.io/apm/l/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")  
 
 ## amWiki 优势
-- 文档系统采用 Markdown 语法 [>>Markdown 快速开始](?file=001-学习amWiki/11-Markdown快速开始)
+- 文档系统采用 Markdown 语法 [>>Markdown 快速开始](?file=001-学习amWiki/05-学习markdown/01-Markdown快速开始)
 - 无需服务端开发，只需支持 http 访问的静态网页空间
 - 不使用数据库，使用 `.md` 扩展名存储文档为本地文件
 - 一键创建新文库，自动生成一套 Html 页面

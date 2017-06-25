@@ -257,9 +257,10 @@ module.exports = {
                 ['raphael-min.js', 'amWiki/js/raphael-min.js'],
                 ['jquery-compat-3.1.0.min.js', 'amWiki/js/jquery-compat-3.1.0.min.js'],
                 ['marked.min.js', 'amWiki/js/marked.min.js'],
-                ['highlight.min.js', 'amWiki/js/highlight.min.js'],
+                ['highlight.pack.js', 'amWiki/js/highlight.pack.js'],
                 ['amWiki.js', 'amWiki/js/amWiki.js'],
                 ['amWiki.scrollbar.js', 'amWiki/js/amWiki.scrollbar.js'],
+                ['amWiki.imgsView.js', 'amWiki/js/amWiki.imgsView.js'],
                 ['amWiki.testing.js', 'amWiki/js/amWiki.testing.js'],
                 ['amWiki.tools.js', 'amWiki/js/amWiki.tools.js'],
                 ['amWiki.storage.js', 'amWiki/js/amWiki.storage.js'],
@@ -277,7 +278,7 @@ module.exports = {
             if (!hasLibrary) {
                 //首页文档
                 const home = fs.readFileSync(options.filesPath + 'doc.home.md', 'utf-8').replace('{{name}}', config.name);
-                fs.writeFileSync(options.outputPath + 'library/首页.md', home, 'utf-8');
+                fs.writeFileSync(options.outputPath + 'library/home-首页.md', home, 'utf-8');
                 //其他页面文档
                 let fileList2 = [
                     ['doc.amwiki-introduce.md', 'library/001-学习amWiki/01-amWiki轻文库简介.md'],
