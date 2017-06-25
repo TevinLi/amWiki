@@ -1,9 +1,8 @@
 # amWiki 版本日志
 
 
-<!--
 ## [v1.1.3](https://github.com/TevinLi/amWiki/releases/tag/v1.1.3)
-_2017-06-**_
+_2017-06-25_
 
 - 增加大图预览模式第一期 ([#44](https://github.com/TevinLi/amWiki/issues/44))
 - Markdown 基础语法扩充，支持定义图片大小与对齐方式 ([#45](https://github.com/TevinLi/amWiki/issues/45))
@@ -11,8 +10,6 @@ _2017-06-**_
 - 修复图片拖拽丢失扩展名的问题 ([#58](https://github.com/TevinLi/amWiki/issues/58))
 - 更改 highlight.js 为完整版，支持 176 种语言语法高亮
 - 修复测试面板切换文档时的一个显示问题
--->
-
 
 ## [v1.1.2](https://github.com/TevinLi/amWiki/releases/tag/v1.1.2)
 _2017-06-03_
@@ -22,7 +19,6 @@ _2017-06-03_
 - 新增本地 server 索引页，本地根 url 不再 404
 - 修复创建时取消创建操作的一个问题
 - 调整一些文案
-
 
 ## [v1.1.1](https://github.com/TevinLi/amWiki/releases/tag/v1.1.1)
 _2017-05-21_

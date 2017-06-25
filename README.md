@@ -53,10 +53,9 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 
 <br>
 
-## amWiki 文档 & 文库 Demo
-amWiki 的文档由项目自身创建与维护  
-更多详细功能与使用介绍请前往 amWiki 的 github pages 查阅：  
-[ [文档中心：https://tevinli.github.io/amWiki/](https://tevinli.github.io/amWiki/index.html?file=001-学习amWiki/01-amWiki轻文库简介) ]
+## amWiki 教程 & 文档
+更多详细功能与使用介绍请前往 Github Pages: [ [amWiki 文档中心：https://tevinli.github.io/amWiki/](https://tevinli.github.io/amWiki/index.html?file=001-学习amWiki/01-amWiki轻文库简介) ]  
+(amWiki 的文档由项目自身创建与维护)  
 
 <br>
 
