@@ -92,14 +92,29 @@ co(function*() {
             mngWiki.linkWikis(wikis);
             mngWiki.addWiki(root);
             const port = parameters[0];
-            //有输入端口且合法
-            if (typeof port !== 'undefined' && /^\d+$/.test(port)) {
-                localServer.run(wikis, port);
+            const noIndex = parameters[1] || '';
+            //有输入端口
+            if (typeof port !== 'undefined') {
+                //端口合法
+                if (/^\d+$/.test(port)) {
+                    yield localServer.run(wikis, port);
+                    if (noIndex === 'no-index') {
+                        localServer.setOffIndex();
+                    }
+                }
+                //端口写成 noIndex
+                else {
+                    yield localServer.run(wikis);
+                    if (port === 'no-index' || noIndex === 'no-index') {
+                        localServer.setOffIndex();
+                    }
+                }
             }
             //没输入端口号
             else {
-                localServer.run(wikis);
+                yield localServer.run(wikis);
             }
+
             break;
         //本地浏览文档
         case 'browser':

@@ -16,10 +16,11 @@ module.exports = {
      * @param {number} port - 服务器端口号
      */
     run: function (wikis, port) {
-        return co(function* () {
-            if (!this._server) {
-                this._server = new Sever(wikis, port);
-                yield this._server.run();
+        const that = this;
+        return co(function*() {
+            if (!that._server) {
+                that._server = new Sever(wikis, port);
+                yield that._server.run();
             }
         });
     },
@@ -30,18 +31,19 @@ module.exports = {
      * @returns {promise}
      */
     browser: function (editPath, wikis) {
-        return co(function* () {
+        const that = this;
+        return co(function*() {
             //判断服务器
-            if (!this._server) {
+            if (!that._server) {
                 if (yield confirm2('本地服务器还未启动，您需要启动服务器么？')) {
-                    this._server = new Sever(wikis);
-                    yield this._server.run();
+                    that._server = new Sever(wikis);
+                    yield that._server.run();
                 } else {
                     return;
                 }
             }
             //解析地址
-            const host = 'http://' + this._server.getLocalIP() + ':' + this._server.getPort();
+            const host = 'http://' + that._server.getLocalIP() + ':' + that._server.getPort();
             const wikiId = mngWiki.createWikiId(editPath.split('library')[0]);
             let url;
             if (editPath.indexOf('$navigation.md') >= 0) {
@@ -75,9 +77,15 @@ module.exports = {
         });
     },
     /**
+     * 关闭 amWiki 索引页显示
+     */
+    setOffIndex: function () {
+        this._server.offIndex();
+    },
+    /**
      * 关闭服务器
      */
     destroy: function () {
-        this.server && this.server.close();
+        this._server && this._server.close();
     }
 };

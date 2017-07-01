@@ -4,8 +4,10 @@
 ## [v1.1.4]()
 _2017-**-**_
 
-- 基础 Markdown 语法扩充，支持复选框效果 ([#56](https://github.com/TevinLi/amWiki/issues/56))
-- 增加导航中文档文件名转义，文档文件名允许使用语法符号`()[]'"`而不冲突
+- 基础 Markdown 语法扩充，支持 todo list 复选框 ([#56](https://github.com/TevinLi/amWiki/issues/56))
+- 终端渠道本地服务器命令新增可关闭 amWiki 索引页的可选参数
+- 优化本地服务器容错性
+- 导航增加文档文件名转义，文档文件名允许使用语法符号`()[]'"`而不再冲突
 - 对带`&`符号的文件名在URL地址上用特殊转义替代，不会再被作为参数截断 ([#64](https://github.com/TevinLi/amWiki/issues/64))
 -->
 

@@ -63,30 +63,31 @@ const helpWords = `
   amwiki [command] [arguments]
 
 命令列表：
-  -h, help        显示帮助
+  -h, help        显示本帮助
   -v, version     显示版本号
   -c, create      创建 wiki
-  -u, update      更新 wiki 数据
-                  默认全部项目更新，添加参数可以指定部分更新
-                      [nav]  仅更新导航
+  -u, update      更新 wiki 数据，默认更新项目全部数据
+                  可选参数：
+                      [nav]  指定仅更新导航(当前仅此一项)
                   ${clc(90, '(eg: amwik update nav)')}
-  -s, server      启动本地服务器
-                  默认本地服务器使用端口5171，添加参数可以修改端口
-                      [8080]  修改端口
-                  ${clc(90, '(eg: amwiki server 8080)')}
-  -b, browser     本地浏览文档
-                  默认访问文库首页，添加参数可以打开指定页面
+  -s, server      启动本地服务器，默认本地服务器使用端口号 5171
+                  可选参数：
+                      [8080]  重新指定端口号
+                      [no-index]  关闭 amwiki 索引页
+                  ${clc(90, '(eg: amwiki server 8080 no-index)')}
+  -b, browser     本地浏览文档，默认访问文库首页
+                  可选参数：
                       [002/001]  按目录文档的id打开指定文档(待开发)
                   ${clc(90, '(eg: amwiki browser 002/001)')}
-  -e, export      项目导出
-                  第一位参数，必需，指定导出类型
-                      github-wiki  导出为github的项目wiki
-                  第二位参数，必需，指定导出路径
-                      d:/your-path  导出路径
+  -e, export      amwiki 项目导出
+                  必需参数：
+                      github-wiki  指定导出类型为 github 项目附属 wiki
+                      d:/your-path  指定本次导出的本地输出路径
                   ${clc(90, '(eg: amwiki export github-wiki d:/your-path)')}
-                  
+
 更多文档：
-  https://tevinli.github.io/amWiki/index.html`;
+  https://tevinli.github.io/amWiki/index.html
+`;
 
 //[embed]  仅更新嵌入数据(待开发)
 //[seo]  仅更新SEO模块(待开发)

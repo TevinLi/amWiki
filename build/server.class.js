@@ -37,6 +37,7 @@ class Server {
         this._wikis = wikis;
         this._port = port;
         this._localIP = this.getLocalIP();
+        this._indexShow = true;
         this.server = http.createServer((req, res) => {
             this._parse(req, res);
         });
@@ -104,6 +105,10 @@ class Server {
         return this._port;
     }
 
+    offIndex() {
+        this._indexShow = false;
+    }
+
     /**
      * 解析请求
      * @param {object} req - 请求体
@@ -112,9 +117,15 @@ class Server {
      */
     _parse(req, res) {
         const pathname = url.parse(req.url).pathname;
+        //文库列表页
         if (/^(\/|(\/index(\.html)?))$/.test(pathname)) {
-            return this._renderIndexPage(req, res);
+            if (this._indexShow) {
+                return this._renderIndexPage(req, res);
+            } else {
+                return Server.page404(req, res, pathname);
+            }
         }
+        //文库
         let wId = '';
         let filePath = pathname.replace(/^\/wiki(\d{3,}?)\//g, function (match, $1) {
             wId = $1;
@@ -133,21 +144,25 @@ class Server {
         //真实地址
         const realPath = this._wikis[wId].root + filePath;
         //解析文件
-        fs.exists(realPath, (exists) => {
-            if (!exists) {
-                return Server.page404(req, res, pathname);
-            } else {
-                const file = fs.createReadStream(realPath);
-                res.writeHead(200, {
-                    'Content-Type': MimeType[realPath.split('.').pop()] || 'text/plain'
-                });
-                file.on('data', res.write.bind(res));
-                file.on('close', res.end.bind(res));
-                file.on('error', function (err) {
-                    return Server.page500(req, res, err);
-                });
-            }
-        });
+        try {
+            fs.exists(realPath, (exists) => {
+                if (!exists) {
+                    return Server.page404(req, res, pathname);
+                } else {
+                    const file = fs.createReadStream(realPath);
+                    res.writeHead(200, {
+                        'Content-Type': MimeType[realPath.split('.').pop()] || 'text/plain'
+                    });
+                    file.on('data', res.write.bind(res));
+                    file.on('close', res.end.bind(res));
+                    file.on('error', function (err) {
+                        return Server.page500(req, res, err);
+                    });
+                }
+            });
+        } catch (err) {
+            return Server.page500(req, res, err);
+        }
     }
 
     /**
