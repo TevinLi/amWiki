@@ -1,5 +1,13 @@
 # amWiki 版本日志
 
+<!--
+## [v1.1.4]()
+_2017-**-**_
+
+-
+- 增加导航中文档文件名转义，文档文件名允许使用语法符号`()[]'"`而不冲突
+- 对带`&`符号的文件名在URL地址上用特殊转义替代，不会再被作为参数截断 ([#64](https://github.com/TevinLi/amWiki/issues/64))
+-->
 
 ## [v1.1.3](https://github.com/TevinLi/amWiki/releases/tag/v1.1.3)
 _2017-06-25_

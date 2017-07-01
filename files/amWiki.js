@@ -389,7 +389,8 @@ $(function () {
         $mainInner.scrollTop(0);  //返回顶部
         //更新history记录
         if (!withOutPushState && HISTORY_STATE) {
-            history.pushState({path: path}, '', '?file=' + path);
+            var path2 = path.replace(/&/g, '%26');  //对带 & 符号的地址特殊处理
+            history.pushState({path: path}, '', '?file=' + path2);
         }
         //第二步，加载服务器上的文档资源，如果有更新重新渲染
         docs.loadPage(path, function (state, content) {
@@ -523,6 +524,7 @@ $(function () {
     //解析地址参数
     var curPath = tools.getURLParameter('file');
     curPath = !curPath ? '首页' : decodeURI(curPath);
+    curPath = curPath.replace(/%26/g, '&');
 
     //加载导航
     loadNav(function (list) {

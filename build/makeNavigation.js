@@ -54,6 +54,14 @@ module.exports = {
                 errorHas = true;
                 continue;
             }
+            //转义文件名中包含的语法符号
+            item.name = item.name
+                .replace(/'/g, '&#39;')   //转义单引号
+                .replace(/"/g, '&#34;')   //转义双引号
+                .replace(/\(/g, '&#40;')  //转义左圆括号
+                .replace(/\)/g, '&#41;')  //转义右圆括号
+                .replace(/\[/g, '&#91;')  //转义左中括号
+                .replace(/\]/g, '&#93;'); //转义右中括号
             //一级目录
             if (item.depth === 0) {
                 //一级目录不允许文件
