@@ -240,6 +240,17 @@
         });
     };
 
+    //解析 markdown 复选框
+    Docs.prototype.setCheckbox = function (html) {
+        return html.replace(/\[([√×Xx\s\-_])\]\s(.*?)([<\n\r])/g, function (m, s1, s2, s3, index) {
+            //console.log(m, s1, s2, s3, a);
+            var checkboxHtml = '<input type="checkbox" id="checkbox' + index + '"';
+            checkboxHtml += /\s/.test(s1) ? '>' : 'checked="true">';
+            checkboxHtml += '<label for="checkbox' + index + '">' + s2 + '</label>';
+            return checkboxHtml + s3;
+        });
+    };
+
     //编码url
     Docs.prototype.encodeUrl = function (path, type) {
         var url = '';
@@ -286,6 +297,8 @@
         html = html.replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
         //自定义图片大小与对齐方式
         html = this.resizeImg(html);
+        //复选框
+        html = this.setCheckbox(html);
         //填充到页面
         this.$e.view.html(html);
         //功能化代码块

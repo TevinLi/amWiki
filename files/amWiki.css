@@ -17,6 +17,8 @@
 .markdown-body img:hover{outline:rgba(0,0,0,.05) 1px solid;box-shadow:1px 1px 1px rgba(0,0,0,.1);cursor:pointer;}
 .markdown-body img[align="center"]{display:block;margin:0 auto;}
 .markdown-body tbody{word-break:initial;}
+.markdown-body input[type="checkbox"]{margin-right:5px;vertical-align:middle;cursor:pointer;}
+.markdown-body input[type="checkbox"]+label{vertical-align:middle;cursor:pointer;}
 .markdown-body pre{position:relative;}
 .markdown-body pre code{padding-top:0.15em;padding-bottom:0.15em;margin:0 1px;font-size:90%;color:#000;word-wrap:break-word;white-space:pre-wrap;}
 .markdown-body pre code.hljs{color:#333;}
