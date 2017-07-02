@@ -543,6 +543,7 @@ $(function () {
             //当有状态记录时，直接跳转
             if (e.originalEvent.state) {
                 path = e.originalEvent.state.path;
+                path = path.replace(/%26/g, '&');
                 //改变导航
                 changeNav(path);
                 //改变页面
@@ -552,6 +553,7 @@ $(function () {
             else {
                 path = tools.getURLParameter('file');
                 path = !path ? '首页' : decodeURI(path);
+                path = path.replace(/%26/g, '&');
                 //判断 url 路径是否和当前一样，不一样才跳转
                 if (path != curPath) {
                     //改变导航

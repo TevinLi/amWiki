@@ -126,6 +126,7 @@
         var noteReg = /\[\^([ a-zA-Z\d]+)]/g;
         var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
         var templates = $.trim($('#template\\:footnote').text()).split(/[\r\n]+\s*/g);
+        templates[4] += templates[5] + templates[6] +templates[7] +templates[8];
         var html = '';
         //提取脚注内容
         text = text.replace(footReg, function (match, s1, s2, index) {
@@ -175,7 +176,7 @@
             }
             html = templates[1].replace('{{list}}', html);
         }
-        return text + html;
+        return text + '\n<br>' + html;
     };
 
     //设置js注释隐藏
