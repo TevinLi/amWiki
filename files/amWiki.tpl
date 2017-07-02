@@ -157,6 +157,10 @@
                 <a href="https://github.com/TevinLi/amWiki" target="_blank">amWiki</a>
             </div>
         </footer>
+        <!-- mounts -->
+        <div class="hidden">
+        		{{mounts}}
+        </div>
         <!-- js -->
         <div class="hidden">
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>

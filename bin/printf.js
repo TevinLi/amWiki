@@ -58,6 +58,7 @@ console.error = (...content) => {
     return console.log(`${clc(41, 'ERROR:')}`, ...content);
 };
 
+//帮助文本
 const helpWords = `
 用法：
   amwiki [command] [arguments]
@@ -88,10 +89,10 @@ const helpWords = `
 更多文档：
   https://tevinli.github.io/amWiki/index.html
 `;
-
 //[embed]  仅更新嵌入数据(待开发)
 //[seo]  仅更新SEO模块(待开发)
 
+//amWiki logo
 const vesWords = `
                        kk            kk  kk  kk      ww
  wwwwww     www  www    kk          kk       kk
@@ -102,22 +103,38 @@ ww    ww  ww   ww   ww   kk kk  kk kk    kk  kkkk      kk
  
 `.replace(/w/g, `${clc(32, '$')}`).replace(/k/g, `${clc(36, '$')}`);
 
-module.exports = {
-    clc: clc,
-    help: function () {
-        alert(helpWords);
-    },
-    ver: function (mainPath) {
-        const packageStr = fs.readFileSync(mainPath.split(/bin[\\\/]main/)[0] + 'package.json', 'utf-8');
-        const packageConf = JSON.parse(packageStr);
-        const text = [
-            'Package:   amWiki',
-            `Version:   ${clc(0, packageConf.version)}`,
-            'Author:    Tevin Li',
-            'HomePage:  https://github.com/tevinli/amWiki',
-            'License:   MIT'
-        ];
-        //const text = ` ${clc(92, 'am')}${clc(96, 'Wiki')} ${clc(1, 'v' + packageConf.version)}`;
-        alert(vesWords + text.join('\n'));
-    }
-};
+const printf = (function () {
+    return {
+        /**
+         * 命令行彩色输出
+         * @public
+         */
+        clc: clc,
+        /**
+         * 显示帮助信息
+         * @public
+         */
+        help: function () {
+            alert(helpWords);
+        },
+        /**
+         * 显示版本信息
+         * @param mainPath
+         * @public
+         */
+        ver: function (mainPath) {
+            const packageStr = fs.readFileSync(mainPath.split(/bin[\\\/]main/)[0] + 'package.json', 'utf-8');
+            const packageConf = JSON.parse(packageStr);
+            const text = [
+                'Package:   amWiki',
+                `Version:   ${clc(0, packageConf.version)}`,
+                'Author:    Tevin Li',
+                'HomePage:  https://github.com/tevinli/amWiki',
+                'License:   MIT'
+            ];
+            alert(vesWords + text.join('\n'));
+        }
+    };
+})();
+
+module.exports = printf;

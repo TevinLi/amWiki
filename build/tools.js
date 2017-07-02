@@ -4,13 +4,18 @@
  */
 
 
-module.exports = {
-    /**
-     * 判断一个对象是否属于数组
-     * @param {object} obj - 需要判断的对象
-     * @return {boolean}
-     */
-    isArray: function (obj) {
-        return Object.prototype.toString.call(obj) === '[object Array]';
-    }
-};
+const tools = (function () {
+    return {
+        /**
+         * 判断一个对象是否属于数组
+         * @param {object} obj - 需要判断的对象
+         * @return {boolean}
+         * @public
+         */
+        isArray: function (obj) {
+            return Object.prototype.toString.call(obj) === '[object Array]';
+        }
+    };
+})();
+
+module.exports = tools;

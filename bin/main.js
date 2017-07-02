@@ -63,7 +63,7 @@ co(function*() {
         case 'update':
         case '-u':
             if (!root) {
-                console.error('非amWiki项目文件夹，无法更新导航！');
+                console.error('非 amWiki 项目文件夹，无法更新导航！');
                 break;
             }
             const type = parameters[0];
@@ -86,7 +86,7 @@ co(function*() {
         case 'server':
         case '-s':
             if (!root) {
-                console.error('非amWiki项目文件夹，无法启动服务器！');
+                console.error('非 amWiki 项目文件夹，无法启动服务器！');
                 break;
             }
             mngWiki.linkWikis(wikis);
@@ -120,7 +120,7 @@ co(function*() {
         case 'browser':
         case '-b':
             if (!root) {
-                console.error('非amWiki项目文件夹，无法浏览文库！');
+                console.error('非 amWiki 项目文件夹，无法浏览文库！');
                 break;
             }
             mngWiki.linkWikis(wikis);

@@ -31,14 +31,22 @@ const MimeType = {
     'wmv': 'video/x-ms-wmv'
 };
 
+/**
+ * @class
+ */
 class Server {
 
+    /**
+     * @constructor
+     * @param wikis
+     * @param port
+     */
     constructor(wikis, port = 5171) {
         this._wikis = wikis;
         this._port = port;
         this._localIP = this.getLocalIP();
         this._indexShow = true;
-        this.server = http.createServer((req, res) => {
+        this._nodeServer = http.createServer((req, res) => {
             this._parse(req, res);
         });
     }
@@ -46,11 +54,12 @@ class Server {
     /**
      * 服务器启动
      * @return {Promise}
+     * @public
      */
     run() {
         return new Promise((resolve, reject) => {
             let portCount = 0;
-            this.server
+            this._nodeServer
                 .on('listening', () => {
                     mngWiki.updateWikiConfig();
                     console.info('Server running at http://' + this._localIP + ':' + this._port + '/');
@@ -61,7 +70,7 @@ class Server {
                         if (portCount < 12) {
                             console.warn('端口 ' + this._port + ' 已被其他程序占用，尝试端口号+1，监听端口 ' + (this._port + 1));
                             portCount++;
-                            this.server.listen(++this._port);
+                            this._nodeServer.listen(++this._port);
                         } else {
                             console.error('端口从 ' + (this._port - portCount) + ' 到 ' + this._port +
                                 ' 尽皆被占用，请使用其他段位的端口！');
@@ -71,13 +80,14 @@ class Server {
                         throw e;
                     }
                 });
-            this.server.listen(this._port);
+            this._nodeServer.listen(this._port);
         });
     }
 
     /**
      * 获取本地ip
      * @returns {string} 本地ip地址
+     * @public
      */
     getLocalIP() {
         if (this._localIP) {
@@ -100,11 +110,16 @@ class Server {
     /**
      * 获取当前 server 监听的端口
      * @return {number} 端口号
+     * @public
      */
     getPort() {
         return this._port;
     }
 
+    /**
+     * 关闭 amWiki 索引页显示
+     * @public
+     */
     offIndex() {
         this._indexShow = false;
     }
