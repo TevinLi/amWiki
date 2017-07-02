@@ -9,7 +9,7 @@ const mngFolder = require('./manageFolder');
 const makeNavigation = (function () {
     return {
         /**
-         * 刷新导航（创建wiki时）
+         * 刷新导航
          * @param {string} editPath - 当前文档的路径
          * @returns {string} library文件夹路径
          * @public
@@ -24,10 +24,10 @@ const makeNavigation = (function () {
             return path
         },
         /**
-         * 创建md导航文件
+         * 创建 .md 导航文件
          * @param {string} path - 文库library文件夹路径
          * @param {object} tree - 目录结构树形数据
-         * @param {object} list - 目录结构列表数据
+         * @param {array} list - 目录结构列表数据
          * @public
          */
         make: function (path, tree, list) {

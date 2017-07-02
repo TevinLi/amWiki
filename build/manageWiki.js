@@ -23,6 +23,30 @@ const manageWiki = (function () {
             this._wikis = wikis;
         },
         /**
+         * 获取所有文库记录
+         * @returns {object}
+         * @public
+         */
+        getWikis: function () {
+            return this._wikis
+        },
+        /**
+         * 通过 root 地址获取单个文库记录
+         * @param {string} root
+         * @returns {object}
+         * @public
+         */
+        getWikiByRoot: function (root) {
+            for (let wId in this._wikis){
+                if (this._wikis.hasOwnProperty(wId)) {
+                    if (this._wikis[wId].root === root) {
+                        return this._wikis[wId]
+                    }
+                }
+            }
+            return null;
+        },
+        /**
          * 添加一个文库到记录
          * @param {string} root - 文库根目录
          * @param {number} [id] - 文库的计算id
@@ -35,21 +59,23 @@ const manageWiki = (function () {
             if (typeof this._wikis[id] !== 'undefined') {
                 return;
             }
-            /*
-             * 文库信息
-             * 一个文库通常包括以下属性
-             * id：文库id，由真实地址计算而来，也就是说文库是基于不同地址来管理的
-             * root：文库根目录地址
-             * path：文库文档地址
-             * treeMD5：文件清单md5值，用于检测文库目录树变化
-             * deprecated：弃用标记，当文库被删除或转移走后，原有地址标记为弃用
-             */
+            //文库信息
             this._wikis[id] = {
+                //文库id，由真实地址计算而来，也就是说文库是基于不同地址来管理的
                 id: id,
+                //文库根目录地址
                 root: root,
+                //文库文档地址
                 path: root + 'library/',
-                deprecated: false
+                //弃用标记，当文库被删除或转移走后，原有地址标记为弃用
+                deprecated: false,
+                //文件清单md5值，用于检测文库目录树变化
+                treeMD5: '',
+                //文库配置文件的解析结果
+                config: null
             };
+            //读取配置文件
+            this.updateWikiConfig();
         },
         /**
          * 计算文库id
@@ -98,7 +124,7 @@ const manageWiki = (function () {
             }
         },
         /**
-         * 更新文库记录中对应的 config.json 的内容
+         * 更新文库记录中对应 config.json 的内容
          * @public
          */
         updateWikiConfig: function () {
@@ -122,8 +148,8 @@ const manageWiki = (function () {
             }
         },
         /**
-         *
-         * @param {object} config - 配置对象
+         * 重新解析/过滤 config 配置
+         * @param {object} config
          * @return {object} config
          * @public
          */
@@ -138,6 +164,8 @@ const manageWiki = (function () {
             config.testing = config.testing || false;
             //设置自定义颜色
             config.colour = config.colour || '#4296eb';
+            //本地页面数据挂载
+            config.localMounts = config.localMounts || false;
             //自定义 css、js 文件
             if (tools.isArray(config.imports) && config.imports.length > 0) {
                 const imports2 = {

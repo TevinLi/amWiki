@@ -12,8 +12,9 @@ const manageFolder = (function () {
          * @param {string} dirPath - 指定要分析的目录
          * @param {number} [depth=0] - 文件夹深度
          * @param {object} [tree={}] - 当前深度结构的树形
-         * @param {object[]} [list=[]] - 当前深度结构的列表
-         * @param {string[]} [files=[]] - 当前深度文件的列表
+         * @param {[object]} [list=[]] - 当前深度结构的列表
+         * @param {[string]} [files=[]] - 当前深度文件的列表
+         * @returns {{tree: object, list: array, files: array}} - 树形数据、列表数据、仅文件列表数据
          * @private
          */
         _listSubFolder: function (dirPath, depth = 0, tree = {}, list = [], files = []) {
@@ -68,7 +69,7 @@ const manageFolder = (function () {
         /**
          * 读取文库library文件夹树形数据
          * @param {string} path - 文库library文件夹路径
-         * @returns {object} 树形数据、文件列表数据、文件夹列表数据
+         * @returns {{tree: object, list: array, files: array}} - 树形数据、列表数据、仅文件列表数据
          * @public
          */
         readLibraryTree: function (path) {
@@ -94,7 +95,7 @@ const manageFolder = (function () {
             const list = fs.readdirSync(path);
             let path2;
             for (let item of list) {
-                path2 = path + '/' + item;
+                path2 = path.replace(/[\\\/]?&/, '/') + item;
                 if (fs.statSync(path2).isDirectory(path2)) {
                     if (item.indexOf('.') !== 0) {  //跳过特殊文件夹
                         this.cleanFolder(path2);
@@ -106,15 +107,34 @@ const manageFolder = (function () {
             }
         },
         /**
-         * 获取项目文件夹
-         * @param {string} path - 需要计算的文件夹路径
-         * @return {strong|boolean} 放回当前文库项目的路径，如果非文库返回 false
+         * 递归创建文件夹
+         * @param {string} path - 需要创建的文件夹路径
          * @public
          */
-        getProjectFoloder: function (path) {
+        createFolder: function (path) {
+            //先判断父级文件夹是否存在，不存在先创建父级文件夹
+            const parentPath = this.getParentFolder(path);
+            if (!fs.existsSync(parentPath)) {
+                this.createFolder(parentPath);  //向上递归创建父级
+                this.createFolder(path);        //创建完父级后再创建本级
+            }
+            //如果父级已存在，直接创建本级
+            else {
+                if (!fs.existsSync(path)) {
+                    fs.mkdirSync(path, 0o777);
+                }
+            }
+        },
+        /**
+         * 获取项目文件夹
+         * @param {string} path - 需要计算的文件夹路径
+         * @return {string|boolean} 放回当前文库项目的路径，如果非文库返回 false
+         * @public
+         */
+        getProjectFolder: function (path) {
             path = this.getLibraryFolder(path);
             if (path) {
-                return path.split('library')[0];
+                return path.replace(/library(\\|\/)?$/, '');
             } else {
                 return false;
             }
@@ -177,23 +197,23 @@ const manageFolder = (function () {
             return path.replace(/\\/g, '/').replace(/\/$/, '').match(/\/([^\/]*?)$/)[1];
         },
         /**
-         * 递归创建文件夹
-         * @param {string} path - 需要创建的文件夹路径
+         * 获取路径对应的一级目录 id
+         * @param {string} path
+         * @param {string} [libPath]
+         * @returns {string}
          * @public
          */
-        createFolder: function (path) {
-            //先判断父级文件夹是否存在，不存在先创建父级文件夹
-            const parentPath = this.getParentFolder(path);
-            if (!fs.existsSync(parentPath)) {
-                this.createFolder(parentPath);  //向上递归创建父级
-                this.createFolder(path);        //创建完父级后再创建本级
+        getLevel1Id: function (path, libPath) {
+            if (path.indexOf('library') < 0) {
+                return '';
             }
-            //如果父级已存在，直接创建本级
-            else {
-                if (!fs.existsSync(path)) {
-                    fs.mkdirSync(path, 0o777);
+            if (typeof libPath === 'undefined' || libPath < 8) {
+                let libPath = this.getLibraryFolder(path);
+                if (!libPath || libPath.length < 8) {
+                    return '';
                 }
             }
+            return path.substr(libPath.length).split(/[-_]/)[0];
         },
         /**
          * 判断一个文件夹是否为 amWiki 文库项目
@@ -209,7 +229,7 @@ const manageFolder = (function () {
             path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
             path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
             //获取 library 路径
-            path = this.getProjectFoloder(path);
+            path = this.getProjectFolder(path);
             if (!path) {
                 return false;
             }

@@ -25,6 +25,8 @@ const mngWiki = require('../build/manageWiki');
 const mngFolder = require('../build/manageFolder');
 //手动刷新导航文件
 const makeNav = require('../build/makeNavigation');
+//手动刷新页面挂载数据
+const makeMut = require('../build/makeMounts');
 //本地服务器模块
 const localServer = require('../build/localServer');
 //项目导出模块
@@ -36,6 +38,12 @@ const printFn = require('./printf');
 //项目根目录
 const root = mngFolder.isAmWiki(process.cwd());
 const wikis = {};
+
+//注册文库
+mngWiki.linkWikis(wikis);
+if (root) {
+    mngWiki.addWiki(root);
+}
 
 co(function*() {
 
@@ -72,7 +80,8 @@ co(function*() {
                 makeNav.refresh(root);
             }
             //更新文库嵌入数据
-            else if (type === 'embed') {
+            else if (type === 'mut') {
+                makeMut.make(root);
             }
             //更新 SEO 模块
             else if (type === 'seo') {
@@ -80,6 +89,7 @@ co(function*() {
             //完整更新
             else if (typeof type === 'undefined') {
                 makeNav.refresh(root);
+                makeMut.make(root, true);
             }
             break;
         //启动本地服务器
@@ -89,8 +99,6 @@ co(function*() {
                 console.error('非 amWiki 项目文件夹，无法启动服务器！');
                 break;
             }
-            mngWiki.linkWikis(wikis);
-            mngWiki.addWiki(root);
             const port = parameters[0];
             const noIndex = parameters[1] || '';
             //有输入端口
@@ -114,7 +122,6 @@ co(function*() {
             else {
                 yield localServer.run(wikis);
             }
-
             break;
         //本地浏览文档
         case 'browser':
@@ -123,8 +130,6 @@ co(function*() {
                 console.error('非 amWiki 项目文件夹，无法浏览文库！');
                 break;
             }
-            mngWiki.linkWikis(wikis);
-            mngWiki.addWiki(root);
             const fileId = parameters[0];
             //未给出需要浏览的文档id
             if (typeof fileId === 'undefined') {
@@ -163,7 +168,6 @@ co(function*() {
         default:
             printFn.help();
             break;
-
     }
 
     //关闭用户输入

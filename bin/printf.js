@@ -67,9 +67,11 @@ const helpWords = `
   -h, help        显示本帮助
   -v, version     显示版本号
   -c, create      创建 wiki
-  -u, update      更新 wiki 数据，默认更新项目全部数据
+  -u, update      更新 wiki 数据，默认根据文库配置选择适当内容更新
                   可选参数：
-                      [nav]  指定仅更新导航(当前仅此一项)
+                      [nav|mut]
+                          指定仅更新导航
+                          指定仅更新页面挂载数据
                   ${clc(90, '(eg: amwik update nav)')}
   -s, server      启动本地服务器，默认本地服务器使用端口号 5171
                   可选参数：
@@ -89,7 +91,6 @@ const helpWords = `
 更多文档：
   https://tevinli.github.io/amWiki/index.html
 `;
-//[embed]  仅更新嵌入数据(待开发)
 //[seo]  仅更新SEO模块(待开发)
 
 //amWiki logo

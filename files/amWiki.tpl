@@ -158,9 +158,7 @@
             </div>
         </footer>
         <!-- mounts -->
-        <div class="hidden">
-        		{{mounts}}
-        </div>
+        <div class="hidden" aw-include="mountLinks"></div>
         <!-- js -->
         <div class="hidden">
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>
