@@ -1,5 +1,5 @@
 /**
- * 工作端 － 创建 ./mounts/*.js 页面挂载数据模块
+ * 工作端 － 创建 mounts/*.js 页面挂载数据模块
  * @author Tevin
  */
 
@@ -26,7 +26,7 @@ const makeMounts = (function () {
             }
             const libPath = rootPath + 'library/';
             const [, list,] = mngFolder.readLibraryTree(libPath);
-            const mountData = this._getMountsData(libPath, list);
+            const mountData = this._getMountsData(libPath, rootPath, list);
             const mountFiles = this._exportMounts(mountData, rootPath);
             this._updateMountLinks(mountFiles, rootPath);
         },
@@ -51,11 +51,12 @@ const makeMounts = (function () {
         /**
          * 收集 mounts 数据
          * @param {string} libPath
+         * @param {string} rootPath
          * @param {[object]} list
          * @returns {{array}}
          * @private
          */
-        _getMountsData: function (libPath, list) {
+        _getMountsData: function (libPath, rootPath, list) {
             const mountData = {};
             const timestamp = Date.now();
             for (let file of list) {
@@ -77,7 +78,39 @@ const makeMounts = (function () {
                     timestamp: timestamp
                 });
             }
+            mountData['nav'] = this._getNavMount(libPath);
+            mountData['icon'] = this._getIconsMount(rootPath);
             return mountData;
+        },
+        /**
+         * 获取导航挂载数据
+         * @param libPath
+         * @returns {{name: string, path: string, content, timestamp: number}}
+         * @private
+         */
+        _getNavMount: function (libPath) {
+            const filePath = libPath + '$navigation.md';
+            return {
+                name: '$navigation.md',
+                path: filePath,
+                content: fs.readFileSync(filePath, 'utf-8'),
+                timestamp: Date.now()
+            }
+        },
+        /**
+         * 获取图标挂载数据
+         * @param rootPath
+         * @returns {{name: string, path: string, content, timestamp: number}}
+         * @private
+         */
+        _getIconsMount: function (rootPath) {
+            const filePath = rootPath + 'amWiki/images/icons.svg';
+            return {
+                name: 'icons.svg',
+                path: filePath,
+                content: fs.readFileSync(filePath, 'utf-8'),
+                timestamp: Date.now()
+            }
         },
         /**
          * 输出 ./mounts/*.js 文件
@@ -87,14 +120,14 @@ const makeMounts = (function () {
          * @private
          */
         _exportMounts: function (mountData, rootPath) {
-            const mountPath = rootPath + 'mounts/';
+            const mountPath = rootPath + 'amWiki/mounts/';
             if (!fs.existsSync(mountPath)) {
                 fs.mkdirSync(mountPath, 0o777);
             } else {
                 mngFolder.cleanFolder(mountPath);
             }
-            const mountTemplate = 'if(typeof pageMountData==\'undefined\'){pageMountData={}};' +
-                'pageMountData[\'{{id}}\']={{content}}';
+            const mountTemplate = 'if(typeof AWPageMounts==\'undefined\'){AWPageMounts={}};' +
+                'AWPageMounts[\'{{id}}\']={{content}}';
             const mountFiles = [];
             for (let mountId in mountData) {
                 if (mountData.hasOwnProperty(mountId)) {
@@ -110,7 +143,7 @@ const makeMounts = (function () {
             return mountFiles;
         },
         /**
-         * 更新 inde.html 文件的挂载
+         * 更新 index.html 文件的挂载
          * @param {array} mountFiles
          * @param {string} rootPath
          * @private
@@ -118,14 +151,13 @@ const makeMounts = (function () {
         _updateMountLinks: function (mountFiles, rootPath) {
             let linksHtml = '';
             for (let fileName of mountFiles) {
-                linksHtml += '<script src="mounts/' + fileName + '"></script>';
+                linksHtml += '<script src="amWiki/mounts/' + fileName + '"></script>';
             }
             let indexSrc = fs.readFileSync(rootPath + 'index.html', 'utf-8');
             const mountReg = /<div(.*?)aw-include="mountLinks"(.*?)>(.*?)<\/div>/;
             indexSrc = indexSrc.replace(mountReg, function (m, s1, s2) {
-                let mountHtml = '<div' + s1 + 'aw-include="mountLinks"' + s2 + '>' +
+                return '<div' + s1 + 'aw-include="mountLinks"' + s2 + '>' +
                     linksHtml + '</div>';
-                return mountHtml;
             });
             fs.writeFileSync(rootPath + 'index.html', indexSrc, 'utf-8');
         }
