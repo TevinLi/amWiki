@@ -154,7 +154,12 @@ $(function () {
             $.get('amWiki/images/icons.svg', function (svg) {
                 sessionStorage['AMWikiIconsSvg'] = svg;
                 $('#svgSymbols').append(svg);
-            }, 'text');
+            }, 'text').fail(function () {
+                if (typeof AWPageMounts != 'undefined') {
+                    sessionStorage['AMWikiIconsSvg'] = AWPageMounts['icon'].content;
+                    $('#svgSymbols').append(AWPageMounts['icon'].content);
+                }
+            });
         }
         //目录悬浮窗展开折叠
         $contents.children('.btn').on('click', function (e) {
@@ -379,6 +384,52 @@ $(function () {
         $menuBar.trigger('scrollbar');
     };
 
+    //从挂载数据读取页面内容
+    var getPageFormMounts = function (path, timestamp) {
+        path += '.md';
+        //首页
+        if (path == AWPageMounts['home'].name) {
+            return AWPageMounts['home'].content;
+        }
+        //其他文档
+        var lv1Id = 'm' + path.split(/[-_]/)[0];
+        for (var lv1 in AWPageMounts) {
+            if (!AWPageMounts.hasOwnProperty(lv1)) {
+                continue;
+            }
+            if (lv1 != lv1Id) {
+                continue;
+            }
+            for (var i = 0, page; page = AWPageMounts[lv1][i]; i++) {
+                if (page.path == path) {
+                    //如果挂载数据比缓存晚，则挂载比较新，返回挂载数据
+                    if (page.timestamp > timestamp) {
+                        return page.content;
+                    }
+                    //如果挂载时间较旧，返回空
+                    else {
+                        return '';
+                    }
+                }
+            }
+        }
+        return '';
+    };
+    //返回首页
+    var backHome = function () {
+        docs.loadPage(homePage.path, function (state, content) {
+            if (state == 'success') {
+                changeNav(homePage.path);
+                docs.renderDoc(content);
+                storage.saveDoc(homePage.path, content);
+                $main.trigger('scrollbar');
+            }
+        });
+        if (HISTORY_STATE) {
+            history.replaceState({path: homePage.path}, '', homePage.url);
+        }
+    };
+
     //改变页面
     var changePage = function (path, withOutPushState, callback) {
         //第一步，从本地缓存读取并渲染页面
@@ -396,25 +447,45 @@ $(function () {
         docs.loadPage(path, function (state, content) {
             //读取服务器文档失败时
             if (state == 'error') {
-                //如果本地缓存为空，且服务器文档读取失败时，跳回首页
+                //如果本地缓存为空
                 if (localDoc == '') {
-                    docs.loadPage(homePage.path, function (state, content) {
-                        if (state == 'success') {
-                            changeNav(homePage.path);
-                            docs.renderDoc(content);
-                            storage.saveDoc(homePage.path, content);
+                    //如果存在挂载数据，从挂载数据读取
+                    if (typeof AWPageMounts != 'undefined') {
+                        var content2 = getPageFormMounts(path, 0);
+                        if (content2 != '') {
+                            docs.renderDoc(content2);
+                            storage.saveDoc(path, content2);
+                            testing && testing.crawlContent();
                             $main.trigger('scrollbar');
+                        } else {
+                            backHome();
                         }
-                    });
-                    if (HISTORY_STATE) {
-                        history.replaceState({path: homePage.path}, '', homePage.url);
+                    }
+                    //否则返回首页
+                    else {
+                        backHome();
                     }
                 }
-                //如果本地缓存不为空，但服务器文档读取失败时
+                //如果本地缓存不为空
                 else {
-                    //记录文档打开数
-                    storage.increaseOpenedCount(path);
-                    callback && callback();
+                    //存在挂载数据时比较缓存与挂载数据时间
+                    if (typeof AWPageMounts != 'undefined') {
+                        var storageTime = storage.readTime(path);
+                        var content3 = getPageFormMounts(path, storageTime);
+                        //如果挂载数据较新，更新
+                        if (content3 != '') {
+                            docs.renderDoc(content3);
+                            storage.saveDoc(path, content3);
+                            testing && testing.crawlContent();
+                            $main.trigger('scrollbar');
+                        }
+                    }
+                    //不存在挂载数据
+                    else {
+                        //记录文档打开数
+                        storage.increaseOpenedCount(path);
+                        callback && callback();
+                    }
                 }
             }
             //读取服务器文档成功时
@@ -439,7 +510,7 @@ $(function () {
     //读取目录导航
     var homePage = {};
     var loadNav = function (callback) {
-        $.get('library/$navigation.md?t=' + Date.now(), function (data) {
+        var fillNav = function (data) {
             $menuBar.find('.scroller-content').html(marked(data));
             //首页
             var menuBarHome = $menuBar.find('h4');
@@ -494,7 +565,12 @@ $(function () {
             }
             //回调
             callback && callback(pathList);
-        }, 'text');
+        };
+        $.get('library/$navigation.md?t=' + Date.now(), fillNav, 'text').fail(function () {
+            if (typeof AWPageMounts != 'undefined') {
+                fillNav(AWPageMounts['nav'].content);
+            }
+        });
     };
 
     //根据hash改变滚动位置

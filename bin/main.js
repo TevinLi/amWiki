@@ -66,6 +66,7 @@ co(function*() {
             }
             //更新导航
             makeNav.refresh(root2 + 'library/');
+            makeMut.make(root, true);
             break;
         //更新 wiki
         case 'update':

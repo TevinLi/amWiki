@@ -78,38 +78,58 @@ const makeMounts = (function () {
                     timestamp: timestamp
                 });
             }
+            mountData['home'] = this._getHomeMount(libPath);
             mountData['nav'] = this._getNavMount(libPath);
             mountData['icon'] = this._getIconsMount(rootPath);
+            //console.log(mountData['home'].name, mountData['nav'].name, mountData['icon'].name);
+            mountData['home'].timestamp = mountData['nav'].timestamp = mountData['icon'].timestamp = timestamp;
             return mountData;
         },
         /**
+         * 获取首页挂载数据
+         * @param {String} libPath
+         * @returns {{name: String, path: String, content: String}}
+         * @private
+         */
+        _getHomeMount: function (libPath) {
+            var list = fs.readdirSync(libPath);
+            for (let name of list) {
+                if (/^home[-_].*?\.md$/.test(name) || name === '首页.md') {
+                    const homePath = libPath + name;
+                    return {
+                        name: name,
+                        path: homePath.substr(libPath.length),
+                        content: fs.readFileSync(homePath, 'utf-8'),
+                    }
+                }
+            }
+        },
+        /**
          * 获取导航挂载数据
-         * @param libPath
-         * @returns {{name: string, path: string, content, timestamp: number}}
+         * @param {String} libPath
+         * @returns {{name: string, path: string, content: String}}
          * @private
          */
         _getNavMount: function (libPath) {
             const filePath = libPath + '$navigation.md';
             return {
                 name: '$navigation.md',
-                path: filePath,
-                content: fs.readFileSync(filePath, 'utf-8'),
-                timestamp: Date.now()
+                path: filePath.substr(libPath.length),
+                content: fs.readFileSync(filePath, 'utf-8')
             }
         },
         /**
          * 获取图标挂载数据
-         * @param rootPath
-         * @returns {{name: string, path: string, content, timestamp: number}}
+         * @param {String} rootPath
+         * @returns {{name: string, path: string, content: String}}
          * @private
          */
         _getIconsMount: function (rootPath) {
             const filePath = rootPath + 'amWiki/images/icons.svg';
             return {
                 name: 'icons.svg',
-                path: filePath,
-                content: fs.readFileSync(filePath, 'utf-8'),
-                timestamp: Date.now()
+                path: '../' + filePath.substr(rootPath.length),
+                content: fs.readFileSync(filePath, 'utf-8')
             }
         },
         /**

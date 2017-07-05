@@ -117,6 +117,20 @@
     };
 
     /**
+     * 读取一篇文档的时间
+     * @param uri {string} - 文档资源地址
+     * @returns {string} - 文档内容
+     */
+    Storage.prototype.readTime = function (uri) {
+        var id = tools.simString(uri, 'short');
+        if (this._db.documents[id]) {
+            return this._db.documents[id].timestamp;
+        } else {
+            return 0;
+        }
+    };
+
+    /**
      * @desc 删除一篇文档
      * @param uri {string} - 文档资源地址
      */
