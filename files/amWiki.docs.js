@@ -260,19 +260,19 @@
             if (localStorage[URL_ENCODE_NAME] == 'utf8') {
                 url = 'library/' + encodeURI(path);
             } else if (localStorage[URL_ENCODE_NAME] == 'gbk') {
-                paths = path.split('/');
-                url = 'library/' + GBK.encode(paths[0]);
-                url += paths[1] ? '/' + GBK.encode(paths[1]) : '';
-                url += paths[2] ? '/' + GBK.encode(paths[2]) : '';
+                paths = path.split('/').map(function(path) {
+                    return GBK.encode(path);
+                });
+                url = 'library/' + paths.join('/');
             }
         }
         //反转编码
         else if (type == 'reverse') {
             if (localStorage[URL_ENCODE_NAME] == 'utf8') {
-                paths = path.split('/');
-                url = 'library/' + GBK.encode(paths[0]);
-                url += paths[1] ? '/' + GBK.encode(paths[1]) : '';
-                url += paths[2] ? '/' + GBK.encode(paths[2]) : '';
+                paths = path.split('/').map(function(path) {
+                    return GBK.encode(path);
+                });
+                url = 'library/' + paths.join('/');
             } else if (localStorage[URL_ENCODE_NAME] == 'gbk') {
                 url = 'library/' + encodeURI(path);
             }
