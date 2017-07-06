@@ -8,8 +8,8 @@ const tools = (function () {
     return {
         /**
          * 判断一个对象是否属于数组
-         * @param {object} obj - 需要判断的对象
-         * @return {boolean}
+         * @param {Object} obj - 需要判断的对象
+         * @return {Boolean}
          * @public
          */
         isArray: function (obj) {

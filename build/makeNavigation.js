@@ -10,8 +10,8 @@ const makeNavigation = (function () {
     return {
         /**
          * 刷新导航
-         * @param {string} editPath - 当前文档的路径
-         * @returns {string} library文件夹路径
+         * @param {String} editPath - 当前文档的路径
+         * @returns {String} library文件夹路径
          * @public
          */
         refresh: function (editPath) {
@@ -25,9 +25,9 @@ const makeNavigation = (function () {
         },
         /**
          * 创建 .md 导航文件
-         * @param {string} path - 文库library文件夹路径
-         * @param {object} tree - 目录结构树形数据
-         * @param {array} list - 目录结构列表数据
+         * @param {String} path - 文库library文件夹路径
+         * @param {Object} tree - 目录结构树形数据
+         * @param {Array} list - 目录结构列表数据
          * @public
          */
         make: function (path, tree, list) {
@@ -98,9 +98,9 @@ const makeNavigation = (function () {
         },
         /**
          * 检查id合法性
-         * @param {string} name
-         * @param {string} path
-         * @returns {boolean}
+         * @param {String} name
+         * @param {String} path
+         * @returns {Boolean}
          * @private
          */
         _checkFileId: function (name, path) {
@@ -116,9 +116,9 @@ const makeNavigation = (function () {
         },
         /**
          * 检查名称合法性
-         * @param {string} name
-         * @param {string} path
-         * @returns {boolean}
+         * @param {String} name
+         * @param {String} path
+         * @returns {Boolean}
          * @private
          */
         _checkFileName: function (name, path) {
@@ -134,9 +134,9 @@ const makeNavigation = (function () {
         },
         /**
          * 递归检查(某一目录下的同级文件和文件夹的)ID是否存在重复
-         * @param {object} tree - 当前层级的目录结构
-         * @param {string} path - 当前目录所在路径
-         * @return {boolean} 如果返回为true，则说明存在重复ID
+         * @param {Object} tree - 当前层级的目录结构
+         * @param {String} path - 当前目录所在路径
+         * @return {Boolean} 如果返回为true，则说明存在重复ID
          * @private
          */
         _checkDuplicateId: function (tree, path = '') {

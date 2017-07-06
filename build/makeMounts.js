@@ -12,8 +12,8 @@ const makeMounts = (function () {
     return {
         /**
          * 创建 mounts 数据
-         * @param {string} editPath
-         * @param {boolean} [offMsg] - 是否关闭提示
+         * @param {String} editPath
+         * @param {Boolean} [offMsg] - 是否关闭提示
          * @public
          */
         make: function (editPath, offMsg) {
@@ -32,8 +32,8 @@ const makeMounts = (function () {
         },
         /**
          * 检查 mounts 创建许可
-         * @param rootPath
-         * @returns {boolean}
+         * @param {String} rootPath
+         * @returns {Boolean}
          * @private
          */
         _checkMountsAllow: function (rootPath) {
@@ -50,10 +50,10 @@ const makeMounts = (function () {
         },
         /**
          * 收集 mounts 数据
-         * @param {string} libPath
-         * @param {string} rootPath
-         * @param {[object]} list
-         * @returns {{array}}
+         * @param {String} libPath
+         * @param {String} rootPath
+         * @param {[Object]} list
+         * @returns {{Array}}
          * @private
          */
         _getMountsData: function (libPath, rootPath, list) {
@@ -107,7 +107,7 @@ const makeMounts = (function () {
         /**
          * 获取导航挂载数据
          * @param {String} libPath
-         * @returns {{name: string, path: string, content: String}}
+         * @returns {{name: String, path: String, content: String}}
          * @private
          */
         _getNavMount: function (libPath) {
@@ -121,7 +121,7 @@ const makeMounts = (function () {
         /**
          * 获取图标挂载数据
          * @param {String} rootPath
-         * @returns {{name: string, path: string, content: String}}
+         * @returns {{name: String, path: String, content: String}}
          * @private
          */
         _getIconsMount: function (rootPath) {
@@ -134,9 +134,9 @@ const makeMounts = (function () {
         },
         /**
          * 输出 ./mounts/*.js 文件
-         * @param {{array}} mountData
-         * @param {string} rootPath
-         * @returns {array}
+         * @param {{Array}} mountData
+         * @param {String} rootPath
+         * @returns {Array}
          * @private
          */
         _exportMounts: function (mountData, rootPath) {
@@ -164,8 +164,8 @@ const makeMounts = (function () {
         },
         /**
          * 更新 index.html 文件的挂载
-         * @param {array} mountFiles
-         * @param {string} rootPath
+         * @param {Array} mountFiles
+         * @param {String} rootPath
          * @private
          */
         _updateMountLinks: function (mountFiles, rootPath) {

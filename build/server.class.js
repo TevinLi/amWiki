@@ -32,14 +32,14 @@ const MimeType = {
 };
 
 /**
- * @class
+ * @class Server
  */
 class Server {
 
     /**
      * @constructor
-     * @param wikis
-     * @param port
+     * @param {[Object]} wikis
+     * @param {Number} port=5171
      */
     constructor(wikis, port = 5171) {
         this._wikis = wikis;
@@ -86,7 +86,7 @@ class Server {
 
     /**
      * 获取本地ip
-     * @returns {string} 本地ip地址
+     * @returns {String} 本地ip地址
      * @public
      */
     getLocalIP() {
@@ -109,7 +109,7 @@ class Server {
 
     /**
      * 获取当前 server 监听的端口
-     * @return {number} 端口号
+     * @return {Number} 端口号
      * @public
      */
     getPort() {
@@ -126,8 +126,8 @@ class Server {
 
     /**
      * 解析请求
-     * @param {object} req - 请求体
-     * @param {object} res - 响应体
+     * @param {Object} req - 请求体
+     * @param {Object} res - 响应体
      * @private
      */
     _parse(req, res) {
@@ -182,8 +182,8 @@ class Server {
 
     /**
      * 渲染索引页
-     * @param {object} req - 请求体
-     * @param {object} res - 响应体
+     * @param {Object} req - 请求体
+     * @param {Object} res - 响应体
      * @private
      */
     _renderIndexPage(req, res) {
@@ -254,7 +254,13 @@ class Server {
         res.end();
     }
 
-    //404未找到页面
+    /**
+     * 404未找到页面
+     * @param {Object} req
+     * @param {Object} res
+     * @param {String} path
+     * @static
+     */
     static page404(req, res, path) {
         res.writeHead(404, {
             'Content-Type': 'text/html'
@@ -266,7 +272,13 @@ class Server {
         res.end();
     }
 
-    //500错误页面
+    /**
+     * 500错误页面
+     * @param {Object} req
+     * @param {Object} res
+     * @param {Error} error
+     * @static
+     */
     static page500(req, res, error) {
         res.writeHead(500, {
             'Content-Type': 'text/html'

@@ -11,6 +11,10 @@
     //计算器
     var searcher = (function () {
 
+        /**
+         * 搜索计算器
+         * @constructor
+         */
         var Searcher = function () {
             //文档存储
             this._documents = null;

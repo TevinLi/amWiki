@@ -7,6 +7,11 @@
 
     'use strict';
 
+    /**
+     * 图片查看器
+     * @param {Object} _this
+     * @constructor
+     */
     var ImgsView = function (_this) {
         this.$e = {
             container: $(_this),       //文档主容器

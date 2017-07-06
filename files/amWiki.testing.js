@@ -10,7 +10,8 @@
     'use strict';
 
     /**
-     * @class 创建接口测试
+     * 建接口测试
+     * @constructor
      */
     var Testing = function () {
         //缓存元素
@@ -53,7 +54,7 @@
     };
 
     /**
-     * @desc 抓取请求内容，抓取成功才显示按钮
+     * 抓取请求内容，抓取成功才显示按钮
      */
     Testing.prototype.crawlContent = function () {
         var that = this;

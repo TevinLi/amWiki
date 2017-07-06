@@ -12,8 +12,8 @@ const creator = (function () {
     return {
         /**
          * 复制文件
-         * @param {string} from
-         * @param {string} to
+         * @param {String} from
+         * @param {String} to
          * @private
          */
         _copyWikiFile: function (from, to) {
@@ -23,8 +23,8 @@ const creator = (function () {
         },
         /**
          * 创建 amWiki 必要的文件夹
-         * @param {string} outputPath
-         * @returns {boolean}
+         * @param {String} outputPath
+         * @returns {Boolean}
          * @private
          */
         _createWikiFolder: function (outputPath) {
@@ -58,8 +58,8 @@ const creator = (function () {
         /**
          * 创建着色色系
          *   (ps: 颜色变亮变暗不是 rgb 分别同时增加或减少一个值)
-         * @param {string} color
-         * @returns {{base: string, light: string, dark: string}} - 生成的浅、中、深三色
+         * @param {String} color
+         * @returns {{base: String, light: String, dark: String}} - 生成的浅、中、深三色
          * @private
          */
         _clacWikiColour: function (color) {
@@ -150,9 +150,9 @@ const creator = (function () {
         },
         /**
          * 配置检查
-         * @param {string} configPath
-         * @param {string} filesPath
-         * @returns {promise}
+         * @param {String} configPath
+         * @param {String} filesPath
+         * @returns {Promise}
          * @private
          */
         _checkConfig: function (configPath, filesPath) {
@@ -202,9 +202,9 @@ const creator = (function () {
         },
         /**
          * 创建amWiki本地文件
-         * @param {string} configPath - config.json文件的路径
-         * @param {string} filesPath - 项目包files文件夹路径
-         * @returns {promise} 传参：项目根目录
+         * @param {String} configPath - config.json文件的路径
+         * @param {String} filesPath - 项目包files文件夹路径
+         * @returns {Promise} 项目根目录
          * @public
          */
         create: function (configPath, filesPath) {

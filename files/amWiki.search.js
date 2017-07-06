@@ -9,7 +9,9 @@
     'use strict';
 
     /**
-     * @class 创建全局搜索
+     * 全局搜索
+     * @param {Storage} _storage
+     * @constructor
      */
     var Search = function (_storage) {
         this._storage = _storage;

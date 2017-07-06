@@ -9,12 +9,12 @@ const manageFolder = (function () {
     return {
         /**
          * 递归分析指定文件夹下的目录结构
-         * @param {string} dirPath - 指定要分析的目录
-         * @param {number} [depth=0] - 文件夹深度
-         * @param {object} [tree={}] - 当前深度结构的树形
-         * @param {[object]} [list=[]] - 当前深度结构的列表
-         * @param {[string]} [files=[]] - 当前深度文件的列表
-         * @returns {{tree: object, list: array, files: array}} - 树形数据、列表数据、仅文件列表数据
+         * @param {String} dirPath - 指定要分析的目录
+         * @param {Number} [depth=0] - 文件夹深度
+         * @param {Object} [tree={}] - 当前深度结构的树形
+         * @param {[Object]} [list=[]] - 当前深度结构的列表
+         * @param {[String]} [files=[]] - 当前深度文件的列表
+         * @returns {{tree: Object, list: [Object], files: [String]}} - 树形数据、列表数据、仅文件列表数据
          * @private
          */
         _listSubFolder: function (dirPath, depth = 0, tree = {}, list = [], files = []) {
@@ -68,8 +68,8 @@ const manageFolder = (function () {
         },
         /**
          * 读取文库library文件夹树形数据
-         * @param {string} path - 文库library文件夹路径
-         * @returns {{tree: object, list: array, files: array}} - 树形数据、列表数据、仅文件列表数据
+         * @param {String} path - 文库library文件夹路径
+         * @returns {{tree: Object, list: [Object], files: [String]}} - 树形数据、列表数据、仅文件列表数据
          * @public
          */
         readLibraryTree: function (path) {
@@ -88,7 +88,7 @@ const manageFolder = (function () {
         },
         /**
          * 递归清空文件夹
-         * @param {string} path - 要清空的文件夹
+         * @param {String} path - 要清空的文件夹
          * @public
          */
         cleanFolder: function (path) {
@@ -108,7 +108,7 @@ const manageFolder = (function () {
         },
         /**
          * 递归创建文件夹
-         * @param {string} path - 需要创建的文件夹路径
+         * @param {String} path - 需要创建的文件夹路径
          * @public
          */
         createFolder: function (path) {
@@ -127,8 +127,8 @@ const manageFolder = (function () {
         },
         /**
          * 获取项目文件夹
-         * @param {string} path - 需要计算的文件夹路径
-         * @return {string|boolean} 放回当前文库项目的路径，如果非文库返回 false
+         * @param {String} path - 需要计算的文件夹路径
+         * @return {String|Boolean} 放回当前文库项目的路径，如果非文库返回 false
          * @public
          */
         getProjectFolder: function (path) {
@@ -141,8 +141,8 @@ const manageFolder = (function () {
         },
         /**
          * 获取 library 目录路径 (通过反向查找，而不是 split 截断)
-         * @param {string} path - 需要计算的文件夹路径
-         * @returns {string|boolean} 返回当前文库 library 目录的路径，如果非文库则返回 false
+         * @param {String} path - 需要计算的文件夹路径
+         * @returns {String|Boolean} 返回当前文库 library 目录的路径，如果非文库则返回 false
          * @public
          */
         getLibraryFolder: function (path) {
@@ -171,8 +171,8 @@ const manageFolder = (function () {
         },
         /**
          * 获取当前文件(夹)所属上级目录的路径
-         * @param {string} path - 需要计算的文件夹路径
-         * @returns {string|boolean} 父级文件夹路径
+         * @param {String} path - 需要计算的文件夹路径
+         * @returns {String|Boolean} 父级文件夹路径
          * @public
          */
         getParentFolder: function (path) {
@@ -189,8 +189,8 @@ const manageFolder = (function () {
         },
         /**
          * 获取当前文件(夹)的名称
-         * @param {string} path - 需要计算的路径
-         * @return {string} 文件(夹)名称
+         * @param {String} path - 需要计算的路径
+         * @return {String} 文件(夹)名称
          * @public
          */
         getBaseName: function (path) {
@@ -198,9 +198,9 @@ const manageFolder = (function () {
         },
         /**
          * 获取路径对应的一级目录 id
-         * @param {string} path
-         * @param {string} [libPath]
-         * @returns {string}
+         * @param {String} path
+         * @param {String} [libPath]
+         * @returns {String}
          * @public
          */
         getLevel1Id: function (path, libPath) {
@@ -217,8 +217,8 @@ const manageFolder = (function () {
         },
         /**
          * 判断一个文件夹是否为 amWiki 文库项目
-         * @param {string} path - 需要判断的文件夹路径
-         * @returns {boolean|string} 判断为否时返回 false，判断为真时返回项目根目录的路径
+         * @param {String} path - 需要判断的文件夹路径
+         * @returns {Boolean|String} 判断为否时返回 false，判断为真时返回项目根目录的路径
          * @public
          */
         isAmWiki: function (path) {

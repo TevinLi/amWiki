@@ -13,7 +13,8 @@
     var URL_ENCODE_NAME = 'AMWikiUrlEncode';  //记录url编码的键名
 
     /**
-     * @class 创建一个文档管理对象
+     * 文档管理
+     * @constructor
      */
     var Docs = function () {
         this.$e = {
@@ -282,8 +283,8 @@
     };
 
     /**
-     * @desc 渲染文档
-     * @param content {string} - 需要渲染的文档内容
+     * 渲染文档
+     * @param {String} content - 需要渲染的文档内容
      */
     Docs.prototype.renderDoc = function (content) {
         var that = this;
@@ -353,14 +354,11 @@
     };
 
     /**
-     * @callback loadPageCallback
-     * @param type {string} - 加载页面最终状态，success、error 两种
-     * @param content {string} - 加载页面成功时，传递加载的内容
-     */
-    /**
-     * @desc 加载指定页面
-     * @param path {string} - 页面资源地址
-     * @param callback {loadPageCallback} - 加载完成后的回调
+     * 加载指定页面
+     * @param {String} path - 页面资源地址
+     * @param {Function} callback - 加载完成后的回调，包含参数：
+     *    type - 加载页面最终状态，success、error 两种
+     *    content - 加载页面成功时，传递加载的内容
      */
     Docs.prototype.loadPage = function (path, callback) {
         //console.log(path);
@@ -388,7 +386,7 @@
     };
 
     /**
-     * @desc 清理页面
+     * 清理页面
      */
     Docs.prototype.cleanView = function () {
         this.$e.view.find('.lang-off-js-comment').off('click');

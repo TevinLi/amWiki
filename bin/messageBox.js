@@ -15,7 +15,7 @@
 
 /**
  * 模拟消息框
- * @param msg
+ * @param {String} msg
  */
 const alert = (msg) => {
     msg = typeof msg !== 'string' ? String(msg) : msg;
@@ -24,8 +24,8 @@ const alert = (msg) => {
 
 /**
  * 模拟确认框，回调传参为用户选择的布尔值
- * @param msg
- * @returns {promise}
+ * @param {String} msg
+ * @returns {Promise}
  */
 const confirm2 = (msg) => {
     return new Promise((resolve, reject) => {
@@ -52,8 +52,8 @@ const confirm2 = (msg) => {
 
 /**
  * 模拟输入框，回调传参为用户输入的字符串
- * @param msg
- * @returns {promise}
+ * @param {String} msg
+ * @returns {Promise}
  */
 const prompt2 = (msg) => {
     return new Promise((resolve, reject) => {

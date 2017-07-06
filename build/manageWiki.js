@@ -16,7 +16,7 @@ const manageWiki = (function () {
         _wikis: null,
         /**
          * 绑定文库记录
-         * @param {object} wikis - 文库记录列表的引用
+         * @param {Object} wikis - 文库记录列表的引用
          * @public
          */
         linkWikis: function (wikis) {
@@ -24,7 +24,7 @@ const manageWiki = (function () {
         },
         /**
          * 获取所有文库记录
-         * @returns {object}
+         * @returns {Object}
          * @public
          */
         getWikis: function () {
@@ -32,8 +32,8 @@ const manageWiki = (function () {
         },
         /**
          * 通过 root 地址获取单个文库记录
-         * @param {string} root
-         * @returns {object}
+         * @param {String} root
+         * @returns {Object}
          * @public
          */
         getWikiByRoot: function (root) {
@@ -48,8 +48,8 @@ const manageWiki = (function () {
         },
         /**
          * 添加一个文库到记录
-         * @param {string} root - 文库根目录
-         * @param {number} [id] - 文库的计算id
+         * @param {String} root - 文库根目录
+         * @param {Number} [id] - 文库的计算id
          * @public
          */
         addWiki: function (root, id = this.createWikiId(root)) {
@@ -79,8 +79,8 @@ const manageWiki = (function () {
         },
         /**
          * 计算文库id
-         * @param {string} root - 需要计算id的文库根目录
-         * @returns {number} 文库id，由根目录路径字符串计算而来
+         * @param {String} root - 需要计算id的文库根目录
+         * @returns {Number} 文库id，由根目录路径字符串计算而来
          * @public
          */
         createWikiId: function (root) {
@@ -96,7 +96,7 @@ const manageWiki = (function () {
         },
         /**
          * 判断文库是否加入记录，未加入则补录
-         * @param {string} path - 需要判断的路径
+         * @param {String} path - 需要判断的路径
          * @public
          */
         checkAddWiki: function (path) {
@@ -112,7 +112,7 @@ const manageWiki = (function () {
         },
         /**
          * 检查文库是否仍然有效，失效则标记弃用
-         * @param {number} wId - 需要判断的文库id
+         * @param {Number} wId - 需要判断的文库id
          * @public
          */
         checkWikiValid: function (wId) {
@@ -149,8 +149,8 @@ const manageWiki = (function () {
         },
         /**
          * 重新解析/过滤 config 配置
-         * @param {object} config
-         * @return {object} config
+         * @param {Object} config
+         * @return {Object} config
          * @public
          */
         parseConfig: function (config) {

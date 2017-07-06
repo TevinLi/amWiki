@@ -18,8 +18,8 @@ const localServer = (function () {
         _server: null,
         /**
          * 启动服务器
-         * @param {object} wikis - 文库记录列表的引用
-         * @param {number} port - 服务器端口号
+         * @param {Object} wikis - 文库记录列表的引用
+         * @param {Number} port - 服务器端口号
          * @public
          */
         run: function (wikis, port) {
@@ -33,9 +33,9 @@ const localServer = (function () {
         },
         /**
          * 浏览当前文档
-         * @param {string} editPath - 当前文档的路径
-         * @param {object} wikis - 文库记录列表的引用
-         * @returns {promise}
+         * @param {String} editPath - 当前文档的路径
+         * @param {Object} wikis - 文库记录列表的引用
+         * @returns {Promise}
          * @public
          */
         browser: function (editPath, wikis) {

@@ -195,16 +195,16 @@ $(function () {
      */
 
     /**
-     * @desc 向下递归进行导航筛选
+     * 向下递归进行导航筛选
      * 当类型为筛选时，必定有正则
      *     当文件夹匹配时，其所属链接和所有子级全部显示且显示匹配
      *     当文件夹不匹配时，其所属链接和当前子级仅显示匹配，隐藏不匹配的项，下一级继续筛选
      * 当类型为打开时，所属链接和子级一律全部显示不隐藏
      *     如果有正则，显示当前匹配
      *     如果无正则，清除匹配
-     * @param {string} type - 筛选类型，有 filter / open 两个值
+     * @param {String} type - 筛选类型，有 filter / open 两个值
      * @param {regexp} valReg - 过滤筛选的正则
-     * @param {object} $title - jquery 对象，“标题-列表”DOM结构中的标题
+     * @param {Object} $title - jquery 对象，“标题-列表”DOM结构中的标题
      */
     var filterNav = function (type, valReg, $title) {
         var $ul = $title.next('ul');

@@ -120,7 +120,7 @@ const printf = (function () {
         },
         /**
          * 显示版本信息
-         * @param mainPath
+         * @param {String} mainPath
          * @public
          */
         ver: function (mainPath) {

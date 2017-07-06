@@ -16,6 +16,11 @@
         }
     }, 500);
 
+    /**
+     * 页面滚动
+     * @param {Object} _this
+     * @constructor
+     */
     var Scroller = function (_this) {
         this.$e = {
             container: $(_this),    //主容器

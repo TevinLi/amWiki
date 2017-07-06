@@ -14,7 +14,8 @@
     var LOCAL_STATES = 'AMWikiStates@' + wikiPath;  //本地状态集键名
 
     /**
-     * @class 创建一个本地存储管理对象
+     * 本地存储管理
+     * @constructor
      */
     var Storage = function () {
         this._db = null;  //内存中的文库缓存
@@ -74,10 +75,10 @@
     };
 
     /**
-     * @desc 保存一篇文档
-     * @param uri {string} - 文档资源地址
-     * @param content {string} - 文档内容
-     * @param [id] {string} - 已经编码的文档地址，可选
+     * 保存一篇文档
+     * @param {String} uri - 文档资源地址
+     * @param {String} content - 文档内容
+     * @param {String} [id] - 已经编码的文档地址，可选
      */
     Storage.prototype.saveDoc = function (uri, content, id) {
         this.saveDocToDB(uri, content, id);
@@ -103,9 +104,9 @@
     };
 
     /**
-     * @desc 读取一篇文档
-     * @param uri {string} - 文档资源地址
-     * @returns {string} - 文档内容
+     * 读取一篇文档
+     * @param {String} uri - 文档资源地址
+     * @returns {String} 文档内容
      */
     Storage.prototype.read = function (uri) {
         var id = tools.simString(uri, 'short');
@@ -118,8 +119,8 @@
 
     /**
      * 读取一篇文档的时间
-     * @param uri {string} - 文档资源地址
-     * @returns {string} - 文档内容
+     * @param {String} uri - 文档资源地址
+     * @returns {String} 文档内容
      */
     Storage.prototype.readTime = function (uri) {
         var id = tools.simString(uri, 'short');
@@ -131,8 +132,8 @@
     };
 
     /**
-     * @desc 删除一篇文档
-     * @param uri {string} - 文档资源地址
+     * 删除一篇文档
+     * @param {String} uri - 文档资源地址
      */
     Storage.prototype.remove = function (uri) {
         var id = tools.simString(uri, 'short');
@@ -148,8 +149,8 @@
     };
 
     /**
-     * @desc 校对列表，清除失效文档
-     * @param list {Array} - 由导航树偏平化生成的文档列表
+     * 校对列表，清除失效文档
+     * @param {Array} list - 由导航树偏平化生成的文档列表
      */
     Storage.prototype.checkLibChange = function (list) {
         this._indexing = list;

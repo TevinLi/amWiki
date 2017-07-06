@@ -11,8 +11,8 @@ const exportGithub = (function () {
     return {
         /**
          * 拷贝一张图片
-         * @param {string} from
-         * @param {string} to
+         * @param {String} from
+         * @param {String} to
          * @private
          */
         _copyImg: function (from, to) {
@@ -20,8 +20,8 @@ const exportGithub = (function () {
         },
         /**
          * 拷贝一篇文档
-         * @param {string} fileName
-         * @param {string} pathTo
+         * @param {String} fileName
+         * @param {String} pathTo
          * @private
          */
         _copyMd: function (fileName, pathTo) {
@@ -44,10 +44,10 @@ const exportGithub = (function () {
         },
         /**
          * 导出导航、底部签名
-         * @param {[array]} fileList
-         * @param {[array]} duplicate
-         * @param {string} pathFrom
-         * @param {string} pathTo
+         * @param {[Array]} fileList
+         * @param {[Array]} duplicate
+         * @param {String} pathFrom
+         * @param {String} pathTo
          * @private
          */
         _exportNavigation: function (fileList, duplicate, pathFrom, pathTo) {
@@ -73,8 +73,8 @@ const exportGithub = (function () {
         },
         /**
          * 导出首页
-         * @param {string} pathFrom
-         * @param {string} pathTo
+         * @param {String} pathFrom
+         * @param {String} pathTo
          * @private
          */
         _exportHome: function (pathFrom, pathTo) {
@@ -94,8 +94,8 @@ const exportGithub = (function () {
         },
         /**
          * 导出图片
-         * @param {string} pathFrom
-         * @param {string} pathTo
+         * @param {String} pathFrom
+         * @param {String} pathTo
          * @private
          */
         _exportImage: function (pathFrom, pathTo) {
@@ -123,8 +123,8 @@ const exportGithub = (function () {
         },
         /**
          * 检查重名
-         * @param {[array]} fileList
-         * @returns {[array]}
+         * @param {[Array]} fileList
+         * @returns {[Array]}
          * @private
          */
         _checkDuplicate: function (fileList) {
@@ -140,8 +140,8 @@ const exportGithub = (function () {
         },
         /**
          * 导出重复文档
-         * @param {array} list
-         * @param {string} pathTo
+         * @param {Array} list
+         * @param {String} pathTo
          * @private
          */
         _exportDuplicate: function (list, pathTo) {
@@ -165,8 +165,8 @@ const exportGithub = (function () {
         },
         /**
          * 导出普通文档
-         * @param {array} list
-         * @param {string} pathTo
+         * @param {Array} list
+         * @param {String} pathTo
          * @private
          */
         _exportNormal: function (list, pathTo) {
@@ -179,11 +179,11 @@ const exportGithub = (function () {
         },
         /**
          * 开始导出
-         * @param {string} pathFrom
-         * @param {string} pathTo
-         * @param {[array]} fileList
-         * @param {[array]} duplicates
-         * @returns {promise}
+         * @param {String} pathFrom
+         * @param {String} pathTo
+         * @param {[Array]} fileList
+         * @param {[Array]} duplicates
+         * @returns {Promise}
          * @private
          */
         _toExport: function (pathFrom, pathTo, fileList, duplicates) {
@@ -223,9 +223,9 @@ const exportGithub = (function () {
         },
         /**
          * 导出准备
-         * @param {string} pathFrom
-         * @param {string} pathTo
-         * @returns {promise}
+         * @param {String} pathFrom
+         * @param {String} pathTo
+         * @returns {Promise}
          * @private
          */
         _toPrepare: function (pathFrom, pathTo) {
@@ -277,8 +277,8 @@ const exportGithub = (function () {
         _githubUrl: '',
         /**
          * 解析 GitHub url
-         * @param {string} path
-         * @returns {boolean|string}
+         * @param {String} path
+         * @returns {Boolean|String}
          * @private
          */
         _parseGithubUrl: function (path) {
@@ -301,9 +301,9 @@ const exportGithub = (function () {
         },
         /**
          * 导出为github-wiki
-         * @param {string} root - 文库项目根目录
-         * @param {string} outputPath - 输出路径
-         * @returns {promise}
+         * @param {String} root - 文库项目根目录
+         * @param {String} outputPath - 输出路径
+         * @returns {Promise}
          * @public
          */
         export: function (root, outputPath) {
