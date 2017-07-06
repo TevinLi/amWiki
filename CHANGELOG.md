@@ -1,14 +1,20 @@
 # amWiki 版本日志
 
 <!--
-## [v1.1.4]()
+## [v1.2.0]()
 _2017-**-**_
 
+- 新增本地数据挂载模式，可以直接双击 index 在浏览器中访问整个文库
+    - 本地页面挂载数据生成与嵌入
+    - 页面加载数据，安排ajax、本地缓存、挂载数据优先级和更新条件
+    - disable 本地模式状态下的接口测试入口
 - 基础 Markdown 语法扩充，支持 todo list 复选框 ([#56](https://github.com/TevinLi/amWiki/issues/56))
 - 终端渠道本地服务器命令新增可关闭 amWiki 索引页的可选参数
 - 优化本地服务器容错性
 - 导航增加文档文件名转义，文档文件名允许使用语法符号`()[]'"`而不再冲突
 - 对带`&`符号的文件名在URL地址上用特殊转义替代，不会再被作为参数截断 ([#64](https://github.com/TevinLi/amWiki/issues/64))
+- 修复服务器文件系统为GBK编码时深目录无法读取的bug
+- 调整一些注释
 -->
 
 ## [v1.1.3](https://github.com/TevinLi/amWiki/releases/tag/v1.1.3)

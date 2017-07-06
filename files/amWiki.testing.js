@@ -225,13 +225,23 @@
         var that = this;
         //显示隐藏控制按钮
         this.elm.$testingShow = $('<div class="testing-show">[<span>测试接口</span>]</div>');
+        if (location.protocol == 'file:') {
+            this.elm.$testingShow
+                .attr('disabled', 'disabled')
+                .append('<i>您当前为本地打开，file:// 协议下不开放接口测试模块，请使用 http(s):// 网址打开</i>');
+        }
         $('#main').append(this.elm.$testingShow);
         //显示隐藏测试面板
         this.elm.$testingShow.on('click', function () {
-            if (that.elm.$testingShow.hasClass('on')) {
-                that.displayBox('off');
+            var $this = that.elm.$testingShow;
+            if ($this.attr('disabled') == 'disabled') {
+                $this.toggleClass('on');
             } else {
-                that.displayBox('on');
+                if (that.elm.$testingShow.hasClass('on')) {
+                    that.displayBox('off');
+                } else {
+                    that.displayBox('on');
+                }
             }
         });
         //填充请求地址

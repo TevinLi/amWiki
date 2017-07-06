@@ -165,7 +165,11 @@ const manageWiki = (function () {
             //设置自定义颜色
             config.colour = config.colour || '#4296eb';
             //本地页面数据挂载
-            config.localMounts = config.localMounts || false;
+            config.pageMounts = config['page-mounts'] || config.pageMounts || false;
+            delete config['page-mounts'];
+            //项目的 github 地址
+            config.githubUrl = config['github-url'] || config.githubUrl || '';
+            delete config['github-url'];
             //自定义 css、js 文件
             if (tools.isArray(config.imports) && config.imports.length > 0) {
                 const imports2 = {

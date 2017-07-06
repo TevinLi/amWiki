@@ -20,7 +20,7 @@ const makeMounts = (function () {
             const rootPath = mngFolder.getProjectFolder(editPath);
             if (!this._checkMountsAllow(rootPath)) {
                 if (offMsg !== true) {
-                    alert('更新失败！\n未检测到 “localMounts” 配置，请在 config.json 中配置');
+                    alert('更新失败！\n未检测到 “page-mounts” 配置，请在 config.json 中配置');
                 }
                 return;
             }
@@ -42,8 +42,8 @@ const makeMounts = (function () {
                 return false;
             }
             const config = wiki.config;
-            if (typeof config.localMounts !== 'undefined') {
-                return config.localMounts === true || typeof config.localMounts === 'object';
+            if (typeof config.pageMounts !== 'undefined') {
+                return config.pageMounts === true || typeof config.pageMounts === 'object';
             } else {
                 return false;
             }
