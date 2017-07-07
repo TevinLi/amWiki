@@ -384,37 +384,6 @@ $(function () {
         $menuBar.trigger('scrollbar');
     };
 
-    //从挂载数据读取页面内容
-    var getPageFormMounts = function (path, timestamp) {
-        path += '.md';
-        //首页
-        if (path == AWPageMounts['home'].name) {
-            return AWPageMounts['home'].content;
-        }
-        //其他文档
-        var lv1Id = 'm' + path.split(/[-_]/)[0];
-        for (var lv1 in AWPageMounts) {
-            if (!AWPageMounts.hasOwnProperty(lv1)) {
-                continue;
-            }
-            if (lv1 != lv1Id) {
-                continue;
-            }
-            for (var i = 0, page; page = AWPageMounts[lv1][i]; i++) {
-                if (page.path == path) {
-                    //如果挂载数据比缓存晚，则挂载比较新，返回挂载数据
-                    if (page.timestamp > timestamp) {
-                        return page.content;
-                    }
-                    //如果挂载时间较旧，返回空
-                    else {
-                        return '';
-                    }
-                }
-            }
-        }
-        return '';
-    };
     //返回首页
     var backHome = function () {
         docs.loadPage(homePage.path, function (state, content) {
@@ -449,43 +418,13 @@ $(function () {
             if (state == 'error') {
                 //如果本地缓存为空
                 if (localDoc == '') {
-                    //如果存在挂载数据，从挂载数据读取
-                    if (typeof AWPageMounts != 'undefined') {
-                        var content2 = getPageFormMounts(path, 0);
-                        if (content2 != '') {
-                            docs.renderDoc(content2);
-                            storage.saveDoc(path, content2);
-                            testing && testing.crawlContent();
-                            $main.trigger('scrollbar');
-                        } else {
-                            backHome();
-                        }
-                    }
-                    //否则返回首页
-                    else {
-                        backHome();
-                    }
+                    backHome();
                 }
                 //如果本地缓存不为空
                 else {
-                    //存在挂载数据时比较缓存与挂载数据时间
-                    if (typeof AWPageMounts != 'undefined') {
-                        var storageTime = storage.readTime(path);
-                        var content3 = getPageFormMounts(path, storageTime);
-                        //如果挂载数据较新，更新
-                        if (content3 != '') {
-                            docs.renderDoc(content3);
-                            storage.saveDoc(path, content3);
-                            testing && testing.crawlContent();
-                            $main.trigger('scrollbar');
-                        }
-                    }
-                    //不存在挂载数据
-                    else {
-                        //记录文档打开数
-                        storage.increaseOpenedCount(path);
-                        callback && callback();
-                    }
+                    //记录文档打开数
+                    storage.increaseOpenedCount(path);
+                    callback && callback();
                 }
             }
             //读取服务器文档成功时
@@ -573,6 +512,48 @@ $(function () {
         });
     };
 
+    //读取页面挂载数据文档部分
+    var loadPageMounts = function () {
+        if (typeof AWPageMounts == 'undefined') {
+            return;
+        }
+        //打开页面立即比较页面挂载数据时间与本地缓存更新时间
+        //  因为首页总是更新的，如果首页页面挂载数据时间大于本地缓存时间，则挂载数据一定已经经过重建
+        var homePath = AWPageMounts['home'].name.replace(/\.md$/, '');
+        var homeStorageTime = storage.readTime(homePath);
+        //如果页面挂载数据经过了重建，开始更新，读取所有挂载数据插入到本地缓存，完成后删除释放资源占用
+        if (AWPageMounts['home'].timestamp > homeStorageTime) {
+            //首页
+            storage.saveDoc(homePath, AWPageMounts['home'].content);
+            delete AWPageMounts['home'];
+            //其他文档
+            for (var lv1 in AWPageMounts) {
+                if (!AWPageMounts.hasOwnProperty(lv1)) {
+                    continue;
+                }
+                if (!/^m\d+/.test(lv1)) {
+                    continue;
+                }
+                for (var i = 0, page; page = AWPageMounts[lv1][i]; i++) {
+                    storage.saveDoc(page.path.replace(/\.md$/, ''), page.content);
+                }
+                delete AWPageMounts[lv1];
+            }
+            storage.saveRebuild();
+        }
+        //否则直接删除页面挂载数据的文档部分，释放内存资源占用
+        else {
+            delete AWPageMounts['home'];
+            for (var name in AWPageMounts) {
+                if (AWPageMounts.hasOwnProperty(name)) {
+                    if (/^m\d+/.test(name)) {
+                        delete AWPageMounts[name];
+                    }
+                }
+            }
+        }
+    };
+
     //根据hash改变滚动位置
     var changeScrollByHash = function () {
         var hash = location.hash.split('#')[1];
@@ -606,6 +587,8 @@ $(function () {
     loadNav(function (list) {
         //核对本地存储
         storage.checkLibChange(list);
+        //读取页面挂载数据文档部分
+        loadPageMounts();
         //首次打开改变导航
         changeNav(curPath);
         //首次打开改变页面
