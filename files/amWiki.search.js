@@ -74,6 +74,10 @@
                 resetResHeight();
             }
         });
+        //当本地浏览且存在页面挂载数据时，隐藏重建缓存按钮
+        if (location.protocol == 'file:' && typeof AWPageMounts != 'undefined') {
+            this.elm.$searchUpdate.parent().addClass('off');
+        }
         //重建缓存
         this.elm.$searchUpdate.on('click', function () {
             //开启重建缓存时，如果存在搜索子进程，则干掉子进程
