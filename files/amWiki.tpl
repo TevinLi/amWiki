@@ -171,6 +171,7 @@
             <script type="text/javascript" src="amWiki/js/amWiki.tools.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.storage.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.search.js"></script>
+            <script type="text/javascript" src="amWiki/js/amWiki.search.worker.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.docs.js"></script>
             {{amWiki.testing.js}}
             <script type="text/javascript" src="amWiki/js/amWiki.scrollbar.js"></script>

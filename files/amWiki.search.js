@@ -155,6 +155,7 @@
             return;
         }
         var words = this.elm.$searchText.val();
+        this.elm.$resultMsg.show().text('创建搜索中...');
         if (typeof win.Worker !== "undefined") {
             //开启一次新搜索时，如果存在搜索子进程，则干掉子进程
             if (this._worker) {
@@ -162,40 +163,68 @@
                 this._worker = null;
                 this.elm.$resultMsg.hide();
             }
-            this.elm.$resultMsg.show().text('创建搜索中...');
-            //创建子进程
-            this._worker = new win.Worker('amWiki/js/amWiki.search.worker.js');
-            //收到子进程搜素消息
-            this._worker.onmessage = function (event) {
-                var data = event.data;
-                //加载成功后发送文档数据
-                if (data.type == 'loaded') {
-                    that._worker.postMessage({type: 'docs', docs: that._storage.getAllDocs()});
-                }
-                //文档预处理完成后开始搜索
-                else if (data.type == 'ready') {
-                    that.elm.$resultMsg.show().html('正在搜索，请稍后...');
-                    that._worker.postMessage({type: 'search', words: words});
-                }
-                //搜索结果排行
-                else if (data.type == 'result') {
-                    that._data.result = data.result;
-                    that._showResultList();
-                    that._worker.terminate();
-                    that._worker = null;
-                }
-            };
-            //子进程出错
-            this._worker.onerror = function (e) {
-                console.error(e);
+            try {
+                //创建搜素子进程搜素
+                this._worker = new win.Worker('amWiki/js/amWiki.search.worker.js');
+                this._searchByWorker(words);
+            } catch (e) {
+                //在当前环境搜索
+                this._searchByPresent(words);
+            }
+        } else {
+            //在当前环境搜索
+            this._searchByPresent(words);
+        }
+    };
+
+    /**
+     * 搜索子进程通讯
+     * @param {String} words
+     * @private
+     */
+    Search.prototype._searchByWorker = function (words) {
+        var that = this;
+        //收到子进程搜素消息
+        this._worker.onmessage = function (event) {
+            var data = event.data;
+            //加载成功后发送文档数据
+            if (data.type == 'searcher:loaded') {
+                that._worker.postMessage({type: 'searcher:docs', docs: that._storage.getAllDocs()});
+            }
+            //文档预处理完成后开始搜索
+            else if (data.type == 'searcher:ready') {
+                that.elm.$resultMsg.show().html('正在搜索，请稍后...');
+                that._worker.postMessage({type: 'searcher:search', words: words});
+            }
+            //搜索结果排行
+            else if (data.type == 'searcher:result') {
+                that._data.result = data.result;
+                that._showResultList();
                 that._worker.terminate();
                 that._worker = null;
-            };
-        } else {
-            this.elm.$resultMsg.show().text('Sorry，您的浏览器不支持搜索！');
-            this.elm.$search.prop('disabled', true);
-        }
+            }
+        };
+        //子进程出错
+        this._worker.onerror = function (e) {
+            console.error(e);
+            this.elm.$resultMsg.show().text('Sorry，出错了！<br/>' + e.msg);
+            that._worker.terminate();
+            that._worker = null;
+        };
+    };
 
+    /**
+     * 在当前环境搜索
+     * @param {String} words
+     * @private
+     */
+    Search.prototype._searchByPresent = function (words) {
+        var searcher = new AWSearcher();
+        searcher.initDocs(this._storage.getAllDocs());
+        this.elm.$resultMsg.show().html('正在搜索，请稍后...');
+        searcher.matchWords(words);
+        this._data.result = searcher.getResult();
+        this._showResultList();
     };
 
     //显示结果列表
