@@ -20,7 +20,7 @@ const makeMounts = (function () {
             const rootPath = mngFolder.getProjectFolder(editPath);
             if (!this._checkMountsAllow(rootPath)) {
                 if (offMsg !== true) {
-                    alert('更新失败！\n未检测到 “page-mounts” 配置，请在 config.json 中配置');
+                    alert('更新失败！\n配置项“page-mounts”不存在或不为 true，请在 config.json 中配置');
                 }
                 return;
             }

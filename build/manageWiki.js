@@ -57,6 +57,8 @@ const manageWiki = (function () {
                 return;
             }
             if (typeof this._wikis[id] !== 'undefined') {
+                //读取配置文件
+                this.updateWikiConfig();
                 return;
             }
             //文库信息
@@ -100,14 +102,10 @@ const manageWiki = (function () {
          * @public
          */
         checkAddWiki: function (path) {
-            if (path.indexOf('library') > 0) {
-                this.addWiki(path.split('library')[0]);
-            } else {
-                //验证转换 path 为 wiki 根目录
-                const root = mngFolder.isAmWiki(path);
-                if (root) {
-                    this.addWiki(root);
-                }
+            //验证转换 path 为 wiki 根目录
+            const root = mngFolder.isAmWiki(path);
+            if (root) {
+                this.addWiki(root);
             }
         },
         /**
