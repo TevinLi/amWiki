@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端 - 浏览器数据缓存模块
+ * amWiki Web端 - 浏览器数据缓存模块
  * @author Tevin
  */
 
@@ -14,27 +14,32 @@
     var LOCAL_STATES = 'AMWikiStates@' + wikiPath;  //本地状态集键名
 
     /**
-     * @class 创建一个本地存储管理对象
+     * 本地存储管理
+     * @constructor
      */
     var Storage = function () {
         this._db = null;  //内存中的文库缓存
         this._states = null;  //内存中的状态集
-        this.elm = {
-            $win: $(win),
+        this.$e = {
+            win: $(win),
             //更新全部缓存按钮
-            $searchUpdate: $('#searchUpdate'),
+            searchUpdate: $('#searchUpdate'),
             //缓存状态
-            $cacheState: $('#cacheState'),
+            cacheState: $('#cacheState'),
             //文档总数
-            $cacheDocTotal: $('#cacheDocTotal'),
+            cacheDocTotal: $('#cacheDocTotal'),
             //上次全部缓存更新时间
-            $cacheLasttime: $('#cacheLasttime')
+            cacheLasttime: $('#cacheLasttime')
         };
         this._bridgeLocalStorage('read');
         this._bindCtrl();
     };
 
-    //存取本地存储
+    /**
+     * 存取本地存储
+     * @param {String} type - read / save
+     * @private
+     */
     Storage.prototype._bridgeLocalStorage = function (type) {
         if (type == 'read') {
             var defaultStr = '{"documents":{},"lastBuild":0}';
@@ -49,15 +54,24 @@
         }
     };
 
-    //绑定操作
+    /**
+     * 绑定操作
+     * @private
+     */
     Storage.prototype._bindCtrl = function () {
         var that = this;
-        this.elm.$win.on('beforeunload', function () {
+        this.$e.win.on('beforeunload', function () {
             that._bridgeLocalStorage('save');
         });
     };
 
-    //更新一篇文档，如果相同则不操作(对应内容不用重新渲染)
+    /**
+     * 更新一篇文档，如果相同则不操作(对应内容不用重新渲染)
+     * @param {String} uri
+     * @param {String} content
+     * @returns {Boolean}
+     * @public
+     */
     Storage.prototype.update = function (uri, content) {
         var id = tools.simString(uri, 'short');
         if (this._db.documents[id]) {
@@ -74,10 +88,11 @@
     };
 
     /**
-     * @desc 保存一篇文档
-     * @param uri {string} - 文档资源地址
-     * @param content {string} - 文档内容
-     * @param [id] {string} - 已经编码的文档地址，可选
+     * 保存一篇文档
+     * @param {String} uri - 文档资源地址
+     * @param {String} content - 文档内容
+     * @param {String} [id] - 已经编码的文档地址，可选
+     * @public
      */
     Storage.prototype.saveDoc = function (uri, content, id) {
         this.saveDocToDB(uri, content, id);
@@ -85,7 +100,13 @@
         this._changeSummary('sateOnly');
     };
 
-    //将文档存储到内存
+    /**
+     * 将文档存储到内存
+     * @param {String} uri
+     * @param {String} content
+     * @param {String} id
+     * @public
+     */
     Storage.prototype.saveDocToDB = function (uri, content, id) {
         if (typeof uri != 'string' && uri == '') {
             throw new Error('Error, uri must be a string!');
@@ -103,9 +124,10 @@
     };
 
     /**
-     * @desc 读取一篇文档
-     * @param uri {string} - 文档资源地址
-     * @returns {string} - 文档内容
+     * 读取一篇文档
+     * @param {String} uri - 文档资源地址
+     * @returns {String} 文档内容
+     * @public
      */
     Storage.prototype.read = function (uri) {
         var id = tools.simString(uri, 'short');
@@ -117,8 +139,24 @@
     };
 
     /**
-     * @desc 删除一篇文档
-     * @param uri {string} - 文档资源地址
+     * 读取一篇文档的时间
+     * @param {String} uri - 文档资源地址
+     * @returns {String} 文档内容
+     * @public
+     */
+    Storage.prototype.readTime = function (uri) {
+        var id = tools.simString(uri, 'short');
+        if (this._db.documents[id]) {
+            return this._db.documents[id].timestamp;
+        } else {
+            return 0;
+        }
+    };
+
+    /**
+     * 删除一篇文档
+     * @param {String} uri - 文档资源地址
+     * @public
      */
     Storage.prototype.remove = function (uri) {
         var id = tools.simString(uri, 'short');
@@ -127,15 +165,20 @@
         this._changeSummary('sateOnly');
     };
 
-    //增涨文档打开数记录
+    /**
+     * 增涨文档打开数记录
+     * @param {String} uri
+     * @public
+     */
     Storage.prototype.increaseOpenedCount = function (uri) {
         var id = tools.simString(uri, 'short');
         //TODO: 待续...打开次数将一定程度影响排行
     };
 
     /**
-     * @desc 校对列表，清除失效文档
-     * @param list {Array} - 由导航树偏平化生成的文档列表
+     * 校对列表，清除失效文档
+     * @param {Array} list - 由导航树偏平化生成的文档列表
+     * @public
      */
     Storage.prototype.checkLibChange = function (list) {
         this._indexing = list;
@@ -152,7 +195,12 @@
         this._changeSummary();
     };
 
-    //更新缓存摘要（位于搜素面板）
+    /**
+     * 更新缓存摘要（位于搜素面板）
+     * @param {String} stateOnly - 是否为只读 stateOnly / ...
+     * @param {String} prepare - 是否为预先 prepare / ...
+     * @private
+     */
     Storage.prototype._changeSummary = function (stateOnly, prepare) {
         var libraryiesLong = 0;
         for (var p in this._db.documents) {
@@ -162,51 +210,75 @@
         }
         //如果是预先，百分数减1
         if (prepare == 'prepare') {
-            this.elm.$cacheState.text(parseInt(libraryiesLong / this._indexing.length * 100 - 1) + '%');
+            this.$e.cacheState.text(parseInt(libraryiesLong / this._indexing.length * 100 - 1) + '%');
         }
         //非预先则正常
         else {
-            this.elm.$cacheState.text(parseInt(libraryiesLong / this._indexing.length * 100) + '%');
+            this.$e.cacheState.text(parseInt(libraryiesLong / this._indexing.length * 100) + '%');
         }
         //如果不只是状态
         if (stateOnly != 'stateOnly') {
-            this.elm.$cacheDocTotal.text(this._indexing.length);
+            this.$e.cacheDocTotal.text(this._indexing.length);
             if (this._db.lastBuild) {
-                this.elm.$cacheLasttime.text(win.tools.formatTime(this._db.lastBuild));
+                this.$e.cacheLasttime.text(win.tools.formatTime(this._db.lastBuild));
             } else {
-                this.elm.$cacheLasttime.text('0000-00-00 00:00:00');
+                this.$e.cacheLasttime.text('0000-00-00 00:00:00');
             }
         }
     };
 
-    //清除内存中的库列表
+    /**
+     * 清除内存中的库列表
+     * @public
+     */
     Storage.prototype.clearLibraries = function () {
         this._db.documents = {};
         this._changeSummary('sateOnly');
     };
 
-    //完成本次缓存重建
+    /**
+     * 完成本次缓存重建
+     * @public
+     */
     Storage.prototype.saveRebuild = function () {
         this._db.lastBuild = Date.now();
         this._bridgeLocalStorage('save');
         this._changeSummary();
     };
 
-    //返回导航列表
+    /**
+     * 返回导航列表
+     * @returns {Array}
+     * @public
+     */
     Storage.prototype.getIndexList = function () {
         return this._indexing;
     };
 
-    //获取当前缓存的所有文档
+    /**
+     * 获取当前缓存的所有文档
+     * @returns {{Object}}
+     * @public
+     */
     Storage.prototype.getAllDocs = function () {
         return this._db.documents;
     };
 
-    //获取缓存最后重建时间
+    /**
+     * 获取缓存最后重建时间
+     * @returns {Number}
+     * @public
+     */
     Storage.prototype.getLastBuildTs = function () {
         return this._db.lastBuild;
     };
 
+    /**
+     * 获取本地存储中指定名称的值
+     * @param {String} name
+     * @returns {*}
+     * @public
+     */
     Storage.prototype.getStates = function (name) {
         if (!this._states) {
             this._states = JSON.parse(win.localStorage[LOCAL_STATES] || '{}');
@@ -214,6 +286,12 @@
         return this._states[name];
     };
 
+    /**
+     * 保持键值对到本地存储
+     * @param {String} name
+     * @param {*} value
+     * @public
+     */
     Storage.prototype.setStates = function (name, value) {
         if (!this._states) {
             this._states = JSON.parse(win.localStorage[LOCAL_STATES] || '{}');

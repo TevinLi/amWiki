@@ -13,13 +13,20 @@
  *
  */
 
-//模拟消息框
+/**
+ * 模拟消息框
+ * @param {String} msg
+ */
 const alert = (msg) => {
     msg = typeof msg !== 'string' ? String(msg) : msg;
     process.stdout.write(msg + '\n')
 };
 
-//模拟确认框，回调传参为用户选择的布尔值
+/**
+ * 模拟确认框，回调传参为用户选择的布尔值
+ * @param {String} msg
+ * @returns {Promise}
+ */
 const confirm2 = (msg) => {
     return new Promise((resolve, reject) => {
         msg = typeof msg !== 'string' ? String(msg) : msg;
@@ -43,7 +50,11 @@ const confirm2 = (msg) => {
     });
 };
 
-//模拟输入框，回调传参为用户输入的字符串
+/**
+ * 模拟输入框，回调传参为用户输入的字符串
+ * @param {String} msg
+ * @returns {Promise}
+ */
 const prompt2 = (msg) => {
     return new Promise((resolve, reject) => {
         msg = typeof msg !== 'string' ? String(msg) : msg;
@@ -63,8 +74,12 @@ const prompt2 = (msg) => {
     });
 };
 
-module.exports = {
-    alert: alert,
-    confirm2: confirm2,
-    prompt2: prompt2
-};
+const messageBox = (function () {
+    return {
+        alert: alert,
+        confirm2: confirm2,
+        prompt2: prompt2
+    };
+})();
+
+module.exports = messageBox;

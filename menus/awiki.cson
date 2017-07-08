@@ -15,6 +15,9 @@
         'label': '手动更新当前文库导航文件',
         'command': 'amWiki:makeNav'
     }, {
+        'label': '手动更新当前文库页面挂载数据',
+        'command': 'amWiki:makeMut'
+    }, {
         'type': 'separator'
     }, {
         'label': '启动本地静态 Web 服务器',

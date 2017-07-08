@@ -4,6 +4,11 @@
 .testing-show{display:none;position:absolute;top:0;right:0;padding:15px;cursor:pointer;}
 .testing-show.show{display:block;}
 .testing-show span{color:@colour-dark;}
+.testing-show[disabled=disabled]{cursor:not-allowed;}
+.testing-show[disabled=disabled] span{color:#999;}
+.testing-show[disabled=disabled] i{display:none;}
+.testing-show[disabled=disabled].on i{display:block;position:absolute;top:35px;right:8px;width:200px;padding:5px 7px;color:#fff;font-size:12px;line-height:18px;background:rgba(0,0,0,.75);border-radius:5px;}
+.testing-show[disabled=disabled].on i:after{display:block;position:absolute;top:-4px;right:32px;width:0;height:0;border-top:8px solid rgba(0,0,0,.75);border-left:8px solid transparent;content:' ';transform:rotate(-45deg);}
 
 /* ---------- testing ---------- */
 .testing-box{display:none;position:absolute;top:0;right:0;width:100%;padding:45px;min-height:100%;background-color:#fff;}

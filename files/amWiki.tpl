@@ -80,7 +80,7 @@
                             <input type="button" id="searchUpdate" value="更新所有缓存" />
                             <div class="text">
                                 <p>上次完全更新：<time id="cacheLasttime">0000-00-00 00:00:00</time></p>
-                                <p>文档总数：<b id="cacheDocTotal">0</b> / <span>已缓存：<i id="cacheState">0%</i></span></p>
+                                <p>文档总数：<b id="cacheDocTotal">0</b> <i>/</i> <span>已缓存：<i id="cacheState">0%</i></span></p>
                             </div>
                         </div>
                         <h2>全库搜索</h2>
@@ -157,6 +157,8 @@
                 <a href="https://github.com/TevinLi/amWiki" target="_blank">amWiki</a>
             </div>
         </footer>
+        <!-- mounts -->
+        <div class="hidden" aw-include="mountLinks"></div>
         <!-- js -->
         <div class="hidden">
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>
@@ -169,6 +171,7 @@
             <script type="text/javascript" src="amWiki/js/amWiki.tools.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.storage.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.search.js"></script>
+            <script type="text/javascript" src="amWiki/js/amWiki.search.worker.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.docs.js"></script>
             {{amWiki.testing.js}}
             <script type="text/javascript" src="amWiki/js/amWiki.scrollbar.js"></script>
