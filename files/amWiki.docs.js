@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端 - 文档加载与渲染模块
+ * amWiki Web端 - 文档加载与渲染模块
  * @author Tevin
  */
 
@@ -30,12 +30,15 @@
             //记录页面宽度
             pageWidth: 0
         };
-        this.initUrlEncode();
-        this.initHashEvent();
+        this._initUrlEncode();
+        this._initHashEvent();
     };
 
-    //初始化url编码类型标记
-    Docs.prototype.initUrlEncode = function () {
+    /**
+     * 初始化url编码类型标记
+     * @private
+     */
+    Docs.prototype._initUrlEncode = function () {
         /*
          * 由于win与linux采用不同编码保存中文文件名
          * 记录浏览器打开当前域名的wiki时服务器中文文件名的编码类型
@@ -49,8 +52,11 @@
         delete localStorage.urlEcode
     };
 
-    //修正移动端hash变化时滚动位置
-    Docs.prototype.initHashEvent = function () {
+    /**
+     * 修正移动端hash变化时滚动位置
+     * @private
+     */
+    Docs.prototype._initHashEvent = function () {
         var that = this;
         this.data.pageWidth = this.$e.win.width();
         this.$e.win.on('resize', function () {
@@ -70,7 +76,12 @@
         });
     };
 
-    //转换链接文本
+    /**
+     * 转换链接文本
+     * @param {String} str
+     * @returns {String}
+     * @private
+     */
     Docs.prototype._tramsformLinkText = function (str) {
         return str
             .replace(/^\s+|\s+$/g, '')  //去除首尾空格
@@ -82,7 +93,11 @@
             .replace(/\]/g, '&#93;');  //转义右中括号
     };
 
-    //设置文档h1、h2、h3描记
+    /**
+     * 设置文档h1、h2、h3描记
+     * @returns {string}
+     * @private
+     */
     Docs.prototype._setTitlesAnchor = function () {
         var that = this;
         var $titles = null;
@@ -121,8 +136,13 @@
         return contentsMd;
     };
 
-    //创建脚注
-    Docs.prototype.createFootnote = function (text) {
+    /**
+     * 创建脚注
+     * @param {String} text
+     * @returns {String}
+     * @private
+     */
+    Docs.prototype._createFootnote = function (text) {
         var footnotes = [];
         var noteReg = /\[\^([ a-zA-Z\d]+)]/g;
         var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
@@ -180,8 +200,12 @@
         return text + '\n<br>' + html;
     };
 
-    //设置js注释隐藏
-    Docs.prototype.setJSCommentDisable = function ($elm) {
+    /**
+     * 设置js代码块注释显示隐藏
+     * @param {Object} $elm
+     * @private
+     */
+    Docs.prototype._setJSCommentDisable = function ($elm) {
         var $disBtn = $('<div class="lang-off-js-comment">注<i>/</i></div>');
         $disBtn.on('click', function () {
             var $this = $(this);
@@ -196,8 +220,12 @@
         $elm.prepend($disBtn);
     };
 
-    //解析流程图
-    Docs.prototype.createFlowChart = function ($elm) {
+    /**
+     * 解析流程图
+     * @param {Object} $elm
+     * @private
+     */
+    Docs.prototype._createFlowChart = function ($elm) {
         var code = $elm.text();
         $elm.text('');
         var id = 'flowChart' + parseInt(Math.random() * 500);
@@ -223,8 +251,13 @@
         });
     };
 
-    //自定义图片大小与对齐方式
-    Docs.prototype.resizeImg = function (html) {
+    /**
+     * 自定义图片大小与对齐方式
+     * @param {String} html
+     * @returns {String}
+     * @private
+     */
+    Docs.prototype._resizeImg = function (html) {
         return html.replace(/<img(.*?)src="(.*?)=(\d*[-x×]\d*)(-[lrc])?"/g, function (m, s1, s2, s3, s4) {
             var imgHtml = '<img' + s1 + 'src="' + s2 + '"';
             var imgSize = s3.split(/[-x×]/);
@@ -242,8 +275,13 @@
         });
     };
 
-    //解析 markdown 复选框
-    Docs.prototype.setCheckbox = function (html) {
+    /**
+     * 解析 markdown 复选框
+     * @param {String} html
+     * @returns {String}
+     * @private
+     */
+    Docs.prototype._setCheckbox = function (html) {
         return html.replace(/\[([√×Xx\s\-_])\]\s(.*?)([<\n\r])/g, function (m, s1, s2, s3, index) {
             var checkboxHtml = '<input type="checkbox" id="checkbox' + index + '"';
             checkboxHtml += /\s/.test(s1) ? '>' : 'checked="true">';
@@ -252,8 +290,15 @@
         });
     };
 
-    //编码url
-    Docs.prototype.encodeUrl = function (path, type) {
+    /**
+     * 编码 url
+     *   由于服务器可能存在 GBK 或 UTF-8 两种编码，中文路径编码不对需要切换才能访问
+     * @param {String} path
+     * @param {String} type - 是否需要编码类型反转， GBK、UTF-8切换
+     * @returns {String}
+     * @private
+     */
+    Docs.prototype._encodeUrl = function (path, type) {
         var url = '';
         var paths = [];
         //正常编码
@@ -285,21 +330,22 @@
     /**
      * 渲染文档
      * @param {String} content - 需要渲染的文档内容
+     * @public
      */
     Docs.prototype.renderDoc = function (content) {
         var that = this;
         var html = '';
         this.cleanView();
         //创建脚注
-        content = this.createFootnote(content);
+        content = this._createFootnote(content);
         //编译 markdown
         html = marked(content);
         //创建目录标记，和悬浮窗格式统一
         html = html.replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
         //自定义图片大小与对齐方式
-        html = this.resizeImg(html);
+        html = this._resizeImg(html);
         //复选框
-        html = this.setCheckbox(html);
+        html = this._setCheckbox(html);
         //填充到页面
         this.$e.view.html(html);
         //功能化代码块
@@ -308,7 +354,7 @@
             var className = $elm.attr('class') || '';
             //创建流程图
             if (className.indexOf('lang-flow') >= 0) {
-                that.createFlowChart($elm);
+                that._createFlowChart($elm);
             }
             //创建语法高亮
             else if (className.indexOf('lang') >= 0) {
@@ -317,7 +363,7 @@
             //创建js注释开关
             className = $elm.attr('class') || '';
             if (className.indexOf('javascript') >= 0) {
-                that.setJSCommentDisable($elm);
+                that._setJSCommentDisable($elm);
             }
         });
         //设置网页title
@@ -330,7 +376,12 @@
         $('.markdown-contents').html(marked(contents));
     };
 
-    //读取文档
+    /**
+     * 读取文档
+     * @param {String} url
+     * @param {Function} callback
+     * @public
+     */
     Docs.prototype.getDoc = function (url, callback) {
         var that = this;
         var ajaxData = {
@@ -359,15 +410,16 @@
      * @param {Function} callback - 加载完成后的回调，包含参数：
      *    type - 加载页面最终状态，success、error 两种
      *    content - 加载页面成功时，传递加载的内容
+     * @public
      */
     Docs.prototype.loadPage = function (path, callback) {
         //console.log(path);
         var that = this;
-        var url = this.encodeUrl(path, 'normal');
+        var url = this._encodeUrl(path, 'normal');
         this.getDoc(url, function (type, data) {
             if (type == 'fail') {
                 //如果第一失败，转换url编码类型后发送第二次请求
-                var url = that.encodeUrl(path, 'reverse');
+                var url = that._encodeUrl(path, 'reverse');
                 that.getDoc(url, function (type) {
                     //第二次仍然失败，视为打开文档失败
                     if (type == 'fail') {
@@ -387,6 +439,7 @@
 
     /**
      * 清理页面
+     * @public
      */
     Docs.prototype.cleanView = function () {
         this.$e.view.find('.lang-off-js-comment').off('click');

@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·工具集
+ * amWiki Web端·工具集
  * @author Tevin
  */
 

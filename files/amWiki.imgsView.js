@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端 - 图片查看模块
+ * amWiki Web端 - 图片查看模块
  * @author Tevin
  */
 
@@ -9,7 +9,7 @@
 
     /**
      * 图片查看器
-     * @param {Object} _this
+     * @param {Element} _this
      * @constructor
      */
     var ImgsView = function (_this) {
@@ -29,7 +29,10 @@
         this._init();
     };
 
-    //初始化
+    /**
+     * 初始化
+     * @private
+     */
     ImgsView.prototype._init = function () {
         var that = this;
         this.$e.imgsViewInner = this.$e.imgsView.find('#imgsViewInner');
@@ -68,7 +71,10 @@
         });
     };
 
-    //显示图片浏览弹层
+    /**
+     * 显示图片浏览弹层
+     * @public
+     */
     ImgsView.prototype.open = function () {
         var that = this;
         this.playTo(this._data.curIndex);
@@ -78,7 +84,10 @@
         }, 50);
     };
 
-    //关闭图片浏览弹层
+    /**
+     * 关闭图片浏览弹层
+     * @public
+     */
     ImgsView.prototype.close = function () {
         var that = this;
         this.$e.imgsView.removeClass('on');
@@ -89,7 +98,11 @@
         that._data.curIndex = -1;
     };
 
-    //切换图片
+    /**
+     * 切换图片
+     * @param {Number} index
+     * @public
+     */
     ImgsView.prototype.playTo = function (index) {
         if (index == 0) {
             this.$e.btnPrev.addClass('off');
@@ -107,7 +120,11 @@
         this._data.curIndex = index;
     };
 
-    //设置图片尺寸
+    /**
+     * 设置图片尺寸
+     * @param {String} type - 尺寸模式：suit 适合 ／ org 原大小
+     * @public
+     */
     ImgsView.prototype.resizeAs = function (type) {
         if (type == 'suit') {
             this.$e.imgCur.removeAttr('width').removeAttr('height');
@@ -126,7 +143,7 @@
         }
     };
 
-    //方法绑定
+    //注册到 jQuery
     $.extend($.fn, {
         imgsView: function () {
             return this.each(function () {
