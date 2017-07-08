@@ -480,6 +480,7 @@ $(function () {
                     });
                 }
             });
+            //上下翻页不再跳页面
             $mainSibling.find('a').on('click', function () {
                 if (HISTORY_STATE) {
                     var $this = $(this);
@@ -496,6 +497,21 @@ $(function () {
             $menuBar.find('strong').each(function () {
                 var $this = $(this);
                 $this.html('<span>' + $this.text() + '</span>');
+            });
+            //搜索结果不再跳转页面
+            $('#results').on('click', 'a', function () {
+                if (HISTORY_STATE) {
+                    var $this = $(this);
+                    var href = $this.attr('href');
+                    if (typeof href != 'undefined' && href != '') {
+                        var path = href.split('file=')[1];
+                        search.displayBox('off'); //关闭搜索面板
+                        changeNav(path);
+                        changePage(path);
+                        $this.trigger('navchange');
+                    }
+                    return false;
+                }
             });
             //设置导航筛选初始值
             var filterVal = storage.getStates('navFilterKey');
