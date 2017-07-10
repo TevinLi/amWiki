@@ -89,7 +89,7 @@ const helpWords = `
                   ${clc(90, '(eg: amwiki export github-wiki d:/your-path)')}
 
 更多文档：
-  https://tevinli.github.io/amWiki/index.html
+  http://amwiki.org/doc/
 `;
 //[seo]  仅更新SEO模块(待开发)
 
