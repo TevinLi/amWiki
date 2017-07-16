@@ -6,6 +6,7 @@
 const fs = require('fs');
 const co = require('../modules/co');
 const mngFolder = require('./manageFolder');
+const mngWiki = require('./manageWiki');
 
 const exportGithub = (function () {
     return {
@@ -271,32 +272,31 @@ const exportGithub = (function () {
             });
         },
         /**
-         * GitHub地址
+         * GitHub项目地址
          * @private
          */
         _githubUrl: '',
         /**
          * 解析 GitHub url
-         * @param {String} path
+         * @param {String} url
          * @returns {Boolean|String}
          * @private
          */
-        _parseGithubUrl: function (path) {
-            const config = JSON.parse(fs.readFileSync(path + '/config.json', 'utf-8'));
-            if (typeof config['github-url'] === 'undefined') {
+        _parseGithubUrl: function (url) {
+            if (url === '') {
                 alert('导出失败！\n未检测到 “github-url” 配置，请在 config.json 中配置您项目的 github-url');
                 return false;
             }
-            const url = config['github-url'];
-            if (url.indexOf('github.com') === 0 || url.split('github.com')[1] === '') {
-                alert('导出失败！\n请以https开头，配置完整的 github URL！');
+            if (url.indexOf('github.com') === -1) {
+                alert('导出失败！\n配置完整的 Github 项目 URL！\n例如 https://github.com/TevinLi/amWiki');
                 return false;
             }
             const urlArr = url.split('github.com')[1].split('/');
             if (urlArr.length < 3) {
-                alert('导出失败！\n请配置完整 github 项目路径！');
+                alert('导出失败！\n请配置完整 Github 项目 URL！\n例如 https://github.com/TevinLi/amWiki');
                 return false;
             }
+            urlArr[2] = urlArr[2].split(/\?#/)[0].split(/\.git/i)[0];
             return '/' + urlArr[1] + '/' + urlArr[2] + '/';
         },
         /**
@@ -309,8 +309,9 @@ const exportGithub = (function () {
         export: function (root, outputPath) {
             const that = this;
             return co(function* () {
+                const wikiConfig = mngWiki.getWikiByRoot(root).config;
                 //检测 GitHub 项目地址
-                that._githubUrl = that._parseGithubUrl(root.split('library')[0]);
+                that._githubUrl = that._parseGithubUrl(wikiConfig.githubUrl);
                 if (!that._githubUrl) {
                     return;
                 }
