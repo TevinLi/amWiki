@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端 - 入口模块
+ * amWiki Web端 - 入口模块
  * @author Tevin
  * @see {@link https://github.com/TevinLi/amWiki}
  * @license MIT - Released under the MIT license.
@@ -154,7 +154,12 @@ $(function () {
             $.get('amWiki/images/icons.svg', function (svg) {
                 sessionStorage['AMWikiIconsSvg'] = svg;
                 $('#svgSymbols').append(svg);
-            }, 'text');
+            }, 'text').fail(function () {
+                if (typeof AWPageMounts != 'undefined') {
+                    sessionStorage['AMWikiIconsSvg'] = AWPageMounts['icon'].content;
+                    $('#svgSymbols').append(AWPageMounts['icon'].content);
+                }
+            });
         }
         //目录悬浮窗展开折叠
         $contents.children('.btn').on('click', function (e) {
@@ -190,16 +195,16 @@ $(function () {
      */
 
     /**
-     * @desc 向下递归进行导航筛选
+     * 向下递归进行导航筛选
      * 当类型为筛选时，必定有正则
      *     当文件夹匹配时，其所属链接和所有子级全部显示且显示匹配
      *     当文件夹不匹配时，其所属链接和当前子级仅显示匹配，隐藏不匹配的项，下一级继续筛选
      * 当类型为打开时，所属链接和子级一律全部显示不隐藏
      *     如果有正则，显示当前匹配
      *     如果无正则，清除匹配
-     * @param {string} type - 筛选类型，有 filter / open 两个值
+     * @param {String} type - 筛选类型，有 filter / open 两个值
      * @param {regexp} valReg - 过滤筛选的正则
-     * @param {object} $title - jquery 对象，“标题-列表”DOM结构中的标题
+     * @param {Object} $title - jquery 对象，“标题-列表”DOM结构中的标题
      */
     var filterNav = function (type, valReg, $title) {
         var $ul = $title.next('ul');
@@ -379,6 +384,21 @@ $(function () {
         $menuBar.trigger('scrollbar');
     };
 
+    //返回首页
+    var backHome = function () {
+        docs.loadPage(homePage.path, function (state, content) {
+            if (state == 'success') {
+                changeNav(homePage.path);
+                docs.renderDoc(content);
+                storage.saveDoc(homePage.path, content);
+                $main.trigger('scrollbar');
+            }
+        });
+        if (HISTORY_STATE) {
+            history.replaceState({path: homePage.path}, '', homePage.url);
+        }
+    };
+
     //改变页面
     var changePage = function (path, withOutPushState, callback) {
         //第一步，从本地缓存读取并渲染页面
@@ -389,27 +409,18 @@ $(function () {
         $mainInner.scrollTop(0);  //返回顶部
         //更新history记录
         if (!withOutPushState && HISTORY_STATE) {
-            history.pushState({path: path}, '', '?file=' + path);
+            var path2 = path.replace(/&/g, '%26');  //对带 & 符号的地址特殊处理
+            history.pushState({path: path}, '', '?file=' + path2);
         }
         //第二步，加载服务器上的文档资源，如果有更新重新渲染
         docs.loadPage(path, function (state, content) {
             //读取服务器文档失败时
             if (state == 'error') {
-                //如果本地缓存为空，且服务器文档读取失败时，跳回首页
+                //如果本地缓存为空
                 if (localDoc == '') {
-                    docs.loadPage(homePage.path, function (state, content) {
-                        if (state == 'success') {
-                            changeNav(homePage.path);
-                            docs.renderDoc(content);
-                            storage.saveDoc(homePage.path, content);
-                            $main.trigger('scrollbar');
-                        }
-                    });
-                    if (HISTORY_STATE) {
-                        history.replaceState({path: homePage.path}, '', homePage.url);
-                    }
+                    backHome();
                 }
-                //如果本地缓存不为空，但服务器文档读取失败时
+                //如果本地缓存不为空
                 else {
                     //记录文档打开数
                     storage.increaseOpenedCount(path);
@@ -438,7 +449,7 @@ $(function () {
     //读取目录导航
     var homePage = {};
     var loadNav = function (callback) {
-        $.get('library/$navigation.md?t=' + Date.now(), function (data) {
+        var fillNav = function (data) {
             $menuBar.find('.scroller-content').html(marked(data));
             //首页
             var menuBarHome = $menuBar.find('h4');
@@ -469,6 +480,7 @@ $(function () {
                     });
                 }
             });
+            //上下翻页不再跳页面
             $mainSibling.find('a').on('click', function () {
                 if (HISTORY_STATE) {
                     var $this = $(this);
@@ -486,6 +498,21 @@ $(function () {
                 var $this = $(this);
                 $this.html('<span>' + $this.text() + '</span>');
             });
+            //搜索结果不再跳转页面
+            $('#results').on('click', 'a', function () {
+                if (HISTORY_STATE) {
+                    var $this = $(this);
+                    var href = $this.attr('href');
+                    if (typeof href != 'undefined' && href != '') {
+                        var path = href.split('file=')[1];
+                        search.displayBox('off'); //关闭搜索面板
+                        changeNav(path);
+                        changePage(path);
+                        $this.trigger('navchange');
+                    }
+                    return false;
+                }
+            });
             //设置导航筛选初始值
             var filterVal = storage.getStates('navFilterKey');
             if (typeof filterVal != 'undefined' && filterVal != '') {
@@ -493,7 +520,54 @@ $(function () {
             }
             //回调
             callback && callback(pathList);
-        }, 'text');
+        };
+        $.get('library/$navigation.md?t=' + Date.now(), fillNav, 'text').fail(function () {
+            if (typeof AWPageMounts != 'undefined') {
+                fillNav(AWPageMounts['nav'].content);
+            }
+        });
+    };
+
+    //读取页面挂载数据文档部分
+    var loadPageMounts = function () {
+        if (typeof AWPageMounts == 'undefined') {
+            return;
+        }
+        //打开页面立即比较页面挂载数据时间与本地缓存更新时间
+        //  因为首页总是更新的，如果首页页面挂载数据时间大于本地缓存时间，则挂载数据一定已经经过重建
+        var homePath = AWPageMounts['home'].name.replace(/\.md$/, '');
+        var homeStorageTime = storage.readTime(homePath);
+        //如果页面挂载数据经过了重建，开始更新，读取所有挂载数据插入到本地缓存，完成后删除释放资源占用
+        if (AWPageMounts['home'].timestamp > homeStorageTime) {
+            //首页
+            storage.saveDoc(homePath, AWPageMounts['home'].content);
+            delete AWPageMounts['home'];
+            //其他文档
+            for (var lv1 in AWPageMounts) {
+                if (!AWPageMounts.hasOwnProperty(lv1)) {
+                    continue;
+                }
+                if (!/^m\d+/.test(lv1)) {
+                    continue;
+                }
+                for (var i = 0, page; page = AWPageMounts[lv1][i]; i++) {
+                    storage.saveDoc(page.path.replace(/\.md$/, ''), page.content);
+                }
+                delete AWPageMounts[lv1];
+            }
+            storage.saveRebuild();
+        }
+        //否则直接删除页面挂载数据的文档部分，释放内存资源占用
+        else {
+            delete AWPageMounts['home'];
+            for (var name in AWPageMounts) {
+                if (AWPageMounts.hasOwnProperty(name)) {
+                    if (/^m\d+/.test(name)) {
+                        delete AWPageMounts[name];
+                    }
+                }
+            }
+        }
     };
 
     //根据hash改变滚动位置
@@ -523,11 +597,14 @@ $(function () {
     //解析地址参数
     var curPath = tools.getURLParameter('file');
     curPath = !curPath ? '首页' : decodeURI(curPath);
+    curPath = curPath.replace(/%26/g, '&');
 
     //加载导航
     loadNav(function (list) {
         //核对本地存储
         storage.checkLibChange(list);
+        //读取页面挂载数据文档部分
+        loadPageMounts();
         //首次打开改变导航
         changeNav(curPath);
         //首次打开改变页面
@@ -541,6 +618,7 @@ $(function () {
             //当有状态记录时，直接跳转
             if (e.originalEvent.state) {
                 path = e.originalEvent.state.path;
+                path = path.replace(/%26/g, '&');
                 //改变导航
                 changeNav(path);
                 //改变页面
@@ -550,6 +628,7 @@ $(function () {
             else {
                 path = tools.getURLParameter('file');
                 path = !path ? '首页' : decodeURI(path);
+                path = path.replace(/%26/g, '&');
                 //判断 url 路径是否和当前一样，不一样才跳转
                 if (path != curPath) {
                     //改变导航

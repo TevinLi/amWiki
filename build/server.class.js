@@ -31,13 +31,22 @@ const MimeType = {
     'wmv': 'video/x-ms-wmv'
 };
 
+/**
+ * @class Server
+ */
 class Server {
 
+    /**
+     * @constructor
+     * @param {[Object]} wikis
+     * @param {Number} port=5171
+     */
     constructor(wikis, port = 5171) {
         this._wikis = wikis;
         this._port = port;
         this._localIP = this.getLocalIP();
-        this.server = http.createServer((req, res) => {
+        this._indexShow = true;
+        this._nodeServer = http.createServer((req, res) => {
             this._parse(req, res);
         });
     }
@@ -45,11 +54,12 @@ class Server {
     /**
      * 服务器启动
      * @return {Promise}
+     * @public
      */
     run() {
         return new Promise((resolve, reject) => {
             let portCount = 0;
-            this.server
+            this._nodeServer
                 .on('listening', () => {
                     mngWiki.updateWikiConfig();
                     console.info('Server running at http://' + this._localIP + ':' + this._port + '/');
@@ -60,7 +70,7 @@ class Server {
                         if (portCount < 12) {
                             console.warn('端口 ' + this._port + ' 已被其他程序占用，尝试端口号+1，监听端口 ' + (this._port + 1));
                             portCount++;
-                            this.server.listen(++this._port);
+                            this._nodeServer.listen(++this._port);
                         } else {
                             console.error('端口从 ' + (this._port - portCount) + ' 到 ' + this._port +
                                 ' 尽皆被占用，请使用其他段位的端口！');
@@ -70,13 +80,14 @@ class Server {
                         throw e;
                     }
                 });
-            this.server.listen(this._port);
+            this._nodeServer.listen(this._port);
         });
     }
 
     /**
      * 获取本地ip
-     * @returns {string} 本地ip地址
+     * @returns {String} 本地ip地址
+     * @public
      */
     getLocalIP() {
         if (this._localIP) {
@@ -98,23 +109,38 @@ class Server {
 
     /**
      * 获取当前 server 监听的端口
-     * @return {number} 端口号
+     * @return {Number} 端口号
+     * @public
      */
     getPort() {
         return this._port;
     }
 
     /**
+     * 关闭 amWiki 索引页显示
+     * @public
+     */
+    offIndex() {
+        this._indexShow = false;
+    }
+
+    /**
      * 解析请求
-     * @param {object} req - 请求体
-     * @param {object} res - 响应体
+     * @param {Object} req - 请求体
+     * @param {Object} res - 响应体
      * @private
      */
     _parse(req, res) {
         const pathname = url.parse(req.url).pathname;
+        //文库列表页
         if (/^(\/|(\/index(\.html)?))$/.test(pathname)) {
-            return this._renderIndexPage(req, res);
+            if (this._indexShow) {
+                return this._renderIndexPage(req, res);
+            } else {
+                return Server.page404(req, res, pathname);
+            }
         }
+        //文库
         let wId = '';
         let filePath = pathname.replace(/^\/wiki(\d{3,}?)\//g, function (match, $1) {
             wId = $1;
@@ -133,27 +159,31 @@ class Server {
         //真实地址
         const realPath = this._wikis[wId].root + filePath;
         //解析文件
-        fs.exists(realPath, (exists) => {
-            if (!exists) {
-                return Server.page404(req, res, pathname);
-            } else {
-                const file = fs.createReadStream(realPath);
-                res.writeHead(200, {
-                    'Content-Type': MimeType[realPath.split('.').pop()] || 'text/plain'
-                });
-                file.on('data', res.write.bind(res));
-                file.on('close', res.end.bind(res));
-                file.on('error', function (err) {
-                    return Server.page500(req, res, err);
-                });
-            }
-        });
+        try {
+            fs.exists(realPath, (exists) => {
+                if (!exists) {
+                    return Server.page404(req, res, pathname);
+                } else {
+                    const file = fs.createReadStream(realPath);
+                    res.writeHead(200, {
+                        'Content-Type': MimeType[realPath.split('.').pop()] || 'text/plain'
+                    });
+                    file.on('data', res.write.bind(res));
+                    file.on('close', res.end.bind(res));
+                    file.on('error', function (err) {
+                        return Server.page500(req, res, err);
+                    });
+                }
+            });
+        } catch (err) {
+            return Server.page500(req, res, err);
+        }
     }
 
     /**
      * 渲染索引页
-     * @param {object} req - 请求体
-     * @param {object} res - 响应体
+     * @param {Object} req - 请求体
+     * @param {Object} res - 响应体
      * @private
      */
     _renderIndexPage(req, res) {
@@ -224,7 +254,13 @@ class Server {
         res.end();
     }
 
-    //404未找到页面
+    /**
+     * 404未找到页面
+     * @param {Object} req
+     * @param {Object} res
+     * @param {String} path
+     * @static
+     */
     static page404(req, res, path) {
         res.writeHead(404, {
             'Content-Type': 'text/html'
@@ -236,7 +272,13 @@ class Server {
         res.end();
     }
 
-    //500错误页面
+    /**
+     * 500错误页面
+     * @param {Object} req
+     * @param {Object} res
+     * @param {Error} error
+     * @static
+     */
     static page500(req, res, error) {
         res.writeHead(500, {
             'Content-Type': 'text/html'

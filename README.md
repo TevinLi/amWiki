@@ -54,7 +54,7 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 <br>
 
 ## amWiki 教程 & 文档
-更多详细功能与使用介绍请前往 Github Pages: [ [amWiki 文档中心：https://tevinli.github.io/amWiki/](https://tevinli.github.io/amWiki/index.html?file=001-学习amWiki/01-amWiki轻文库简介) ]  
+更多详细功能与使用介绍请前往: [ [amWiki 文档中心：amwiki.org/doc/](http://amwiki.org/doc/index.html) ]  
 (amWiki 的文档由项目自身创建与维护)  
 
 <br>
@@ -62,7 +62,8 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 ## 更新日志
 ### 如何获取最新版本信息与动态？
 - QQ群 **347125653**
-- 如果可以，欢迎直接加我微信，微信号 **XF90_Net**  
+- 如果可以，欢迎直接加我微信
+  ![](http://amwiki.org/doc/assets/wx.qrcode.150.png)
 
 ### 如何查看历史版本日志？
 [amWiki 版本更新日志](https://github.com/TevinLi/amWiki/blob/master/CHANGELOG.md "amWiki版本更新日志")

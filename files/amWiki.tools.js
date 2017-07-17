@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·工具集
+ * amWiki Web端·工具集
  * @author Tevin
  */
 
@@ -11,9 +11,9 @@
     return win.tools = {
 
         /**
-         * @desc 获取url参数
-         * @param name {string}
-         * @returns {string|null} - 获取的参数
+         * 获取url参数
+         * @param {String} name
+         * @returns {String|Null} - 获取的参数
          */
         getURLParameter: function (name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
@@ -26,10 +26,10 @@
         },
 
         /**
-         * @desc 转换字符中每个汉字为两个字符
-         * @param str {string} - 要编码的字符串
-         * @param [mod] {string} - 编码模式选择，可选，normal(默认)一个汉字对应两位字符，short一个汉字对应一位字符
-         * @returns {string} - 编码后的字符串
+         * 转换字符中每个汉字为两个字符
+         * @param {String} str - 要编码的字符串
+         * @param {String} [mod] - 编码模式选择，可选，normal(默认)一个汉字对应两位字符，short一个汉字对应一位字符
+         * @returns {String} 编码后的字符串
          */
         simString: function (str, mod) {
             mod = mod == 'short';  //短字符串
@@ -59,9 +59,9 @@
         },
 
         /**
-         * @desc json格式化
-         * @param str {string} - 需要格式化的json字符串
-         * @returns {string} - 格式化后的json字符串
+         * json格式化
+         * @param {String} str - 需要格式化的json字符串
+         * @returns {String} 格式化后的json字符串
          */
         formatJson: function (str) {
             var json = decodeURI(str.replace(/%([^0-9A-Z]{0,2})/g, '%25$1'));
@@ -130,9 +130,9 @@
         },
 
         /**
-         * @desc 时间戳格式化为日期时间
-         * @param timestamp {number} - 时间戳
-         * @returns {string} - 日期时间
+         * 时间戳格式化为日期时间
+         * @param {Number} timestamp - 时间戳
+         * @returns {String} 日期时间
          */
         formatTime: function (timestamp) {
             var time = new Date(timestamp);

@@ -15,6 +15,10 @@
 .search-update .text i{font-style:normal;}
 .search-update input{position:relative;z-index:10;float:right;margin-top:6px;padding:4px 12px;}
 .search-update input[disabled]{padding:5px 13px;color:#ccc;background:#f2f2f2;border:#aaa 1px solid;border-radius:1px;}
+.search-update.off .text:after,.search-update.off .text span,.search-update.off .text i,.search-update.off input{display:none;}
+.search-update.off .text b {margin-right:0;}
+.search-update.off .text{padding-right:5px;}
+
 .search-box h2{height:65px;color:#666;font-size:24px;font-weight:normal;}
 
 /* ---------- search-input ---------- */

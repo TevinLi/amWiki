@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端 - 搜索计算子进程模块
+ * amWiki Web端 - 搜索计算子进程模块
  * @author Tevin
  */
 
@@ -8,9 +8,15 @@
 
     'use strict';
 
-    //计算器
-    var searcher = (function () {
+    //通过 jQuery 检查判断是否处于子进程工作
+    var atWorker = typeof self.jQuery == 'undefined';
 
+    (function () {
+
+        /**
+         * 搜索计算器
+         * @constructor
+         */
         var Searcher = function () {
             //文档存储
             this._documents = null;
@@ -29,7 +35,7 @@
 
         //初始文档
         Searcher.prototype.initDocs = function (docs) {
-            this._documents = docs;
+            this._documents = atWorker ? docs : JSON.parse(JSON.stringify(docs));
             for (var id in this._documents) {
                 if (this._documents.hasOwnProperty(id)) {
                     this._preDoc(this._documents[id]);
@@ -48,10 +54,10 @@
                 })
                 //分离测试文档请求地址
                 .replace(/([^#]#{3} *请求地址[\n\r]{1,4})([-\w:\/\.]+?)[\n\r]{1,}(#{3} *请求类型[\s\S]+?#{3} *请求参数)/,
-                function (match, s1, s2, s3) {
-                    doc.api = s2;
-                    return s1 + s3;
-                })
+                    function (match, s1, s2, s3) {
+                        doc.api = s2;
+                        return s1 + s3;
+                    })
                 //清除 Markdown 标题标记
                 .replace(/#{1,6}(.*?)#{0,6}\s*[\r\n]/g, '$1')
                 //清除 Markdown 强调斜体删除线标记
@@ -188,21 +194,27 @@
             return this._sortByScore();
         };
 
-        return new Searcher();
+        //作为子进程加载时，仅子进程内有效
+        //作为全局加载时，全局有效
+        return this.AWSearcher = Searcher;
 
-    })();
+    }).call(self);
 
-    self.onmessage = function (event) {
-        var data = event.data;
-        if (data.type == 'docs') {
-            searcher.initDocs(data.docs);
-            self.postMessage({type: 'ready'});
-        } else if (data.type == 'search') {
-            searcher.matchWords(data.words);
-            self.postMessage({type: 'result', result: searcher.getResult()});
-        }
-    };
-
-    self.postMessage({type: 'loaded'});
+    //作为子进程工作时，通过 message 通讯工作
+    if (atWorker) {
+        //计算器
+        var searcher = new self.AWSearcher();
+        self.onmessage = function (event) {
+            var data = event.data;
+            if (data.type == 'searcher:docs') {
+                searcher.initDocs(data.docs);
+                self.postMessage({type: 'searcher:ready'});
+            } else if (data.type == 'searcher:search') {
+                searcher.matchWords(data.words);
+                self.postMessage({type: 'searcher:result', result: searcher.getResult()});
+            }
+        };
+        self.postMessage({type: 'searcher:loaded'});
+    }
 
 })(self);

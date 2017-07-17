@@ -25,6 +25,8 @@ const mngWiki = require('../build/manageWiki');
 const mngFolder = require('../build/manageFolder');
 //手动刷新导航文件
 const makeNav = require('../build/makeNavigation');
+//手动刷新页面挂载数据
+const makeMut = require('../build/makeMounts');
 //本地服务器模块
 const localServer = require('../build/localServer');
 //项目导出模块
@@ -36,6 +38,12 @@ const printFn = require('./printf');
 //项目根目录
 const root = mngFolder.isAmWiki(process.cwd());
 const wikis = {};
+
+//注册文库
+mngWiki.linkWikis(wikis);
+if (root) {
+    mngWiki.addWiki(root);
+}
 
 co(function*() {
 
@@ -58,12 +66,13 @@ co(function*() {
             }
             //更新导航
             makeNav.refresh(root2 + 'library/');
+            makeMut.make(root, true);
             break;
         //更新 wiki
         case 'update':
         case '-u':
             if (!root) {
-                console.error('非amWiki项目文件夹，无法更新导航！');
+                console.error('非 amWiki 项目文件夹，无法更新导航！');
                 break;
             }
             const type = parameters[0];
@@ -72,7 +81,8 @@ co(function*() {
                 makeNav.refresh(root);
             }
             //更新文库嵌入数据
-            else if (type === 'embed') {
+            else if (type === 'mut') {
+                makeMut.make(root);
             }
             //更新 SEO 模块
             else if (type === 'seo') {
@@ -80,36 +90,47 @@ co(function*() {
             //完整更新
             else if (typeof type === 'undefined') {
                 makeNav.refresh(root);
+                makeMut.make(root, true);
             }
             break;
         //启动本地服务器
         case 'server':
         case '-s':
             if (!root) {
-                console.error('非amWiki项目文件夹，无法启动服务器！');
+                console.error('非 amWiki 项目文件夹，无法启动服务器！');
                 break;
             }
-            mngWiki.linkWikis(wikis);
-            mngWiki.addWiki(root);
             const port = parameters[0];
-            //有输入端口且合法
-            if (typeof port !== 'undefined' && /^\d+$/.test(port)) {
-                localServer.run(wikis, port);
+            const noIndex = parameters[1] || '';
+            //有输入端口
+            if (typeof port !== 'undefined') {
+                //端口合法
+                if (/^\d+$/.test(port)) {
+                    yield localServer.run(wikis, port);
+                    if (noIndex === 'no-index') {
+                        localServer.setOffIndex();
+                    }
+                }
+                //端口写成 noIndex
+                else {
+                    yield localServer.run(wikis);
+                    if (port === 'no-index' || noIndex === 'no-index') {
+                        localServer.setOffIndex();
+                    }
+                }
             }
             //没输入端口号
             else {
-                localServer.run(wikis);
+                yield localServer.run(wikis);
             }
             break;
         //本地浏览文档
         case 'browser':
         case '-b':
             if (!root) {
-                console.error('非amWiki项目文件夹，无法浏览文库！');
+                console.error('非 amWiki 项目文件夹，无法浏览文库！');
                 break;
             }
-            mngWiki.linkWikis(wikis);
-            mngWiki.addWiki(root);
             const fileId = parameters[0];
             //未给出需要浏览的文档id
             if (typeof fileId === 'undefined') {
@@ -148,7 +169,6 @@ co(function*() {
         default:
             printFn.help();
             break;
-
     }
 
     //关闭用户输入
