@@ -211,8 +211,14 @@ const creator = (function () {
             const that = this;
             return co(function*() {
                 const {options, config} = yield that._checkConfig(configPath, filesPath);
-                //创建
-                const files = fs.readdirSync(options.outputPath);
+                //开始创建
+                let files = [];
+                //忽略点开头的文件
+                fs.readdirSync(options.outputPath).forEach(function (file) {
+                    if (file.indexOf('.') != 0) {
+                        files.push(file);
+                    }
+                });
                 if (files.length > 1) {
                     if (!(yield confirm2('此处已有一些文件或文件夹，是否仍然在此创建amWiki？'))) {
                         return false;
