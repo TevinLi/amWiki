@@ -155,8 +155,7 @@ co(function*() {
             if (typeof outPath === 'undefined') {
                 outPath = yield prompt2('请输入导出文件夹：');
             }
-            outPath = outPath.replace(/\\/g, '/');
-            yield exportGithub.export(root, outPath);
+            yield exportGithub.export(root, outPath.replace(/\\/g, '/'));
             break;
         //显示版本号
         case 'version':

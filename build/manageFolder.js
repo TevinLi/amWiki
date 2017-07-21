@@ -8,6 +8,35 @@ const fs = require('fs');
 const manageFolder = (function () {
     return {
         /**
+         * 判断一个文件夹是否为 amWiki 文库项目
+         * @param {String} path - 需要判断的文件夹路径
+         * @returns {Boolean|String} 判断为否时返回 false，判断为真时返回项目根目录的路径
+         * @public
+         */
+        isAmWiki: function (path) {
+            if (!path && typeof path !== 'string') {
+                return false;
+            }
+            path = path.replace(/\\/g, '/');
+            path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
+            path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
+            //获取 library 路径
+            path = this.getProjectFolder(path);
+            if (!path) {
+                return false;
+            }
+            //通过识别文件夹子项来判定
+            else {
+                let states = [
+                    fs.existsSync(path + 'library/'),
+                    fs.existsSync(path + 'amWiki/'),
+                    fs.existsSync(path + 'config.json'),
+                    fs.existsSync(path + 'index.html')
+                ];
+                return states[0] && states[1] && states[2] && states[3] ? path : false;
+            }
+        },
+        /**
          * 递归分析指定文件夹下的目录结构
          * @param {String} dirPath - 指定要分析的目录
          * @param {Number} [depth=0] - 文件夹深度
@@ -20,15 +49,11 @@ const manageFolder = (function () {
         _listSubFolder: function (dirPath, depth = 0, tree = {}, list = [], files = []) {
             try {
                 let filePath;
-                for (let fileName of fs.readdirSync(dirPath)) {
+                for (let fileName of this.readFolder(dirPath)) {
                     //文件路径
                     filePath = dirPath + (depth > 0 ? '/' : '') + fileName;
-                    //跳过点号开头的系统保留文件
-                    if (/^\./.test(fileName)) {
-                        continue;
-                    }
                     //文件夹及其递归处理
-                    if (fs.statSync(filePath).isDirectory(filePath)) {
+                    if (this.isFolder(filePath)) {
                         //读取下一级数据
                         const [tempTree, tempList, tempFiles] = this._listSubFolder(filePath, depth + 1);
                         //记录子级的树形
@@ -78,7 +103,7 @@ const manageFolder = (function () {
                 return [];
             }
             const tree = {};
-            for (let fileName of fs.readdirSync(path)) {
+            for (let fileName of this.readFolder(path)) {
                 if (/^home[-_].*?\.md$/.test(fileName) || fileName === '首页.md') {
                     tree[fileName] = false;
                     break;
@@ -87,21 +112,47 @@ const manageFolder = (function () {
             return this._listSubFolder(path, 0, tree);
         },
         /**
-         * 递归清空文件夹
-         * @param {String} path - 要清空的文件夹
+         * fs 同步读取文件夹改进版，忽略以点开头的文件
+         *   (比如 Mac 的 .DS_Store 文件)
+         * @param {String} path
+         * @param {Boolean} [force] - 是否强制读取文件夹内所有内容
+         * @returns {Array}
          * @public
          */
-        cleanFolder: function (path) {
-            const list = fs.readdirSync(path);
+        readFolder: function (path, force) {
+            let files = [];
+            try {
+                if (force === true) {
+                    files = fs.readdirSync(path);
+                } else {
+                    fs.readdirSync(path).forEach(function (fileName) {
+                        //忽略点开头的文件
+                        if (fileName.indexOf('.') !== 0) {
+                            files.push(fileName);
+                        }
+                    });
+                }
+            } catch (e) {}
+            return files;
+        },
+        /**
+         * 递归清空文件夹
+         * @param {String} path - 要清空的文件夹
+         * @param {Boolean} [force] - 是否强制清理文件夹内所有文件
+         * @public
+         */
+        cleanFolder: function (path, force) {
+            const list = this.readFolder(path, force);
             let path2;
             for (let item of list) {
-                path2 = path.replace(/[\\\/]?&/, '/') + item;
-                if (fs.statSync(path2).isDirectory(path2)) {
-                    if (item.indexOf('.') !== 0) {  //跳过特殊文件夹
-                        this.cleanFolder(path2);
-                        fs.rmdirSync(path2);
-                    }
-                } else {
+                path2 = path.replace(/\\?$/, '/') + item;
+                //文件夹，递归删除
+                if (this.isFolder(path2)) {
+                    this.cleanFolder(path2, true);
+                    fs.rmdirSync(path2);
+                }
+                //文件
+                else {
                     fs.unlinkSync(path2);
                 }
             }
@@ -124,6 +175,41 @@ const manageFolder = (function () {
                     fs.mkdirSync(path, 0o777);
                 }
             }
+        },
+        /**
+         * 深度拷贝一个文件夹到指定位置
+         * @param {String} from
+         * @param {String} to
+         * @public
+         */
+        copyFolder: function (from, to) {
+            const list = this.readFolder(from);
+            let from2, to2;
+            for (let item of list) {
+                from2 = from + '/' + item;
+                to2 = to + '/' + item;
+                if (this.isFolder(from2)) {
+                    this.createFolder(to2);
+                    this.copyFolder(from2, to2);
+                } else {
+                    fs.createReadStream(from2).pipe(fs.createWriteStream(to2));
+                }
+            }
+        },
+        /**
+         * 判断一个地址是否为文件夹
+         * @param {String} path
+         * @returns {Boolean}
+         * @public
+         */
+        isFolder: function (path) {
+            let state;
+            try {
+                state = fs.statSync(path).isDirectory(path);
+            } catch (e) {
+                state = false;
+            }
+            return state;
         },
         /**
          * 获取项目文件夹
@@ -214,35 +300,6 @@ const manageFolder = (function () {
                 }
             }
             return path.substr(libPath.length).split(/[-_]/)[0];
-        },
-        /**
-         * 判断一个文件夹是否为 amWiki 文库项目
-         * @param {String} path - 需要判断的文件夹路径
-         * @returns {Boolean|String} 判断为否时返回 false，判断为真时返回项目根目录的路径
-         * @public
-         */
-        isAmWiki: function (path) {
-            if (!path && typeof path !== 'string') {
-                return false;
-            }
-            path = path.replace(/\\/g, '/');
-            path = path.indexOf('config.json') < 0 ? path : path.split('config.json')[0];
-            path = path.indexOf('index.html') < 0 ? path : path.split('index.html')[0];
-            //获取 library 路径
-            path = this.getProjectFolder(path);
-            if (!path) {
-                return false;
-            }
-            //通过识别文件夹子项来判定
-            else {
-                let states = [
-                    fs.existsSync(path + 'library/'),
-                    fs.existsSync(path + 'amWiki/'),
-                    fs.existsSync(path + 'config.json'),
-                    fs.existsSync(path + 'index.html')
-                ];
-                return states[0] && states[1] && states[2] && states[3] ? path : false;
-            }
         }
     };
 })();

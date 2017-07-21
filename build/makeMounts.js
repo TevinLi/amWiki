@@ -92,7 +92,7 @@ const makeMounts = (function () {
          * @private
          */
         _getHomeMount: function (libPath) {
-            var list = fs.readdirSync(libPath);
+            const list = mngFolder.readFolder(libPath);
             for (let name of list) {
                 if (/^home[-_].*?\.md$/.test(name) || name === '首页.md') {
                     const homePath = libPath + name;

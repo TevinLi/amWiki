@@ -6,6 +6,7 @@
 const fs = require('fs');
 const co = require('../modules/co');
 const mngWiki = require('./manageWiki');
+const mngFolder = require('./manageFolder');
 const makeNav = require('./makeNavigation');
 
 const creator = (function () {
@@ -212,13 +213,7 @@ const creator = (function () {
             return co(function*() {
                 const {options, config} = yield that._checkConfig(configPath, filesPath);
                 //开始创建
-                let files = [];
-                //忽略点开头的文件
-                fs.readdirSync(options.outputPath).forEach(function (file) {
-                    if (file.indexOf('.') != 0) {
-                        files.push(file);
-                    }
-                });
+                const files = mngFolder.readFolder(options.outputPath);
                 if (files.length > 1) {
                     if (!(yield confirm2('此处已有一些文件或文件夹，是否仍然在此创建amWiki？'))) {
                         return false;
