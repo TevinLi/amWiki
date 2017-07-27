@@ -131,7 +131,7 @@
                     //接口地址命中
                     if (this._documents[id].api) {
                         var apiMatch = this._documents[id].api.match(wordsReg);
-                        if (titleMatch && titleMatch.length > 0) {
+                        if (apiMatch && apiMatch.length > 0) {
                             var api = '<p class="p1"><em>接口</em>' +
                                 this._documents[id].api.replace(wordsReg, function (match) {
                                     return '<mark>' + match + '</mark>';
