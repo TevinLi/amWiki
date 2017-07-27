@@ -34,7 +34,8 @@
 .markdown-body .lang-off-js-comment.on i{color:#f00;}
 
 /* ---------- base ---------- */
-body{position:relative;background:#e7e8eb;}
+html{height:100%;}
+body{position:relative;height:100%;background:#e7e8eb;}
 .hidden{display:none !important;}
 
 /* ---------- header ---------- */
@@ -48,7 +49,7 @@ body{position:relative;background:#e7e8eb;}
 .header .menu-icon{display:none;}
 
 /* ---------- container ---------- */
-.container{position:relative;margin:20px 18px 20px;background:url(../images/menubar_bg.png) repeat-y #fff;border:#c3c4c6 1px solid;border-top:@colour-base 2px solid;}
+.container{position:relative;margin:20px 18px 0;background:url(../images/menubar_bg.png) repeat-y #fff;border:#c3c4c6 1px solid;border-top:@colour-base 2px solid;}
 
 /* ---------- menu ---------- */
 .container .nav{position:absolute;left:0px;top:0px;width:250px;height:100%;}
@@ -179,8 +180,8 @@ aside .back-top:hover .back-icon{border:none;}
 aside .back-top:hover .back-text{display:block;color:#aaa;}
 
 /* ---------- footer ---------- */
-footer{position:relative;width:100%;}
-footer .signature{position:absolute;right:20px;bottom:-5px;color:#999;}
+footer{position:absolute;left:0;bottom:0;width:100%;}
+footer .signature{position:absolute;right:20px;bottom:8px;color:#999;}
 
 /* ---------- lowBrowser ---------- */
 #lowBrowser{position:fixed;top:0;left:0;z-index:9999999;width:100%;height:100%;}
@@ -259,7 +260,7 @@ footer .signature{position:absolute;right:20px;bottom:-5px;color:#999;}
     aside .back-top:hover .back-text{display:none;}
 
     /* ---------- footer ---------- */
-    footer{position:relative;width:100%;height:0;}
+    footer{position:relative;left:0;bottom:0;width:100%;height:0;}
     footer .signature{position:absolute;right:12px;bottom:6px;color:#ccc;}
     footer .signature a{color:#aaa;}
 
