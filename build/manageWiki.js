@@ -170,9 +170,9 @@ const manageWiki = (function () {
             config.githubUrl = typeof config.githubUrl === 'undefined' ? '' : config.githubUrl + '';
             delete config['github-url'];
             //转接 library 地址
-            config.transferLibPath = config['transfer-lib-path'] || config.transferLibPath;
-            config.transferLibPath = typeof config.transferLibPath === 'undefined' ? '' : config.transferLibPath + '';
-            delete config['transfer-lib-path'];
+            config.libraryPrefix = config['library-prefix'] || config.libraryPrefix;
+            config.libraryPrefix = typeof config.libraryPrefix === 'undefined' ? '' : config.libraryPrefix + '';
+            delete config['library-prefix'];
             //自定义 css、js 文件
             if (tools.isArray(config.imports) && config.imports.length > 0) {
                 const imports2 = {

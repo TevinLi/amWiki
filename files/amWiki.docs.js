@@ -299,17 +299,20 @@
      * @private
      */
     Docs.prototype._encodeUrl = function (path, type) {
-        var url = '';
+        var url = 'library/';
+        if (typeof AWConfig.libraryPrefix == 'string' && AWConfig.libraryPrefix.length > 0) {
+            url = AWConfig.libraryPrefix.replace(/\\/g, '/').replace(/[\\\/]?&/, '/');
+        }
         var paths = [];
         //正常编码
         if (type == 'normal') {
             if (localStorage[URL_ENCODE_NAME] == 'utf8') {
-                url = 'library/' + encodeURI(path);
+                url += encodeURI(path);
             } else if (localStorage[URL_ENCODE_NAME] == 'gbk') {
                 paths = path.split('/').map(function(path) {
                     return GBK.encode(path);
                 });
-                url = 'library/' + paths.join('/');
+                url += paths.join('/');
             }
         }
         //反转编码
@@ -318,9 +321,9 @@
                 paths = path.split('/').map(function(path) {
                     return GBK.encode(path);
                 });
-                url = 'library/' + paths.join('/');
+                url += paths.join('/');
             } else if (localStorage[URL_ENCODE_NAME] == 'gbk') {
-                url = 'library/' + encodeURI(path);
+                url += encodeURI(path);
             }
         }
         url += '.md?t=' + (new Date()).getTime();
