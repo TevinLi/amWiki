@@ -142,7 +142,7 @@
      * @returns {String}
      * @private
      */
-    Docs.prototype._createFootnote = function (text) {
+    Docs.prototype._setFootnote = function (text) {
         var footnotes = [];
         var noteReg = /\[\^([ a-zA-Z\d]+)]/g;
         var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
@@ -233,7 +233,7 @@
         var chart = flowchart.parse(code);
         chart.drawSVG(id, {
             'line-width': 1.3,
-            'line-length': 55,
+            'line-length': 56,
             'line-color': '#666',
             'text-margin': 10,
             'font-size': 12,
@@ -257,7 +257,7 @@
      * @returns {String}
      * @private
      */
-    Docs.prototype._resizeImg = function (html) {
+    Docs.prototype._setImgResize = function (html) {
         return html.replace(/<img(.*?)src="(.*?)=(\d*[-x×]\d*)(-[lrc])?"/g, function (m, s1, s2, s3, s4) {
             var imgHtml = '<img' + s1 + 'src="' + s2 + '"';
             var imgSize = s3.split(/[-x×]/);
@@ -290,6 +290,12 @@
         });
     };
 
+    Docs.prototype._setRedText = function (html) {
+        return html.replace(/==(.*?)==/g, function (m, s1) {
+            return '<mark>' + s1 + '</mark>';
+        });
+    };
+
     /**
      * 编码 url
      *   由于服务器可能存在 GBK 或 UTF-8 两种编码，中文路径编码不对需要切换才能访问
@@ -301,7 +307,7 @@
     Docs.prototype._encodeUrl = function (path, type) {
         var url = 'library/';
         if (typeof AWConfig.libraryPrefix == 'string' && AWConfig.libraryPrefix.length > 0) {
-            url = AWConfig.libraryPrefix.replace(/\\/g, '/').replace(/[\\\/]?&/, '/');
+            url = AWConfig.libraryPrefix.replace(/\\/g, '/').replace(/\/?&/, '/');
         }
         var paths = [];
         //正常编码
@@ -340,15 +346,17 @@
         var html = '';
         this.cleanView();
         //创建脚注
-        content = this._createFootnote(content);
+        content = this._setFootnote(content);
         //编译 markdown
         html = marked(content);
         //创建目录标记，和悬浮窗格式统一
         html = html.replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
         //自定义图片大小与对齐方式
-        html = this._resizeImg(html);
+        html = this._setImgResize(html);
         //复选框
         html = this._setCheckbox(html);
+        //文字飘红
+        html = this._setRedText(html);
         //填充到页面
         this.$e.view.html(html);
         //功能化代码块

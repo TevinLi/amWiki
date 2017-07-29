@@ -32,6 +32,7 @@
 .markdown-body .lang-off-js-comment:hover i{color:#999;}
 .markdown-body .lang-off-js-comment.on{display:block;color:#333;background:#ccc;}
 .markdown-body .lang-off-js-comment.on i{color:#f00;}
+.markdown-body mark{color:#e61e1e;background:transparent;}
 
 /* ---------- base ---------- */
 html{height:100%;}
