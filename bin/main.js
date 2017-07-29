@@ -35,6 +35,9 @@ const exportGithub = require('../build/exportGithub');
 //格式化显示
 const printFn = require('./printf');
 
+//读取项目包配置
+const packageConf = JSON.parse(fs.readFileSync(mainPath.split(/bin[\\\/]main/)[0] + 'package.json', 'utf-8'));
+
 //项目根目录
 const root = mngFolder.isAmWiki(process.cwd());
 const wikis = {};
@@ -60,7 +63,7 @@ co(function*() {
             //项目 files 文件夹路径
             const filesPath = mainPath.replace(/\\/g, '/').split('bin')[0] + 'files/';
             //开始创建
-            const root2 = yield creator.create(configPath, filesPath);
+            const root2 = yield creator.create(configPath, filesPath, packageConf);
             if (!root2) {
                 break;
             }
@@ -160,7 +163,7 @@ co(function*() {
         //显示版本号
         case 'version':
         case '-v':
-            printFn.ver(mainPath);
+            printFn.ver(packageConf);
             break;
         //显示帮助
         case 'help':

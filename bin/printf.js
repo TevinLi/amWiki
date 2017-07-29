@@ -120,12 +120,10 @@ const printf = (function () {
         },
         /**
          * 显示版本信息
-         * @param {String} mainPath
+         * @param {Object} packageConf
          * @public
          */
-        ver: function (mainPath) {
-            const packageStr = fs.readFileSync(mainPath.split(/bin[\\\/]main/)[0] + 'package.json', 'utf-8');
-            const packageConf = JSON.parse(packageStr);
+        ver: function (packageConf) {
             const text = [
                 'Package:   amWiki',
                 `Version:   ${clc(0, packageConf.version)}`,

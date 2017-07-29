@@ -174,10 +174,10 @@ const makeMounts = (function () {
                 linksHtml += '<script src="amWiki/mounts/' + fileName + '"></script>';
             }
             let indexSrc = fs.readFileSync(rootPath + 'index.html', 'utf-8');
-            const mountReg = /<div(.*?)aw-include="mountLinks"(.*?)>(.*?)<\/div>/;
-            indexSrc = indexSrc.replace(mountReg, function (m, s1, s2) {
+            const mountReg = /<div(.*?)aw-include="mountLinks"(.*?)>([\s\S]*?)<\/div>/;
+            indexSrc = indexSrc.replace(mountReg, function (m, s1, s2, s3) {
                 return '<div' + s1 + 'aw-include="mountLinks"' + s2 + '>' +
-                    linksHtml + '</div>';
+                    linksHtml +  s3 + '</div>';
             });
             fs.writeFileSync(rootPath + 'index.html', indexSrc, 'utf-8');
         }

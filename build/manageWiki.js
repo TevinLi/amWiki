@@ -169,6 +169,10 @@ const manageWiki = (function () {
             config.githubUrl = config['github-url'] || config.githubUrl;
             config.githubUrl = typeof config.githubUrl === 'undefined' ? '' : config.githubUrl + '';
             delete config['github-url'];
+            //转接 library 地址
+            config.transferLibPath = config['transfer-lib-path'] || config.transferLibPath;
+            config.transferLibPath = typeof config.transferLibPath === 'undefined' ? '' : config.transferLibPath + '';
+            delete config['transfer-lib-path'];
             //自定义 css、js 文件
             if (tools.isArray(config.imports) && config.imports.length > 0) {
                 const imports2 = {

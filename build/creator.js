@@ -17,10 +17,8 @@ const creator = (function () {
          * @param {String} to
          * @private
          */
-        _copyWikiFile: function (from, to) {
-            const encoding = from.indexOf('png') >= 0 ? 'binary' : 'utf-8';
-            const file = fs.readFileSync(from, encoding);
-            fs.writeFileSync(to, file, encoding);
+        _copyFile: function (from, to) {
+            fs.createReadStream(from).pipe(fs.createWriteStream(to));
         },
         /**
          * 创建 amWiki 必要的文件夹
@@ -205,10 +203,11 @@ const creator = (function () {
          * 创建amWiki本地文件
          * @param {String} configPath - config.json文件的路径
          * @param {String} filesPath - 项目包files文件夹路径
+         * @param {Object} packageConf - 项目包配置
          * @returns {Promise} 项目根目录
          * @public
          */
-        create: function (configPath, filesPath) {
+        create: function (configPath, filesPath, packageConf) {
             const that = this;
             return co(function*() {
                 const {options, config} = yield that._checkConfig(configPath, filesPath);
@@ -224,6 +223,12 @@ const creator = (function () {
                 indexPage = indexPage.replace(/\{\{name\}\}/g, config.name)
                     .replace('{{version}}', config.version)
                     .replace('{{logo}}', config.logo);
+                //嵌入配置
+                config.AWPackage = {
+                    version: packageConf.version,
+                    homepage: packageConf.homepage
+                };
+                indexPage = indexPage.replace('{{config}}', 'AWConfig=' + JSON.stringify(config));
                 //测试模块
                 if (config.testing) {
                     const testingTpl = fs.readFileSync(options.filesPath + 'amWiki.testing.tpl', 'utf-8');
@@ -296,7 +301,7 @@ const creator = (function () {
                     ['menubar_bg.png', 'amWiki/images/menubar_bg.png']
                 ];
                 for (let file of fileList) {
-                    that._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
+                    that._copyFile(options.filesPath + file[0], options.outputPath + file[1]);
                 }
                 //如果没有library则复制一套默认文档
                 if (!hasLibrary) {
@@ -319,7 +324,7 @@ const creator = (function () {
                         ['doc.demo-long-article.md', 'library/002-文档示范/002-超长文档页内目录示例.md']
                     ];
                     for (let file of fileList2) {
-                        that._copyWikiFile(options.filesPath + file[0], options.outputPath + file[1]);
+                        that._copyFile(options.filesPath + file[0], options.outputPath + file[1]);
                     }
                 }
                 return options.outputPath;
