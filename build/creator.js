@@ -203,11 +203,10 @@ const creator = (function () {
          * 创建amWiki本地文件
          * @param {String} configPath - config.json文件的路径
          * @param {String} filesPath - 项目包files文件夹路径
-         * @param {Object} packageConf - 项目包配置
          * @returns {Promise} 项目根目录
          * @public
          */
-        create: function (configPath, filesPath, packageConf) {
+        create: function (configPath, filesPath) {
             const that = this;
             return co(function*() {
                 const {options, config} = yield that._checkConfig(configPath, filesPath);
@@ -224,10 +223,6 @@ const creator = (function () {
                     .replace('{{version}}', config.version)
                     .replace('{{logo}}', config.logo);
                 //嵌入配置
-                config.AWPackage = {
-                    version: packageConf.version,
-                    homepage: packageConf.homepage
-                };
                 indexPage = indexPage.replace('{{config}}', 'AWConfig=' + JSON.stringify(config));
                 //测试模块
                 if (config.testing) {

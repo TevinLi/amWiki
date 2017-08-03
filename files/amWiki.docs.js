@@ -147,7 +147,7 @@
         var noteReg = /\[\^([ a-zA-Z\d]+)]/g;
         var footReg = /\[\^([ a-zA-Z\d]+)]: ?([\S\s]+?)(?=\[\^(?:[ a-zA-Z\d]+)]|\n\n|$)/g;
         var templates = $.trim($('#template\\:footnote').text()).split(/[\r\n]+\s*/g);
-        templates[4] += templates[5] + templates[6] +templates[7] +templates[8];
+        templates[4] += templates[5] + templates[6] + templates[7] + templates[8];
         var html = '';
         //提取脚注内容
         text = text.replace(footReg, function (match, s1, s2, index) {
@@ -252,7 +252,17 @@
     };
 
     /**
-     * 自定义图片大小与对齐方式
+     * 解析 Markdown 目录
+     * @param {String} html
+     * @returns {String}
+     * @private
+     */
+    Docs.prototype._setTOC = function (html) {
+        return html.replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
+    };
+
+    /**
+     * 解析 Markdown 自定义图片大小与对齐方式
      * @param {String} html
      * @returns {String}
      * @private
@@ -290,9 +300,73 @@
         });
     };
 
+    /**
+     * 解析 markdown 文字飘红
+     * @param {String} html
+     * @returns {String}
+     * @private
+     */
     Docs.prototype._setRedText = function (html) {
         return html.replace(/==(.*?)==/g, function (m, s1) {
             return '<mark>' + s1 + '</mark>';
+        });
+    };
+
+    /**
+     * 创建目录
+     * @param {String} contents - markdown 目录
+     * @private
+     */
+    Docs.prototype._createContents = function (contents) {
+        var $contents = $('.markdown-contents').html(marked(contents));
+        $('blockquote').each(function () {
+            var $this = $(this);
+            var $links = $this.find('ol>li>a');
+            //至少2条链接才视为目录
+            if ($links.length > 1) {
+                $this.addClass('markdown-contents');
+                $contents = $contents.add($this);
+            }
+        });
+        //自带序号的目录，不再额外显示一层序号
+        $contents.find('ol').each(function () {
+            var $this = $(this);
+            var $links = $this.children('li').children('a');
+            var text1 = $links.eq(0).text(),
+                text2 = $links.eq(1).text();
+            var conditions = [
+                //普通数字类型
+                /^[\(（]?(\d+\.?)+[^\d]{2,}/,
+                //汉字序号类型
+                /^[\(（【第]?[一二三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+/,
+                //英文序号类型
+                /^(chapter)|(section)|(part)｜(step)/i,
+                //罗马序号类型
+                /^[ⅠⅡⅢⅣIⅤⅥⅦⅧⅨⅩⅪⅫLCDM]+\.?/
+            ];
+            for (var i = 0, cond; cond = conditions[i]; i++) {
+                if (cond.test(text1) && cond.test(text2)) {
+                    $this.addClass('unindex');
+                    break;
+                }
+            }
+        });
+        //没写序号的目录，创建序号
+        var setIndex = function ($elm, index1) {
+            if ($elm.length == 0) {
+                return;
+            }
+            $elm.children('li').each(function (index2) {
+                var $this = $(this);
+                if (!$elm.hasClass('unindex')) {
+                    var index = typeof index1 == 'number' ? (index1 + 1) + '.' + (index2 + 1): (index2 + 1);
+                    $this.prepend('<i>' + index + '</i>');
+                }
+                setIndex($this.children('ol'), index2);
+            });
+        };
+        $contents.children('ol').each(function () {
+            setIndex($(this));
         });
     };
 
@@ -315,7 +389,7 @@
             if (localStorage[URL_ENCODE_NAME] == 'utf8') {
                 url += encodeURI(path);
             } else if (localStorage[URL_ENCODE_NAME] == 'gbk') {
-                paths = path.split('/').map(function(path) {
+                paths = path.split('/').map(function (path) {
                     return GBK.encode(path);
                 });
                 url += paths.join('/');
@@ -324,7 +398,7 @@
         //反转编码
         else if (type == 'reverse') {
             if (localStorage[URL_ENCODE_NAME] == 'utf8') {
-                paths = path.split('/').map(function(path) {
+                paths = path.split('/').map(function (path) {
                     return GBK.encode(path);
                 });
                 url += paths.join('/');
@@ -350,7 +424,7 @@
         //编译 markdown
         html = marked(content);
         //创建目录标记，和悬浮窗格式统一
-        html = html.replace(/\[(TOC|MENU)]/g, '<blockquote class="markdown-contents"></blockquote>');
+        html = this._setTOC(html);
         //自定义图片大小与对齐方式
         html = this._setImgResize(html);
         //复选框
@@ -384,7 +458,7 @@
         //创建描点
         var contents = this._setTitlesAnchor();
         //创建目录
-        $('.markdown-contents').html(marked(contents));
+        this._createContents(contents);
     };
 
     /**
