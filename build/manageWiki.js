@@ -153,21 +153,26 @@ const manageWiki = (function () {
          */
         parseConfig: function (config) {
             //库名称
-            config.name = config.name || 'amWiki轻文库';
+            config.name = typeof config.name === 'undefined' ? 'amWiki轻文库' : config.name + '';
             //库版本号
-            config.version = config.ver || 'by Tevin';
+            config.version = typeof config.ver === 'undefined' ? 'by Tevin' : config.ver + '';
             //logo地址
-            config.logo = config.logo || 'amWiki/images/logo.png';
+            config.logo = typeof config.logo === 'undefined' ? 'amWiki/images/logo.png' : config.logo + '';
             //是否开启接口测试
-            config.testing = config.testing || false;
+            config.testing = !!config.testing || false;
             //设置自定义颜色
-            config.colour = config.colour || '#4296eb';
+            config.colour = typeof config.colour === 'undefined' ? '#4296eb' : config.color + '';
             //本地页面数据挂载
-            config.pageMounts = config['page-mounts'] || config.pageMounts || false;
+            config.pageMounts = !!(config['page-mounts'] || config.pageMounts) || false;
             delete config['page-mounts'];
             //项目的 github 地址
-            config.githubUrl = config['github-url'] || config.githubUrl || '';
+            config.githubUrl = config['github-url'] || config.githubUrl;
+            config.githubUrl = typeof config.githubUrl === 'undefined' ? '' : config.githubUrl + '';
             delete config['github-url'];
+            //转接 library 地址
+            config.libraryPrefix = config['library-prefix'] || config.libraryPrefix;
+            config.libraryPrefix = typeof config.libraryPrefix === 'undefined' ? '' : config.libraryPrefix + '';
+            delete config['library-prefix'];
             //自定义 css、js 文件
             if (tools.isArray(config.imports) && config.imports.length > 0) {
                 const imports2 = {
