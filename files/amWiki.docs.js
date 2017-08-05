@@ -359,7 +359,7 @@
             $elm.children('li').each(function (index2) {
                 var $this = $(this);
                 if (!$elm.hasClass('unindex')) {
-                    var index = typeof index1 == 'number' ? (index1 + 1) + '.' + (index2 + 1): (index2 + 1);
+                    var index = typeof index1 == 'number' ? (index1 + 1) + '.' + (index2 + 1): (index2 + 1) + '.';
                     $this.prepend('<i>' + index + '</i>');
                 }
                 setIndex($this.children('ol'), index2);

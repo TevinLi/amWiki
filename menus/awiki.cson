@@ -6,7 +6,7 @@
     }, {
         'type': 'separator'
     }, {
-        'label': '提取 h2,h3 标题为页内目录',
+        'label': '提取 h2,h3 标题为篇内目录',
         'command': 'amWiki:catalogue'
     }, {
        'label': '从剪切板粘贴截图',
