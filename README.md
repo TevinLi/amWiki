@@ -4,7 +4,7 @@
 amWiki 是一款由 JS 开发、依赖 Atom 或 Nodejs-Npm 的 Markdown 轻量级前端化开源文库系统。  
 amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库！  
 
-[[view amWiki on Github](https://github.com/TevinLi/amWiki)]  
+[[fork amWiki on Github](https://github.com/TevinLi/amWiki)]  
 
 GitHub:  
 [![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars") [![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks") [![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues") [![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues")  
@@ -54,7 +54,7 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 <br>
 
 ## amWiki 教程 & 文档
-更多详细功能与使用介绍请前往: [ [amWiki 文档中心：amwiki.org/doc/](http://amwiki.org/doc/index.html) ]  
+更多详细功能与使用介绍请前往: [ [amWiki 官网文档中心：amwiki.org/doc/](https://amwiki.org/doc/) ]  
 (amWiki 的文档由项目自身创建与维护)  
 
 <br>
@@ -63,7 +63,7 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 ### 如何获取最新版本信息与动态？
 - QQ群 **347125653**
 - 如果可以，欢迎直接加我微信  
-  ![](http://amwiki.org/doc/assets/wx.qrcode.150.png)
+  ![](http://img.amwiki.org/global/wx.qrcode.150.png)
 
 ### 如何查看历史版本日志？
 [amWiki 版本更新日志](https://github.com/TevinLi/amWiki/blob/master/CHANGELOG.md "amWiki版本更新日志")

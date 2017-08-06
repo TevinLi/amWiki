@@ -69,7 +69,7 @@ const exportGithub = (function () {
                 .replace(/\?file=(home[-_].*?\))|(首页\))/, this._githubUrl + 'wiki)')
                 .replace(/#### \[(.*?)]/, '## WIKI 导航\n\n##### [$1]');
             navigation += '\n\n﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊  \n' +
-                '**This wiki is created by [[amWiki](http://amwiki.org)]**';
+                '**This wiki is created by [[amWiki](https://amwiki.org)]**';
             fs.writeFileSync(pathTo + '/_Sidebar.md', navigation, 'utf-8');
         },
         /**

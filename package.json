@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/TevinLi/amWiki/issues"
   },
-  "homepage": "http://amwiki.org",
+  "homepage": "https://amwiki.org",
   "configSchema": {
     "checkLibraryOnWindowFocus": {
       "type": "boolean",
