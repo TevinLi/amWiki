@@ -85,11 +85,11 @@ const helpWords = `
   -e, export      amwiki 项目导出
                   必需参数：
                       github-wiki  指定导出类型为 github 项目附属 wiki
-                      d:/your-path  指定本次导出的本地输出路径
-                  ${clc(90, '(eg: amwiki export github-wiki d:/your-path)')}
+                      d:\/your-path  指定本次导出的本地输出路径
+                  ${clc(90, '(eg: amwiki export github-wiki d:\/your-path)')}
 
 更多文档：
-  http://amwiki.org/doc/
+  https://amwiki.org/doc/
 `;
 //[seo]  仅更新SEO模块(待开发)
 
@@ -120,20 +120,19 @@ const printf = (function () {
         },
         /**
          * 显示版本信息
-         * @param {String} mainPath
+         * @param {Object} packageConf
          * @public
          */
-        ver: function (mainPath) {
-            const packageStr = fs.readFileSync(mainPath.split(/bin[\\\/]main/)[0] + 'package.json', 'utf-8');
-            const packageConf = JSON.parse(packageStr);
+        ver: function (packageConf) {
             const text = [
                 'Package:   amWiki',
                 `Version:   ${clc(0, packageConf.version)}`,
                 'Author:    Tevin Li',
-                'HomePage:  https://github.com/tevinli/amWiki',
+                'HomePage:  amwiki.org',
+                'Fork:      github.com/tevinli/amWiki',
                 'License:   MIT'
             ];
-            alert(vesWords + text.join('\n'));
+            alert(vesWords + text.join('\n') + '\n');
         }
     };
 })();

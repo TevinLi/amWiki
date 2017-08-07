@@ -6,6 +6,7 @@
 const fs = require('fs');
 const co = require('../modules/co');
 const mngFolder = require('./manageFolder');
+const mngWiki = require('./manageWiki');
 
 const exportGithub = (function () {
     return {
@@ -65,10 +66,10 @@ const exportGithub = (function () {
                 navigation = navigation.replace('?file=' + path, this._githubUrl + 'wiki/' + name);
             }
             navigation = navigation
-                .replace('?file=首页', this._githubUrl + 'wiki')
-                .replace('#### [首页]', '## WIKI 导航\n\n##### [首页]');
+                .replace(/\?file=(home[-_].*?\))|(首页\))/, this._githubUrl + 'wiki)')
+                .replace(/#### \[(.*?)]/, '## WIKI 导航\n\n##### [$1]');
             navigation += '\n\n﹊﹊﹊﹊﹊﹊﹊﹊﹊﹊  \n' +
-                '**This wiki is created by [[amWiki](https://github.com/TevinLi/amWiki)]**';
+                '**This wiki is created by [[amWiki](https://amwiki.org)]**';
             fs.writeFileSync(pathTo + '/_Sidebar.md', navigation, 'utf-8');
         },
         /**
@@ -78,7 +79,12 @@ const exportGithub = (function () {
          * @private
          */
         _exportHome: function (pathFrom, pathTo) {
-            let file = fs.readFileSync(pathFrom + '/首页.md', 'utf-8');
+            let file = null;
+            for (let fileName of mngFolder.readFolder(pathFrom)) {
+                if (/^home[-_].*?\.md$/.test(fileName) || fileName === '首页.md') {
+                    file = fs.readFileSync(pathFrom + '/' + fileName, 'utf-8');
+                }
+            }
             file = file
             //相对路径图片地址转换
                 .replace(/!\[(.*?)]\(assets(.*?)\)/g, '![$1](' + this._githubUrl + 'wiki/images$2)')
@@ -87,7 +93,7 @@ const exportGithub = (function () {
                 .replace(/<a(.*?)href="assets(.*?)"/g, '<a$1href="' + this._githubUrl + 'wiki/images$2"')
                 //logo复制与图片引用地址转换
                 .replace('amWiki/images/logo.png', () => {
-                    this._copyImg(pathFrom + '../amWiki/images/logo.png', pathTo + '\\images\\amWiki-logo.png');
+                    this._copyImg(pathFrom + '../amWiki/images/logo.png', pathTo + '/images/amWiki-logo.png');
                     return this._githubUrl + 'wiki/images/amWiki-logo.png';
                 });
             fs.writeFileSync(pathTo + '/Home.md', file, 'utf-8');
@@ -102,23 +108,8 @@ const exportGithub = (function () {
             if (!fs.existsSync(pathTo + '/images/')) {
                 fs.mkdirSync(pathTo + '/images/', 0o777);
             }
-            //文件夹拷贝
-            const copyFolder = (from, to) => {
-                const list = fs.readdirSync(from);
-                let path, to2;
-                for (let item of list) {
-                    path = from + '/' + item;
-                    to2 = to + '/' + item;
-                    if (fs.statSync(path).isDirectory(path)) {
-                        fs.mkdirSync(to2, 0o777);
-                        copyFolder(path, to + '/' + item);
-                    } else {
-                        this._copyImg(path, to + '/' + item);
-                    }
-                }
-            };
             if (fs.existsSync(pathFrom + '../assets/')) {
-                copyFolder(pathFrom + '../assets/', pathTo + '/images/');
+                mngFolder.copyFolder(pathFrom + '../assets/', pathTo + '/images/');
             }
         },
         /**
@@ -189,7 +180,7 @@ const exportGithub = (function () {
         _toExport: function (pathFrom, pathTo, fileList, duplicates) {
             const that = this;
             return co(function* () {
-                if (fs.readdirSync(pathTo).length > 0 && (yield confirm2('所选导出文件夹不为空，是否需要清空？'))) {
+                if (mngFolder.readFolder(pathTo).length > 0 && (yield confirm2('所选导出文件夹不为空，是否需要清空？'))) {
                     mngFolder.cleanFolder(pathTo);
                 }
                 let fileList2 = [];
@@ -271,32 +262,31 @@ const exportGithub = (function () {
             });
         },
         /**
-         * GitHub地址
+         * GitHub项目地址
          * @private
          */
         _githubUrl: '',
         /**
          * 解析 GitHub url
-         * @param {String} path
+         * @param {String} url
          * @returns {Boolean|String}
          * @private
          */
-        _parseGithubUrl: function (path) {
-            const config = JSON.parse(fs.readFileSync(path + '/config.json', 'utf-8'));
-            if (typeof config['github-url'] === 'undefined') {
+        _parseGithubUrl: function (url) {
+            if (url === '') {
                 alert('导出失败！\n未检测到 “github-url” 配置，请在 config.json 中配置您项目的 github-url');
                 return false;
             }
-            const url = config['github-url'];
-            if (url.indexOf('github.com') === 0 || url.split('github.com')[1] === '') {
-                alert('导出失败！\n请以https开头，配置完整的 github URL！');
+            if (url.indexOf('github.com') === -1) {
+                alert('导出失败！\n配置完整的 Github 项目 URL！\n例如 https://github.com/TevinLi/amWiki');
                 return false;
             }
             const urlArr = url.split('github.com')[1].split('/');
             if (urlArr.length < 3) {
-                alert('导出失败！\n请配置完整 github 项目路径！');
+                alert('导出失败！\n请配置完整 Github 项目 URL！\n例如 https://github.com/TevinLi/amWiki');
                 return false;
             }
+            urlArr[2] = urlArr[2].split(/\?#/)[0].split(/\.git/i)[0];
             return '/' + urlArr[1] + '/' + urlArr[2] + '/';
         },
         /**
@@ -309,8 +299,9 @@ const exportGithub = (function () {
         export: function (root, outputPath) {
             const that = this;
             return co(function* () {
+                const wikiConfig = mngWiki.getWikiByRoot(root).config;
                 //检测 GitHub 项目地址
-                that._githubUrl = that._parseGithubUrl(root.split('library')[0]);
+                that._githubUrl = that._parseGithubUrl(wikiConfig.githubUrl);
                 if (!that._githubUrl) {
                     return;
                 }

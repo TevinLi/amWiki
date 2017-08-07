@@ -1,9 +1,22 @@
 # amWiki 版本日志
 
+<!--
+## [v1.2.1](https://github.com/TevinLi/amWiki/releases/tag/v1.2.1)
+_2017-08-08_
+
+- 改善 Mac 上点号开头的系统文件带来的诸多问题（例如导出报错等）([#32](https://github.com/TevinLi/amWiki/issues/32)、[#67](https://github.com/TevinLi/amWiki/issues/67))
+- 允许在 config 上重新定义 library 路径 ([#47](https://github.com/TevinLi/amWiki/issues/47))
+- 文章篇内目录显示优化 ([#33](https://github.com/TevinLi/amWiki/issues/33))
+- 文章篇内目录序号识别，已有序号不再增加序号 ([#33](https://github.com/TevinLi/amWiki/issues/33))
+- 基础 Markdown 语法扩充，实现文字飘红
+- 统一官网和文档中心网址
+- 修复几处显示细节
+-->
+
 ## [v1.2.0](https://github.com/TevinLi/amWiki/releases/tag/v1.2.0)
 _2017-07-18_
 
-- 新增本地数据挂载模式，可以直接双击 index 在浏览器中访问整个文库s
+- 新增本地数据挂载模式，可以直接双击 index 在浏览器中访问整个文库
     - Atom 平台和 Node-Npm 平台挂载数据操作绑定
     - 本地页面挂载数据生成与嵌入模块
     - 页面加载数据，页面打开时立即判断和读取挂载数据
