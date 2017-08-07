@@ -1,6 +1,5 @@
 # amWiki 版本日志
 
-<!--
 ## [v1.2.1](https://github.com/TevinLi/amWiki/releases/tag/v1.2.1)
 _2017-08-08_
 
@@ -11,7 +10,6 @@ _2017-08-08_
 - 基础 Markdown 语法扩充，实现文字飘红
 - 统一官网和文档中心网址
 - 修复几处显示细节
--->
 
 ## [v1.2.0](https://github.com/TevinLi/amWiki/releases/tag/v1.2.0)
 _2017-07-18_
