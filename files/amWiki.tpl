@@ -143,7 +143,7 @@
         <!-- 图片预览 -->
         <section class="imgsv" id="imgsView">
             <div class="imgsv-background"></div>
-            <div class="imgsv-view" id="imgsViewInner"><img src="assets/003/001-01a02027.png" alt="" /></div>
+            <div class="imgsv-view" id="imgsViewInner"></div>
             <ul class="imgsv-panel">
                 <li class="prev off">Prev</li>
                 <li class="next">Next</li>
