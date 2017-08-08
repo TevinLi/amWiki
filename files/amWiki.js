@@ -133,13 +133,11 @@ $(function () {
                 $menuBar.find('h5').each(function () {
                     filterNav('filter', valReg, $(this));
                 });
-                storage.setStates('navFilterKey', value);
             } else {
                 $filterClean.addClass('off');
                 $menuBar.find('h5').each(function () {
                     filterNav('open', null, $(this));
                 });
-                storage.setStates('navFilterKey');
             }
             $menuBar.trigger('scrollbar');
         });
@@ -513,11 +511,6 @@ $(function () {
                     return false;
                 }
             });
-            //设置导航筛选初始值
-            var filterVal = storage.getStates('navFilterKey');
-            if (typeof filterVal != 'undefined' && filterVal != '') {
-                $filter.val(filterVal).trigger('input2');
-            }
             //回调
             callback && callback(pathList);
         };
