@@ -4,15 +4,12 @@
 amWiki 是一款由 JS 开发、依赖 Atom 或 Nodejs-Npm 的 Markdown 轻量级前端化开源文库系统。  
 amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库！  
 
-[[fork amWiki on Github](https://github.com/TevinLi/amWiki)]  
-
 GitHub:  
-[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars") [![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks") [![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues") [![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues")  
-[![GitHub Tag](https://img.shields.io/github/tag/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Tag") [![apm](https://img.shields.io/github/license/TevinLi/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")  
-APM:  
-[![APM Version](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "APM Version") [![APM Downloads](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "APM Downloads")  
+[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg) ![](https://img.shields.io/github/forks/TevinLi/amWiki.svg) ![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg) ![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg) <br> ![GitHub Tag](https://img.shields.io/github/tag/TevinLi/amWiki.svg) ![apm](https://img.shields.io/github/license/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki)  
 NPM:  
-[![NPM Version](https://img.shields.io/npm/v/amwiki.svg)](https://www.npmjs.com/package/amwiki "NPM Version") [![APM Downloads](https://img.shields.io/npm/dt/amwiki.svg)](https://www.npmjs.com/package/amwiki "APM Downloads") [![npm](https://img.shields.io/npm/dm/amwiki.svg)](https://www.npmjs.com/package/amwiki)
+[![NPM Version](https://img.shields.io/npm/v/amwiki.svg) ![APM Downloads](https://img.shields.io/npm/dt/amwiki.svg) ![npm](https://img.shields.io/npm/dm/amwiki.svg)](https://www.npmjs.com/package/amwiki)  
+APM:  
+[![APM Version](https://img.shields.io/apm/v/amWiki.svg) ![APM Downloads](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki)  
 
 <br>
 
@@ -32,8 +29,8 @@ NPM:
 <br>
 
 ## 安装 amWiki
-amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工作，两个平台的工作相互独立，但所创建的文库却可以相互共用  
-（PS：对这两个平台的依赖都是编辑需求而不是服务器需求，amWiki 创建的文库是纯静态 html，可以布置到任意服务器）
+amWiki 可以同时在 Atom 编辑器和 nodejs npm 命令行两个平台工作，两个平台的工作相互独立，所创建的文库可以相互通用  
+_(PS：对这两个平台的依赖都是编辑需求而不是服务器需求，amWiki 创建的文库是纯静态 html，可以布置到任意服务器)_
 
 ### 作为 Atom 插件安装
 1. 下载 Github 开源文本编辑器 [Atom](https://atom.io/ "Atom官网")，并安装  
@@ -45,16 +42,18 @@ amWiki 可以同时在 Atom 编辑器和 nodejs npm 的命令行两个平台工�
 4. 在此文件夹下创建一个名为 `config.json` 的文件
 5. 在 Atom 菜单，amWiki轻文库 -> 通过“config.json”创建新文库
 
-### 作为 nodejs 全局模块安装
+### 作为 nodejs 全局模块安装  
 1. 下载 [nodejs](https://nodejs.org/) 并安装
 2. 执行命令： `npm install -g amwiki`（_第三字母 w 小写_）
 3. cd 到某个文件夹，通过命令 `amwiki create` 创建文库
 4. 通过命令 `amwiki help` 查看帮助
 
+(此场景相当于 amwiki-cli，但是 amwiki 本身就是 node 包，不用加-cli)  
+
 <br>
 
 ## amWiki 教程 & 文档
-更多详细功能与使用介绍请前往: [ [amWiki 官网文档中心：amwiki.org/doc/](https://amwiki.org/doc/) ]  
+更多详细资料请前往: [ [amWiki 官网文档中心：amwiki.org/doc/](https://amwiki.org/doc/) ]  
 (amWiki 的文档由项目自身创建与维护)  
 
 <br>
