@@ -137,6 +137,7 @@ body[onselectstart]{cursor:pointer;-moz-user-select:none;-webkit-user-select:non
 .main .footnote li:focus{background:#EAFFEA;}
 .main .footnote svg{display:inline-block;width:14px;height:14px;margin-bottom:-1px;}
 .main .footnote-none{width:0;height:0;overflow:hidden;}
+.main .todolist{list-style:none;padding-left:10px;}
 /* sibling */
 .main-sibling{display:none;width:100%;padding:30px 45px 20px;font-size:14px;border-top:1px solid #e7e7eb;}
 .main-sibling.on{display:block;}

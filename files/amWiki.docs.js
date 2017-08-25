@@ -197,7 +197,7 @@
             }
             html = templates[1].replace('{{list}}', html);
         }
-        return text + '\n<br>' + html;
+        return text + '\n\n<br>' + html;
     };
 
     /**
@@ -292,12 +292,16 @@
      * @private
      */
     Docs.prototype._setCheckbox = function (html) {
-        return html.replace(/\[([√×Xx\s\-_])\]\s(.*?)([<\n\r])/g, function (m, s1, s2, s3, index) {
-            var checkboxHtml = '<input type="checkbox" id="checkbox' + index + '"';
-            checkboxHtml += /\s/.test(s1) ? '>' : 'checked="true">';
-            checkboxHtml += '<label for="checkbox' + index + '">' + s2 + '</label>';
-            return checkboxHtml + s3;
-        });
+        return html
+            .replace(/<ul>\n(<li>\[[√×Xx\-_ ]\] *.*?<\/li>\n)+<\/ul>/g, function (m) {
+                return m.replace('<ul>', '<ul class="todolist">');
+            })
+            .replace(/\[([√×Xx\-_ ])\] (.*?)([<\n\r])/g, function (m, s1, s2, s3, index) {
+                var checkboxHtml = '<input type="checkbox" id="checkbox' + index + '"';
+                checkboxHtml += /\s/.test(s1) ? '>' : 'checked="true">';
+                checkboxHtml += '<label for="checkbox' + index + '">' + s2 + '</label>';
+                return checkboxHtml + s3;
+            });
     };
 
     /**
@@ -340,7 +344,7 @@
                 //汉字序号类型
                 /^[\(（【第]?[一二三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+/,
                 //英文序号类型
-                /^(chapter)|(section)|(part)|(step)/i,
+                /^(chapter)|(section)|(part)|(lesson)|(step)/i,
                 //罗马序号类型
                 /^[ⅠⅡⅢⅣIⅤⅥⅦⅧⅨⅩⅪⅫLCDM]+\.?/
             ];
@@ -359,7 +363,7 @@
             $elm.children('li').each(function (index2) {
                 var $this = $(this);
                 if (!$elm.hasClass('unindex')) {
-                    var index = typeof index1 == 'number' ? (index1 + 1) + '.' + (index2 + 1): (index2 + 1) + '.';
+                    var index = typeof index1 == 'number' ? (index1 + 1) + '.' + (index2 + 1) : (index2 + 1) + '.';
                     $this.prepend('<i>' + index + '</i>');
                 }
                 setIndex($this.children('ol'), index2);
