@@ -458,7 +458,9 @@ $(function () {
             //列表
             $menuBar.find('h5').each(function () {
                 var $this = $(this);
-                $this.html('<svg><use xlink:href="#icon:navArrow"></use></svg><span>' + $this.text() + '</span>')
+                $this
+                    .attr('title', $this.text())
+                    .html('<svg><use xlink:href="#icon:navArrow"></use></svg><span>' + $this.text() + '</span>');
             });
             $menuBar.trigger('scrollbar');
             var pathList = [];
@@ -494,7 +496,9 @@ $(function () {
             });
             $menuBar.find('strong').each(function () {
                 var $this = $(this);
-                $this.html('<span>' + $this.text() + '</span>');
+                $this
+                    .attr('title', $this.text())
+                    .html('<span>' + $this.text() + '</span>');
             });
             //搜索结果不再跳转页面
             $('#results').on('click', 'a', function () {
