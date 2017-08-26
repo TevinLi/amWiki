@@ -422,7 +422,16 @@
     Docs.prototype.renderDoc = function (content) {
         var that = this;
         var html = '';
+        var codeList = [];
         this.cleanView();
+        //抽取代码块
+        content = content
+            .replace(/```[\s\S]*?```/g, function (m) {
+                return '<code:' + codeList.push(m) + '>';
+            })
+            .replace(/`.*?`/g, function (m) {
+                return '<code:' + codeList.push(m) + '>';
+            });
         //增加"\"符转义功能
         content = content.replace(/\\(.)/g, function (m, s1) {
             return '&#' + s1.charCodeAt(0) + ';';
@@ -439,6 +448,10 @@
         html = this._setCheckbox(html);
         //文字飘红
         html = this._setRedText(html);
+        //还原代码块
+        html = html.replace(/<code:(\d+)>/g, function (m, s1) {
+            return marked(codeList[parseInt(s1) - 1]);
+        });
         //填充到页面
         this.$e.view.html(html);
         //功能化代码块
