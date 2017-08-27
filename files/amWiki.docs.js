@@ -426,10 +426,16 @@
         this.cleanView();
         //抽取代码块
         content = content
-            .replace(/```[\s\S]*?```/g, function (m) {
+            .replace(/( {4,}|\t+)?```[\s\S]*?```/g, function (m, s1) {
+                if (s1) {
+                    return m;
+                }
                 return '<code:' + codeList.push(m) + '>';
             })
-            .replace(/`.*?`/g, function (m) {
+            .replace(/(`+)?`.*?`/g, function (m, s1) {
+                if (s1) {
+                    return m;
+                }
                 return '<code:' + codeList.push(m) + '>';
             });
         //增加"\"符转义功能
@@ -450,7 +456,7 @@
         html = this._setRedText(html);
         //还原代码块
         html = html.replace(/<code:(\d+)>/g, function (m, s1) {
-            return marked(codeList[parseInt(s1) - 1]);
+            return marked(codeList[parseInt(s1) - 1]).replace(/<\/?p>/g, '');
         });
         //填充到页面
         this.$e.view.html(html);
