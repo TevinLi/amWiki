@@ -4,6 +4,7 @@
 ## v1.2.2
 _2017-0-0_
 
+- 增加短链接模式 ([#53](https://github.com/TevinLi/amWiki/issues/53))
 - 增加 `\` 符转义功能，用于阻止语法解析 ([#71](https://github.com/TevinLi/amWiki/issues/71))
 - 对代码块增加一层隔离处理，代码块中的语法符不解析
 - 修复复选框为 Todo-list 时多余的点修饰 ([#56](https://github.com/TevinLi/amWiki/issues/56))

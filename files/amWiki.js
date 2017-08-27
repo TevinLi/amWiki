@@ -25,6 +25,8 @@ $(function () {
     if (window.AWTesting) {
         var testing = new AWTesting();
     }
+    //短链接模式
+    var shortLink = new AWShortLink();
     //是否支持history.state的API (IE9不支持)
     var HISTORY_STATE = 'pushState' in history;
 
@@ -336,7 +338,7 @@ $(function () {
         var setSiblingNav = function (num, $other) {
             if ($other) {
                 $mainSibling.find('a').eq(num)
-                    .attr('href', $other.attr('href'))
+                    .attr('href', shortLink.getShort($other.attr('href')))
                     .text($other.text());
             } else {
                 $mainSibling.find('a').eq(num)
@@ -353,7 +355,7 @@ $(function () {
 
     //改变导航显示
     var changeNav = function (path) {
-        if (/^home[-_].*?/.test(path) || path == '首页') {
+        if (path == 'home') {
             $menuBar.find('h4').addClass('on');
             $menuBar.find('a').removeClass('on');
             changeSibling(null);
@@ -361,7 +363,7 @@ $(function () {
             var hsLink = false;
             $menuBar.find('a').each(function () {
                 var $this = $(this);
-                var path2 = $this.attr('href').split('file=')[1];
+                var path2 = $this.attr('href').split('doc=')[1];
                 if (path2 == path) {
                     hsLink = true;
                     //本层加高亮
@@ -384,11 +386,12 @@ $(function () {
 
     //返回首页
     var backHome = function () {
-        docs.loadPage(homePage.path, function (state, content) {
+        var path2 = shortLink.getLink(homePage.path);
+        docs.loadPage(path2, function (state, content) {
             if (state == 'success') {
                 changeNav(homePage.path);
                 docs.renderDoc(content);
-                storage.saveDoc(homePage.path, content);
+                storage.saveDoc(path2, content);
                 $main.trigger('scrollbar');
             }
         });
@@ -399,19 +402,19 @@ $(function () {
 
     //改变页面
     var changePage = function (path, withOutPushState, callback) {
+        var path2 = shortLink.getLink(path);
         //第一步，从本地缓存读取并渲染页面
-        var localDoc = storage.read(path);
+        var localDoc = storage.read(path2);
         docs.renderDoc(localDoc);
         testing && testing.crawlContent();
         $main.trigger('scrollbar');
         $mainInner.scrollTop(0);  //返回顶部
         //更新history记录
         if (!withOutPushState && HISTORY_STATE) {
-            var path2 = path.replace(/&/g, '%26');  //对带 & 符号的地址特殊处理
-            history.pushState({path: path}, '', '?file=' + path2);
+            history.pushState({path: path}, '', '?doc=' + path);
         }
         //第二步，加载服务器上的文档资源，如果有更新重新渲染
-        docs.loadPage(path, function (state, content) {
+        docs.loadPage(path2, function (state, content) {
             //读取服务器文档失败时
             if (state == 'error') {
                 //如果本地缓存为空
@@ -421,7 +424,7 @@ $(function () {
                 //如果本地缓存不为空
                 else {
                     //记录文档打开数
-                    storage.increaseOpenedCount(path);
+                    storage.increaseOpenedCount(path2);
                     callback && callback();
                 }
             }
@@ -430,7 +433,7 @@ $(function () {
                 //如果服务器文档有更新，更新本地缓存、重新渲染页面、重新判断接口测试
                 if (content != localDoc) {
                     docs.renderDoc(content);
-                    storage.saveDoc(path, content);
+                    storage.saveDoc(path2, content);
                     testing && testing.crawlContent();
                     $main.trigger('scrollbar');
                 }
@@ -438,7 +441,7 @@ $(function () {
                 else {
                 }
                 //记录文档打开数
-                storage.increaseOpenedCount(path);
+                storage.increaseOpenedCount(path2);
                 callback && callback();
             }
         });
@@ -453,7 +456,7 @@ $(function () {
             var menuBarHome = $menuBar.find('h4');
             homePage.text = menuBarHome.text();
             homePage.url = menuBarHome.find('a').attr('href');
-            homePage.path = homePage.url.split('file=')[1];
+            homePage.path = shortLink.add(homePage.url.split('file=')[1]);
             menuBarHome.prepend('<svg><use xlink:href="#icon:navHome"></use></svg>');
             //列表
             $menuBar.find('h5').each(function () {
@@ -469,7 +472,9 @@ $(function () {
                 var $this = $(this);
                 $this.html('<span>' + $this.text() + '</span>');
                 if (HISTORY_STATE) {
-                    var path = $this.attr('href').split('file=')[1];
+                    var path = shortLink.add($this.attr('href').split('file=')[1]);
+                    $this.attr('data-href', $this.attr('href'))
+                        .attr('href', '?doc=' + path);
                     pathList.push(path);
                     $this.on('click', function () {
                         search.displayBox('off'); //关闭搜索面板
@@ -486,7 +491,7 @@ $(function () {
                     var $this = $(this);
                     var href = $this.attr('href');
                     if (typeof href != 'undefined' && href != '') {
-                        var path = href.split('file=')[1];
+                        var path = shortLink.getShort(href.split('file=')[1]);
                         changeNav(path);
                         changePage(path);
                         $this.trigger('navchange');
@@ -506,7 +511,7 @@ $(function () {
                     var $this = $(this);
                     var href = $this.attr('href');
                     if (typeof href != 'undefined' && href != '') {
-                        var path = href.split('file=')[1];
+                        var path = shortLink.getShort(href.split('file=')[1]);
                         search.displayBox('off'); //关闭搜索面板
                         changeNav(path);
                         changePage(path);
@@ -591,10 +596,8 @@ $(function () {
      启动应用
      */
 
-    //解析地址参数
-    var curPath = tools.getURLParameter('file');
-    curPath = !curPath ? '首页' : decodeURI(curPath);
-    curPath = curPath.replace(/%26/g, '&');
+    //读取地址参数
+    var curPath = tools.getURLParameter('doc') || tools.getURLParameter('file');
 
     //加载导航
     loadNav(function (list) {
@@ -602,9 +605,9 @@ $(function () {
         storage.checkLibChange(list);
         //读取页面挂载数据文档部分
         loadPageMounts();
-        //首次打开改变导航
+        //首次打开改变导航和页面
+        curPath = !curPath ? 'home' : shortLink.getShort(decodeURI(curPath).replace(/%26/g, '&'));
         changeNav(curPath);
-        //首次打开改变页面
         changePage(curPath, true, changeScrollByHash);
     });
 
@@ -615,7 +618,6 @@ $(function () {
             //当有状态记录时，直接跳转
             if (e.originalEvent.state) {
                 path = e.originalEvent.state.path;
-                path = path.replace(/%26/g, '&');
                 //改变导航
                 changeNav(path);
                 //改变页面
@@ -624,8 +626,7 @@ $(function () {
             //当没有状态记录时
             else {
                 path = tools.getURLParameter('file');
-                path = !path ? '首页' : decodeURI(path);
-                path = path.replace(/%26/g, '&');
+                path = !path ? 'home' : shortLink.getShort(decodeURI(curPath).replace(/%26/g, '&'));
                 //判断 url 路径是否和当前一样，不一样才跳转
                 if (path != curPath) {
                     //改变导航
@@ -673,4 +674,49 @@ $(function () {
 
 });
 
+/* 短链接模块 */
+(function (win) {
+
+    var ShortLink = function () {
+        this._data = {
+            links: {}
+        };
+    };
+
+    ShortLink.prototype.add = function (link) {
+        if (link.indexOf('?file') >= 0) {
+            link = link.replace('?file=', '');
+        }
+        var short = this.getShort(link);
+        if (typeof this._data.links[short] == 'undefined') {
+            this._data.links[short] = link;
+        }
+        return short;
+    };
+
+    ShortLink.prototype.getShort = function (link) {
+        if (link.indexOf('?file') >= 0) {
+            link = link.replace('?file=', '');
+        }
+        var short = '';
+        if (/^home[-_].*?/.test(link) || link == '首页') {
+            short = 'home';
+        } else {
+            short = link.split('/').map(function (item) {
+                return item.split(/[-_]/)[0];
+            }).join('/');
+        }
+        return short;
+    };
+
+    ShortLink.prototype.getLink = function (short) {
+        if (short.indexOf('?doc') >= 0) {
+            short = short.replace('?doc=', '');
+        }
+        return this._data.links[short];
+    };
+
+    return win.AWShortLink = ShortLink;
+
+})(window);
 
