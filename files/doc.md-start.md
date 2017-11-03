@@ -15,7 +15,7 @@
     1. [【分割线】](#【分割线】 "【分割线】")
     1. [【换行】](#【换行】 "【换行】")
     1. [【html】](#【html】 "【html】")
-1. [研究更多 markdown 语法详细细节](#研究更多 markdown 语法详细细节 "研究更多 markdown 语法详细细节")
+1. [更多 markdown 语法](#更多 markdown 语法 "更多 markdown 语法")
 
 
 ## 简介
@@ -25,7 +25,7 @@ Markdown的语法简洁明了、学习容易，得到了许多著名网络平台
 
 ## 语法快速入门
 
-### <font color=#C71585>【标题】</font>
+### <font color="#C71585">【标题】</font>
 在行首插入1到6个#，对应1到6阶标题
     # 这是 H1
     ## 这是 H2
@@ -41,7 +41,7 @@ Markdown的语法简洁明了、学习容易，得到了许多著名网络平台
 ##### 这是 H5
 ###### 这是 H6
 
-### <font color=#C71585>【修辞和强调】</font>
+### <font color="#C71585">【修辞和强调】</font>
 使用星号和底线来标记需要强调的区段
 
     **加粗**
@@ -55,14 +55,14 @@ __加粗__
 *斜体*  
 _斜体_  
 
-### <font color=#C71585>【删除线】</font>
+### <font color="#C71585">【删除线】</font>
 
     ~~要删掉的内容~~
 
 渲染效果：  
 ~~要删掉的内容~~
 
-### <font color=#C71585>【列表】</font>
+### <font color="#C71585">【列表】</font>
 **无序列表** 使用星号、加号和减号来做为列表的项目标记
     * Candy.
     * Gum.
@@ -95,7 +95,7 @@ _斜体_
 50. Green
 1000. Blue
 
-### <font color=#C71585>【链接】</font>
+### <font color="#C71585">【链接】</font>
 在方括号后面用圆括号接上链接
 
     这是一个[链接显示文本](http://www.baidu.com "链接title文本")
@@ -103,7 +103,7 @@ _斜体_
 渲染效果：  
 这是一个[链接显示文本](http://www.baidu.com "链接title文本")
 
-### <font color=#C71585>【图片】</font>
+### <font color="#C71585">【图片】</font>
 图片的语法和链接很像
 
     ![alt文本](amWiki/images/logo.png "Title")
@@ -111,7 +111,7 @@ _斜体_
 渲染效果：  
 ![alt文本](amWiki/images/logo.png "Title")
 
-### <font color=#C71585>【代码】</font>
+### <font color="#C71585">【代码】</font>
 使用反引号 \` 来标记代码区段
 
     我是`code`，`<div>division</div>`
@@ -119,7 +119,7 @@ _斜体_
 渲染效果：  
 我是`code`，`<div>division</div>`
 
-### <font color=#C71585>【代码段】</font>
+### <font color="#C71585">【代码段】</font>
 如果要建立一个已经格式化好的代码区块，只要每行都缩进 4 个空格或是一个 tab 就可以了
 
         var name = 'Candy'
@@ -128,7 +128,7 @@ _斜体_
 
     var name = 'Candy'
 
-### <font color=#C71585>【表格】</font>
+### <font color="#C71585">【表格】</font>
 使用竖线分割内容，且同时使用“---”与“:”指定对齐方式
 
     | Header01 | Header02 | Header03
@@ -141,7 +141,7 @@ _斜体_
 | -------- | :------: | ---:
 | 默认 | 居中 | 右
 
-### <font color=#C71585>【引用】</font>
+### <font color="#C71585">【引用】</font>
 只需要在文本前加入 > 这种尖括号（大于号）即可
 
     >这里是一段引用
@@ -149,7 +149,7 @@ _斜体_
 渲染效果：  
 >这里是一段引用
 
-### <font color=#C71585>【分割线】</font>
+### <font color="#C71585">【分割线】</font>
 只需要三个 \- 号
 
     ---
@@ -158,7 +158,7 @@ _斜体_
 
 ---
 
-### <font color=#C71585>【换行】</font>
+### <font color="#C71585">【换行】</font>
 只需要两个以上的空格然后回车
 
     我是首行  
@@ -168,16 +168,17 @@ _斜体_
 我是首行  
 我换行了
 
-### <font color=#C71585>【html】</font>
+### <font color="#C71585">【html】</font>
 可以直接在文档里书写 HTML，不需要额外标注这是 HTML
 
-    <div>division</div>
+    <div style="color:orange">division</div>
 
 渲染效果：  
-<div>division</div>
+<div style="color:orange">division</div>
 
 
-## 研究更多 markdown 语法详细细节
+## 更多 Markdown 语法
 
-- [创始人 John Gruber 的 Markdown 语法说明](http://daringfireball.net/projects/markdown/syntax)  
-- [Markdown 中文版语法说明](http://wowubuntu.com/markdown/)
+更多 amWiki 专属 Markdown 语法，请前往：[ [amWiki 官网·文档中心](https://amwiki.org/doc/) ] 
+
+
