@@ -438,6 +438,7 @@
                 }
                 return '<code:' + codeList.push(m) + '>';
             });
+        //TODO:先全部转义，在解码后再转义回来
         //增加"\"符转义功能
         content = content.replace(/\\(.)/g, function (m, s1) {
             return '&#' + s1.charCodeAt(0) + ';';
