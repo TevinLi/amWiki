@@ -7,13 +7,11 @@
 
     'use strict';
 
-    var tools = ns('common.tools');
-
     /**
      * 命名空间注册 Eventor 声明
-     * @memberof ns.common
+     * @memberof ns.class.core
      */
-    var Eventor = ns('common.Eventor', function () {
+    var Eventor = ns('class.core.Eventor', function () {
         this._eventList = {};
     });
 
@@ -32,12 +30,12 @@
             return;
         }
         if (priority) {
-            if (!tools.isArray(this._eventList[type + '$'])) {
+            if (!Object.prototype.toString.call(this._eventList[type + '$']) === '[object Array]') {
                 this._eventList[type + '$'] = [];
             }
             this._eventList[type + '$'].push(callback);
         } else {
-            if (!tools.isArray(this._eventList[type])) {
+            if (!Object.prototype.toString.call(this._eventList[type]) === '[object Array]') {
                 this._eventList[type] = [];
             }
             this._eventList[type].push(callback);
@@ -54,7 +52,7 @@
         if (!type || typeof type !== 'string') {
             return;
         }
-        if (!tools.isFunction(callback)) {
+        if (!Object.prototype.toString.call(callback) === '[object Function]') {
             if (this._eventList[type + '$']) {
                 this._eventList[type + '$'].length = 0;
             }
@@ -85,7 +83,7 @@
      */
     Eventor.prototype.trigger = function (type, event) {
         var stopNormalLevel = false;
-        if (tools.isArray(this._eventList[type + '$'])) {
+        if (Object.prototype.toString.call(this._eventList[type + '$']) === '[object Array]') {
             for (var j = 0, state; j < this._eventList[type + '$'].length; j++) {
                 state = this._eventList[type + '$'][j] && this._eventList[type + '$'][j](event);
                 stopNormalLevel = state === false;
@@ -95,7 +93,7 @@
         if (stopNormalLevel) {
             return
         }
-        if (tools.isArray(this._eventList[type])) {
+        if (Object.prototype.toString.call(this._eventList[type]) === '[object Array]') {
             for (var i = 0; i < this._eventList[type].length; i++) {
                 this._eventList[type][i] && this._eventList[type][i](event);
             }
