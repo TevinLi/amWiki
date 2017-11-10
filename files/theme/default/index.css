@@ -49,7 +49,7 @@ body{position:relative;height:100%;background:#e7e8eb;}
 .header .menu-icon{display:none;}
 
 /* ---------- container ---------- */
-.container{position:relative;margin:20px 18px 0;background:url(../images/menubar_bg.png) repeat-y #fff;border:#c3c4c6 1px solid;border-top:@colour-base 2px solid;}
+.container{position:relative;margin:20px 18px 0;background:url(img/menubar_bg.png) repeat-y #fff;border:#c3c4c6 1px solid;border-top:@colour-base 2px solid;}
 
 /* ---------- menu ---------- */
 .container .nav{position:absolute;left:0px;top:0px;width:250px;height:100%;}

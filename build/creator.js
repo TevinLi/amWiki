@@ -4,7 +4,7 @@
  */
 
 const fs = require('fs');
-const co = require('../modules/co');
+const co = require('../modules/co/co');
 const mngWiki = require('./manageWiki');
 const mngFolder = require('./manageFolder');
 const makeNav = require('./makeNavigation');
