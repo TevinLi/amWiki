@@ -11,7 +11,7 @@
      * 命名空间注册 Eventor 声明
      * @memberof ns.class.core
      */
-    var Eventor = ns('class.core.Eventor', function () {
+    var Eventor = ns('class.Eventor', function () {
         this._eventList = {};
     });
 

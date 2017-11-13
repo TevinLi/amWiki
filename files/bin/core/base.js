@@ -8,13 +8,13 @@
     'use strict';
 
     //命名空间引用
-    var eventor = ns('class.core.Eventor');
+    var eventor = ns('class.Eventor');
 
     /**
      * 命名空间注册 Base 声明
      * @memberof ns.class.core
      */
-    var Base = ns('class.core.Base', function () {
+    var Base = ns('class.Base', function () {
     });
 
     /**
