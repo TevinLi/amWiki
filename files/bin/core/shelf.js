@@ -25,10 +25,13 @@
     Shelf.prototype.constructor = Shelf;
 
     /**
-     * 初始化插件
+     * 加载插件
      * @public
      */
-    Shelf.prototype.initPlugins = function () {
+    Shelf.prototype.loadPlugins = function () {
+    };
+
+    Shelf.prototype.initPlugin = function (plugin) {
     };
 
     /**

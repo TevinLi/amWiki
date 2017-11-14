@@ -1,3 +1,9 @@
 {
-    "name":"aw-flowchart"
+    "name": "aw-flowchart",
+    "type": "plugin",
+    "cssList": [],
+    "jsList": [
+        "flowchart.min.js",
+        "raphael-min.js"
+    ]
 }

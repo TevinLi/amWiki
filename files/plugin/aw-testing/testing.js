@@ -1,9 +1,22 @@
 /**
- * amWiki Web端 - 简单 ajax 测试模块
+ * ajax 测试插件
  * @author Tevin
  *
  * @notice 仅当页面存在“请求地址”、“请求类型”、“请求参数”三个h3标题时触发，且参数列表表格顺序不能打乱
  */
+
+(function (win, ns) {
+
+    'use strict';
+
+    var $ = win.jQuery;
+
+    var testing = {};
+
+    ns('plugin.aw-testing', {});
+
+})(window, window.ns);
+
 
 (function (win, $) {
 

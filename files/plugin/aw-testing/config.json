@@ -1,3 +1,11 @@
 {
-    "name":"aw-testing"
+    "name": "aw-testing",
+    "type": "plugin",
+    "templates": [],
+    "cssList": [
+        "testing.css"
+    ],
+    "jsList": [
+        "testing.js"
+    ]
 }

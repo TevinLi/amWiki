@@ -1,0 +1,16 @@
+{
+    "name": "amwiki-app",
+    "description": "The amWiki app working folder",
+    "repository": "https://amwiki.org",
+    "plugins": [
+        "aw-search",
+        "aw-testing",
+        "aw-scrollbar",
+        "aw-doc-pring",
+        "aw-flowchart",
+        "aw-highlight",
+        "aw-img-view"
+    ],
+    "themes": [],
+    "expands": []
+}

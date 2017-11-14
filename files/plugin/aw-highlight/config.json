@@ -1,3 +1,10 @@
 {
-    "name":"aw-highlight"
+    "name": "aw-highlight",
+    "type": "plugin",
+    "cssList": [
+        "lhjs.github-gist.css"
+    ],
+    "jsList": [
+        "highlight.pack.js"
+    ]
 }

@@ -1,3 +1,11 @@
 {
-    "name":"aw-search"
+    "name": "aw-search",
+    "type": "plugin",
+    "cssList": [
+        "search.css"
+    ],
+    "jsList": [
+        "search.js",
+        "worker.js"
+    ]
 }

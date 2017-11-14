@@ -1,3 +1,8 @@
 {
-    "name":"aw-img-view"
+    "name": "aw-img-view",
+    "type": "plugin",
+    "cssList": [],
+    "jsList": [
+        "imgView.js"
+    ]
 }

@@ -1,3 +1,8 @@
 {
-    "name":"aw-scrollbar"
+    "name": "aw-scrollbar",
+    "type": "plugin",
+    "cssList": [],
+    "jsList": [
+        "scrollbar.js"
+    ]
 }
