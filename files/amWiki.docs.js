@@ -419,6 +419,10 @@
         var that = this;
         var html = '';
         this.cleanView();
+        //增加"\"符转义功能
+        content = content.replace(/\\(.)/g, function (m, s1) {
+            return '&#' + s1.charCodeAt(0) + ';';
+        });
         //创建脚注
         content = this._setFootnote(content);
         //编译 markdown
