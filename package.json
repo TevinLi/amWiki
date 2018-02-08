@@ -1,8 +1,9 @@
 {
   "name": "amWiki",
-  "main": "./lib/main",
-  "version": "0.7.3",
-  "description": "amWiki是一套非常简单基于atom编辑器markdown语法的轻量级wiki文库系统，仅仅需要您使用Atom编辑markdown文档和拥有http纯静态访问空间！使用amWiki，您无需服务端开发、不用数据库、一键创建新文库、自动更新文库目录、支持截图直接粘帖为本地png并插入当前markdown...",
+  "main": "./lib/main.js",
+  "bin": "./bin/main.js",
+  "version": "1.2.1",
+  "description": "amWiki 是一款由 JS 开发、依赖 Atom 或 Nodejs-Npm 的 Markdown 轻量级前端化开源文库系统。amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库！",
   "keywords": [
     "amWiki",
     "markdown",
@@ -16,12 +17,13 @@
   },
   "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+    "atom": ">=1.0.0 <2.0.0",
+    "node": ">=1.0.0"
   },
   "bugs": {
     "url": "https://github.com/TevinLi/amWiki/issues"
   },
-  "homepage": "https://github.com/TevinLi/amWiki",
+  "homepage": "http://amwiki.org",
   "configSchema": {
     "checkLibraryOnWindowFocus": {
       "type": "boolean",

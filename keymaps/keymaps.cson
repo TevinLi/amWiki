@@ -2,6 +2,4 @@
 #
 "atom-workspace atom-text-editor:not([mini])":
   "shift-ctrl-v": "amWiki:paste"
-  "ctrl-d": "amWiki:catalogue"
-  "ctrl-h": "amWiki:history"
   "f12": "amWiki:browser"

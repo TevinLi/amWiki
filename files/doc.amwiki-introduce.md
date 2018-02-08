@@ -4,12 +4,21 @@
 amWiki 是一款基于 Javascript 脚本语言、依赖 Atom 编辑器、使用 Markdown 标记语法的轻量级开源 wiki 文库系统。  
 amWiki 致力于让大家可以更简单、更便捷的建设个人和团队文库系统！  
 
-**传送门**  
-[amWiki 项目 Github 托管地址](https://github.com/TevinLi/amWiki "amWiki项目Github托管地址")  
-[![amWiki github star](https://amwiki.xf09.net/githubicons/Tevinli/amWiki/star) ![amWiki github fork](https://amwiki.xf09.net/githubicons/Tevinli/amWiki/fork)](https://github.com/TevinLi/amWiki)
+[[view amWiki on Github](https://github.com/TevinLi/amWiki)]
+
+GitHub:  
+[![](https://img.shields.io/github/stars/TevinLi/amWiki.svg?style=social&label=Star)](https://github.com/TevinLi/amWiki "GitHub Stars")
+[![](https://img.shields.io/github/forks/TevinLi/amWiki.svg?style=social&label=Fork)](https://github.com/TevinLi/amWiki "GitHub Forks")
+[![](https://img.shields.io/github/issues-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Open Issues")
+[![](https://img.shields.io/github/issues-closed-raw/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Closed Issues")
+[![](https://img.shields.io/github/contributors/TevinLi/amWiki.svg)](https://github.com/TevinLi/amWiki "GitHub Contributors")  
+Apm:  
+[![apm](https://img.shields.io/apm/v/amWiki.svg)](https://atom.io/packages/amWiki "Apm Version")
+[![apm](https://img.shields.io/apm/dm/amWiki.svg)](https://atom.io/packages/amWiki "Apm Downloads")
+[![apm](https://img.shields.io/apm/l/amWiki.svg)](https://atom.io/packages/amWiki "MIT License")  
 
 ## amWiki 优势
-- 文档系统采用 Markdown 语法 [>>Markdown 快速开始](?file=001-学习amWiki/11-Markdown快速开始)
+- 文档系统采用 Markdown 语法 [>>Markdown 快速开始](?file=001-学习amWiki/05-学习markdown/01-Markdown快速开始)
 - 无需服务端开发，只需支持 http 访问的静态网页空间
 - 不使用数据库，使用 `.md` 扩展名存储文档为本地文件
 - 一键创建新文库，自动生成一套 Html 页面

@@ -1,5 +1,5 @@
 /**
- * @desc amWiki Web端·主执行模块
+ * amWiki Web端 - 入口模块
  * @author Tevin
  * @see {@link https://github.com/TevinLi/amWiki}
  * @license MIT - Released under the MIT license.
@@ -8,6 +8,10 @@
 $(function () {
 
     'use strict';
+
+    /*
+     引入
+     */
 
     //工具集
     var tools = window.tools;
@@ -24,21 +28,46 @@ $(function () {
     //是否支持history.state的API (IE9不支持)
     var HISTORY_STATE = 'pushState' in history;
 
-    //页面基本显示与操作
-    var $menuBar = $('#menuBar');
-    var pageBase = function () {
-        //菜单折叠
-        $menuBar.on('click', 'h5', function () {
-            var $this = $(this),
-                $next = $this.next('ul');
-            if ($this.hasClass('on')) {
-                $this.removeClass('on');
-                $next.slideUp(200);
+    /*
+     页面基本
+     */
+
+    //页面元素
+    var $win = $(window),
+        $body = $('body'),
+        $menuIcon = $('#menuIcon'),            //顶部折叠显示导航按钮
+        $container = $('#container'),            //页面主容器
+        $nav = $('#nav'),                      //左侧导航
+        $menuBar = $('#menuBar'),              //左侧导航内容
+        $filter = $('#menuFilter'),
+        $filterClean = $filter.next('i'),
+        $main = $('#main'),
+        $mainInner = $main.children('.main-inner'),
+        $mainSibling = $('#mainSibling'),      //其他文章
+        $contents = $('#contents');            //目录
+
+    //是否为移动端
+    var isMobi = window.isMobi = (function () {
+        var winW = $win.width();
+        var threshold = 720;
+        var onResize = function () {
+            winW = $win.width();
+            if (winW <= threshold) {
+                $container.removeAttr('style');
             } else {
-                $this.addClass('on');
-                $next.slideDown(200);
+                $container.height($win.height() - 70 - 15 - 20 * 2);
             }
-        });
+        };
+        onResize();
+        $win.on('resize', onResize);
+        return function () {
+            return winW <= threshold;
+        };
+    })();
+
+    //页面基本显示与操作
+    (function () {
+        //菜单折叠
         $menuBar.on('click', 'h4', function () {
             var $this = $(this);
             if (!$this.hasClass('on')) {
@@ -47,90 +76,76 @@ $(function () {
             }
             $menuBar.find('h5').removeClass('on').next('ul').hide();
         });
+        $menuBar.on('click', 'h5', function () {
+            var $this = $(this),
+                $next = $this.next('ul');
+            if ($this.hasClass('on')) {
+                $this.removeClass('on');
+                $next.slideUp(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
+            } else {
+                $this.addClass('on');
+                $next.slideDown(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
+            }
+        });
         $menuBar.on('click', 'strong', function () {
             var $this = $(this),
                 $next = $this.next('ul');
             if ($this.hasClass('on')) {
                 $this.removeClass('on');
-                $next.slideUp(200);
+                $next.slideUp(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
             } else {
                 $this.addClass('on');
-                $next.slideDown(200);
+                $next.slideDown(200, function () {
+                    $menuBar.trigger('scrollbar');
+                });
             }
         });
-        //展开折叠所有导航栏位按钮
-        /*$('.menu-fold').on('click', function () {
-         var $this = $(this);
-         if ($this.hasClass('on')) {
-         $this.removeClass('on').find('use').attr('xlink:href', '#navFolder1');
-         $menuBar.find('h5').removeClass('on').next('ul').hide();
-         } else {
-         $this.addClass('on').find('use').attr('xlink:href', '#navFolder2');
-         $menuBar.find('h5').addClass('on').next('ul').show();
-         }
-         });*/
         //响应式菜单
-        var $nav = $('.nav'),
-            $menuIcon = $('.menu_icon');
         $menuIcon.on('click', function () {
             var $this = $(this);
             if ($this.hasClass('close')) {
-                $this.removeClass('close');
-                $menuIcon.find('use').attr('xlink:href', '#icon:navStart');
+                $this.removeClass('close')
+                    .find('use').attr('xlink:href', '#icon:navStart');
                 $nav.removeClass('on');
             } else {
-                $this.addClass('close');
-                $menuIcon.find('use').attr('xlink:href', '#icon:navClose');
+                $this.addClass('close')
+                    .find('use').attr('xlink:href', '#icon:navClose');
                 $nav.addClass('on');
             }
         });
-        $menuBar.on('click', 'li a', function () {
+        $nav.on('navchange searchon searchoff', function (e) {
+            $menuIcon.removeClass('close')
+                .find('use').attr('xlink:href', '#icon:navStart');
             $nav.removeClass('on');
         });
-        $menuBar.on('click', 'h4', function () {
-            $nav.removeClass('on');
-        });
-        //页面筛选
-        var $filter = $('#menuFilter');
-        var $filterClean = $filter.next('i');
-        $filter.on('blur change input propertychange', function () {
-            var value = $filter.val();
-            if (value != '') {
+        //筛选操作
+        $filter.on('input propertychange input2', function () {
+            var value = $filter.val().replace(/([\(\)\[\]\^\$\+])/g, '\\$1');
+            var valReg = new RegExp('(' + $.trim($filter.val()).split(/[ ,]/).join('|') + ')', 'ig');
+            if (value != '' && !/^\s$/g.test(value)) {
                 $filterClean.removeClass('off');
-                $menuBar.find('h5').removeClass('on').next('ul').hide();
-                $menuBar.find('a').each(function () {
-                    var $this = $(this);
-                    if ($this.text().indexOf(value) >= 0) {
-                        $this.html($this.text().replace(value, '<mark>' + value + '</mark>'));
-                        var $prev = $this.parent().removeClass('off').parent().show().prev();
-                        //一级目录
-                        if ($prev.is('h5')) {
-                            $prev.addClass('on');
-                        }
-                        //二级目录
-                        else if ($prev.is('strong')) {
-                            $prev.addClass('on').parent().removeClass('off').parent().show().prev().addClass('on');
-                        }
-                    } else {
-                        if ($this.find('mark').length > 0) {
-                            $this.text($this.text());
-                        }
-                        $this.parent().addClass('off');
-                    }
+                $menuBar.find('h5').each(function () {
+                    filterNav('filter', valReg, $(this));
                 });
+                storage.setStates('navFilterKey', value);
             } else {
                 $filterClean.addClass('off');
-                $menuBar.find('a').each(function () {
-                    var $this = $(this);
-                    if ($this.find('mark').length > 0) {
-                        $this.text($this.text());
-                    }
+                $menuBar.find('h5').each(function () {
+                    filterNav('open', null, $(this));
                 });
-                $menuBar.find('a').parent().removeClass('off');
+                storage.setStates('navFilterKey');
             }
+            $menuBar.trigger('scrollbar');
         });
+        //清空筛选
         $filterClean.on('click', function () {
-            $filter.val('').trigger('change');
+            $filter.val('').trigger('input2');
         });
         //显示svg图标
         if (sessionStorage['AMWikiIconsSvg']) {
@@ -139,12 +154,168 @@ $(function () {
             $.get('amWiki/images/icons.svg', function (svg) {
                 sessionStorage['AMWikiIconsSvg'] = svg;
                 $('#svgSymbols').append(svg);
-            }, 'text');
+            }, 'text').fail(function () {
+                if (typeof AWPageMounts != 'undefined') {
+                    sessionStorage['AMWikiIconsSvg'] = AWPageMounts['icon'].content;
+                    $('#svgSymbols').append(AWPageMounts['icon'].content);
+                }
+            });
+        }
+        //目录悬浮窗展开折叠
+        $contents.children('.btn').on('click', function (e) {
+            $contents.toggleClass('on').removeClass('hover');
+        });
+        $contents.hover(function () {
+            $contents.addClass('hover');
+        }, function () {
+            $contents.removeClass('hover');
+        });
+        //开启滚动条
+        $('.scroller').scrollbar();
+        $('#backTop').on('click', function () {
+            $mainInner.scrollTop(0);
+        });
+        //图片放大
+        $main.imgsView();
+        //全局点击
+        $(document).on('click', function (e) {
+            var $tag = $(e.target);
+            //移动端
+            if (isMobi()) {
+                //折叠目录悬浮窗
+                if ($tag.closest('#contents').length == 0) {
+                    $contents.removeClass('on').removeClass('on');
+                }
+            }
+        });
+    })();
+
+    /*
+     业务操作函数
+     */
+
+    /**
+     * 向下递归进行导航筛选
+     * 当类型为筛选时，必定有正则
+     *     当文件夹匹配时，其所属链接和所有子级全部显示且显示匹配
+     *     当文件夹不匹配时，其所属链接和当前子级仅显示匹配，隐藏不匹配的项，下一级继续筛选
+     * 当类型为打开时，所属链接和子级一律全部显示不隐藏
+     *     如果有正则，显示当前匹配
+     *     如果无正则，清除匹配
+     * @param {String} type - 筛选类型，有 filter / open 两个值
+     * @param {regexp} valReg - 过滤筛选的正则
+     * @param {Object} $title - jquery 对象，“标题-列表”DOM结构中的标题
+     */
+    var filterNav = function (type, valReg, $title) {
+        var $ul = $title.next('ul');
+        //因为一级文件夹和子级文件夹DOM结构不同，所以区分对待
+        //  显示上，strong 带 on 加粗显示，h5 加 off 隐藏
+        //  文本操作使用变量 $span，其他操作使用变量 $title
+        var $span = $title.find('span');
+        //当类型为筛选时
+        if (type == 'filter' && valReg) {
+            //当文件夹标题匹配时
+            if (valReg.test($span.text())) {
+                $span.html($span.text().replace(valReg, '<mark>$1</mark>'));
+                $title.addClass('on').removeClass('off');
+                //所属链接全部显示，且显示匹配
+                $ul.show().find('> li > a').each(function () {
+                    var $this = $(this);
+                    var $span2 = $this.find('span');
+                    $span2.html($span2.text().replace(valReg, '<mark>$1</mark>'));
+                    $this.parent().removeClass('off');
+                });
+                //父级显示
+                showNavParents($title);
+                //下一级筛选类型更改，文件和文件夹全部显示，且显示匹配
+                $ul.find('> li > strong').each(function () {
+                    filterNav('open', valReg, $(this));
+                });
+            }
+            //当文件夹标题不匹配时
+            else {
+                $span.text($span.text());
+                $title.removeClass('on');
+                //隐藏父级或隐藏h5
+                if ($title.is('h5')) {
+                    $title.parent().addClass('off');
+                } else {
+                    $title.addClass('off');
+                }
+                //所属链接仅显示匹配的
+                $ul.hide().find('> li > a').each(function () {
+                    var $this = $(this);
+                    var $span2 = $this.find('span');
+                    if (valReg.test($this.text())) {
+                        $span2.html($span2.text().replace(valReg, '<mark>$1</mark>'));
+                        $this.parent().removeClass('off');
+                        //存在匹配时父级才显示
+                        showNavParents($ul.show().prev());
+                    } else {
+                        $span2.text($span2.text());
+                        $this.parent().addClass('off');
+                    }
+                });
+                //下一级继续完全筛选
+                $ul.find('> li > strong').each(function () {
+                    filterNav('filter', valReg, $(this));
+                });
+            }
+        }
+        //当类型为打开，显示全部链接和文件夹
+        else if (type == 'open') {
+            $title.removeClass('off');
+            if ($title.hasClass('on')) {
+                $ul.show();
+            } else {
+                $ul.hide();
+            }
+            //当存在正则时，显示匹配
+            if (!!valReg) {
+                $span.html($span.text().replace(valReg, '<mark>$1</mark>'));
+                if (valReg.test($span.text())) {
+                    $ul.show();  //当文件夹名称命中，展开文件夹
+                }
+                $ul.find('> li > a').each(function () {
+                    var $this = $(this);
+                    var $span2 = $this.find('span');
+                    $span2.html($span2.text().replace(valReg, '<mark>$1</mark>'));
+                    if (valReg.test($this.text())) {
+                        $ul.show();  //当链接名称命中，展开文件夹
+                    }
+                    $this.parent().removeClass('off');
+                });
+                //父级显示
+                showNavParents($title);
+                //下一级继续以相同类型显示
+                $ul.find('> li > strong').each(function () {
+                    filterNav('open', valReg, $(this));
+                });
+            }
+            //当正则不存在，显示所有本级和子级、清除匹配
+            else {
+                $span.text($span.text());
+                $ul.find('> li > a').each(function () {
+                    var $span2 = $(this).find('span');
+                    $span2.text($span2.text());
+                });
+                $ul.children('li').removeClass('off').children('strong').each(function () {
+                    filterNav('open', null, $(this));
+                });
+            }
+        }
+    };
+    //向上递归显示父级
+    var showNavParents = function ($title) {
+        $title.addClass('on').removeClass('off');
+        //向上显示直到一级目录
+        if (!$title.is('h5')) {
+            var $prev2 = $title.parent().removeClass('off').parent().show().prev();
+            showNavParents($prev2);
         }
     };
 
     //改变底部上下篇目
-    var $mainSibling = $('#mainSibling');
     var changeSibling = function ($item) {
         //如果未传导航项进来，隐藏上下篇目栏位
         if (!$item) {
@@ -177,12 +348,14 @@ $(function () {
         };
         setSiblingNav(0, getDocLink('prev', $item));
         setSiblingNav(1, getDocLink('next', $item));
-        $mainSibling.addClass('on');
+        if (testing && !testing.isOpen()) {
+            $mainSibling.addClass('on');
+        }
     };
 
     //改变导航显示
     var changeNav = function (path) {
-        if (path == '首页') {
+        if (/^home[-_].*?/.test(path) || path == '首页') {
             $menuBar.find('h4').addClass('on');
             $menuBar.find('a').removeClass('on');
             changeSibling(null);
@@ -195,10 +368,9 @@ $(function () {
                     hsLink = true;
                     //本层加高亮
                     var $prev = $this.addClass('on').parent().parent().show().prev().addClass('on');
-                    //如果本层处于第二层，对应的第一层加高亮
-                    if ($prev[0].tagName.toLowerCase() == 'strong') {
-                        $prev.parent().parent().show().prev().addClass('on');
-                    }
+                    //父级高亮
+                    showNavParents($prev);
+                    //改变上下篇切换
                     changeSibling($this.parent());
                 } else {
                     $this.removeClass('on');
@@ -208,78 +380,107 @@ $(function () {
                 $menuBar.find('h4').removeClass('on');
             }
         }
+        curPath = path;
+        $menuBar.trigger('scrollbar');
+    };
+
+    //返回首页
+    var backHome = function () {
+        docs.loadPage(homePage.path, function (state, content) {
+            if (state == 'success') {
+                changeNav(homePage.path);
+                docs.renderDoc(content);
+                storage.saveDoc(homePage.path, content);
+                $main.trigger('scrollbar');
+            }
+        });
+        if (HISTORY_STATE) {
+            history.replaceState({path: homePage.path}, '', homePage.url);
+        }
     };
 
     //改变页面
-    var changePage = function (path, withOutPushState) {
+    var changePage = function (path, withOutPushState, callback) {
         //第一步，从本地缓存读取并渲染页面
         var localDoc = storage.read(path);
         docs.renderDoc(localDoc);
         testing && testing.crawlContent();
+        $main.trigger('scrollbar');
+        $mainInner.scrollTop(0);  //返回顶部
         //更新history记录
         if (!withOutPushState && HISTORY_STATE) {
-            history.pushState({path: path}, '', '?file=' + path);
+            var path2 = path.replace(/&/g, '%26');  //对带 & 符号的地址特殊处理
+            history.pushState({path: path}, '', '?file=' + path2);
         }
         //第二步，加载服务器上的文档资源，如果有更新重新渲染
         docs.loadPage(path, function (state, content) {
-            //读取服务器文档失败
+            //读取服务器文档失败时
             if (state == 'error') {
-                //如果本地缓存为空，且服务器文档读取失败，跳回首页
+                //如果本地缓存为空
                 if (localDoc == '') {
-                    docs.loadPage('首页', function (state, content) {
-                        if (state == 'success') {
-                            docs.renderDoc(content);
-                            storage.saveDoc('首页', content);
-                        }
-                    });
-                    if (HISTORY_STATE) {
-                        history.replaceState({path: '首页'}, '', '?file=首页');
-                    }
+                    backHome();
                 }
-                //如果本地缓存不为空，但服务器文档读取失败
+                //如果本地缓存不为空
                 else {
                     //记录文档打开数
                     storage.increaseOpenedCount(path);
+                    callback && callback();
                 }
             }
-            //读取服务器文档成功
+            //读取服务器文档成功时
             else if (state == 'success') {
                 //如果服务器文档有更新，更新本地缓存、重新渲染页面、重新判断接口测试
                 if (content != localDoc) {
                     docs.renderDoc(content);
                     storage.saveDoc(path, content);
                     testing && testing.crawlContent();
+                    $main.trigger('scrollbar');
                 }
                 //如果服务器文档与本地缓存一致，不进行任何操作
-                else {}
+                else {
+                }
                 //记录文档打开数
                 storage.increaseOpenedCount(path);
+                callback && callback();
             }
         });
     };
 
     //读取目录导航
+    var homePage = {};
     var loadNav = function (callback) {
-        $.get('library/$navigation.md?t=' + Date.now(), function (data) {
-            $menuBar.html(marked(data));
-            $menuBar
-                .find('h4').prepend('<svg><use xlink:href="#icon:navHome"></use></svg>').end()
-                .find('h5').prepend('<svg><use xlink:href="#icon:navArrow"></use></svg>');
+        var fillNav = function (data) {
+            $menuBar.find('.scroller-content').html(marked(data));
+            //首页
+            var menuBarHome = $menuBar.find('h4');
+            homePage.text = menuBarHome.text();
+            homePage.url = menuBarHome.find('a').attr('href');
+            homePage.path = homePage.url.split('file=')[1];
+            menuBarHome.prepend('<svg><use xlink:href="#icon:navHome"></use></svg>');
+            //列表
+            $menuBar.find('h5').each(function () {
+                var $this = $(this);
+                $this.html('<svg><use xlink:href="#icon:navArrow"></use></svg><span>' + $this.text() + '</span>')
+            });
+            $menuBar.trigger('scrollbar');
             var pathList = [];
             //支持history api时，改变默认事件，导航不再跳转页面
             $menuBar.find('a').each(function () {
+                var $this = $(this);
+                $this.html('<span>' + $this.text() + '</span>');
                 if (HISTORY_STATE) {
-                    var $this = $(this);
                     var path = $this.attr('href').split('file=')[1];
                     pathList.push(path);
                     $this.on('click', function () {
                         search.displayBox('off'); //关闭搜索面板
                         changeNav(path);
                         changePage(path);
+                        $this.trigger('navchange');
                         return false;
                     });
                 }
             });
+            //上下翻页不再跳页面
             $mainSibling.find('a').on('click', function () {
                 if (HISTORY_STATE) {
                     var $this = $(this);
@@ -288,21 +489,164 @@ $(function () {
                         var path = href.split('file=')[1];
                         changeNav(path);
                         changePage(path);
+                        $this.trigger('navchange');
                     }
                     return false;
                 }
             });
+            $menuBar.find('strong').each(function () {
+                var $this = $(this);
+                $this.html('<span>' + $this.text() + '</span>');
+            });
+            //搜索结果不再跳转页面
+            $('#results').on('click', 'a', function () {
+                if (HISTORY_STATE) {
+                    var $this = $(this);
+                    var href = $this.attr('href');
+                    if (typeof href != 'undefined' && href != '') {
+                        var path = href.split('file=')[1];
+                        search.displayBox('off'); //关闭搜索面板
+                        changeNav(path);
+                        changePage(path);
+                        $this.trigger('navchange');
+                    }
+                    return false;
+                }
+            });
+            //设置导航筛选初始值
+            var filterVal = storage.getStates('navFilterKey');
+            if (typeof filterVal != 'undefined' && filterVal != '') {
+                $filter.val(filterVal).trigger('input2');
+            }
+            //回调
             callback && callback(pathList);
-        }, 'text');
+        };
+        $.get('library/$navigation.md?t=' + Date.now(), fillNav, 'text').fail(function () {
+            if (typeof AWPageMounts != 'undefined') {
+                fillNav(AWPageMounts['nav'].content);
+            }
+        });
     };
 
+    //读取页面挂载数据文档部分
+    var loadPageMounts = function () {
+        if (typeof AWPageMounts == 'undefined') {
+            return;
+        }
+        //打开页面立即比较页面挂载数据时间与本地缓存更新时间
+        //  因为首页总是更新的，如果首页页面挂载数据时间大于本地缓存时间，则挂载数据一定已经经过重建
+        var homePath = AWPageMounts['home'].name.replace(/\.md$/, '');
+        var homeStorageTime = storage.readTime(homePath);
+        //如果页面挂载数据经过了重建，开始更新，读取所有挂载数据插入到本地缓存，完成后删除释放资源占用
+        if (AWPageMounts['home'].timestamp > homeStorageTime) {
+            //首页
+            storage.saveDoc(homePath, AWPageMounts['home'].content);
+            delete AWPageMounts['home'];
+            //其他文档
+            for (var lv1 in AWPageMounts) {
+                if (!AWPageMounts.hasOwnProperty(lv1)) {
+                    continue;
+                }
+                if (!/^m\d+/.test(lv1)) {
+                    continue;
+                }
+                for (var i = 0, page; page = AWPageMounts[lv1][i]; i++) {
+                    storage.saveDoc(page.path.replace(/\.md$/, ''), page.content);
+                }
+                delete AWPageMounts[lv1];
+            }
+            storage.saveRebuild();
+        }
+        //否则直接删除页面挂载数据的文档部分，释放内存资源占用
+        else {
+            delete AWPageMounts['home'];
+            for (var name in AWPageMounts) {
+                if (AWPageMounts.hasOwnProperty(name)) {
+                    if (/^m\d+/.test(name)) {
+                        delete AWPageMounts[name];
+                    }
+                }
+            }
+        }
+    };
+
+    //根据hash改变滚动位置
+    var changeScrollByHash = function () {
+        var hash = location.hash.split('#')[1];
+        //当不存在hash
+        if (!hash || hash.length == '') {
+            //检测是否在顶部，不在顶部滚动至顶部
+            if ($mainInner.scrollTop() != 0) {
+                $mainInner.scrollTop(0);
+            }
+            return;
+        }
+        //获取hash指向的元素
+        var $hash = $('.anchor[name="' + hash + '"]');
+        if ($hash.length == 0) {
+            return
+        }
+        //滚动至元素
+        $mainInner.scrollTop($hash.position().top + $mainInner.scrollTop() - 10);
+    };
+
+    /*
+     启动应用
+     */
+
     //解析地址参数
-    var path = tools.getURLParameter('file');
-    if (!path) {
-        path = '首页';
-    } else {
-        path = decodeURI(path);
+    var curPath = tools.getURLParameter('file');
+    curPath = !curPath ? '首页' : decodeURI(curPath);
+    curPath = curPath.replace(/%26/g, '&');
+
+    //加载导航
+    loadNav(function (list) {
+        //核对本地存储
+        storage.checkLibChange(list);
+        //读取页面挂载数据文档部分
+        loadPageMounts();
+        //首次打开改变导航
+        changeNav(curPath);
+        //首次打开改变页面
+        changePage(curPath, true, changeScrollByHash);
+    });
+
+    //history api 浏览器前进后退操作响应
+    if (HISTORY_STATE) {
+        $win.on('popstate', function (e) {
+            var path;
+            //当有状态记录时，直接跳转
+            if (e.originalEvent.state) {
+                path = e.originalEvent.state.path;
+                path = path.replace(/%26/g, '&');
+                //改变导航
+                changeNav(path);
+                //改变页面
+                changePage(path, true, changeScrollByHash);
+            }
+            //当没有状态记录时
+            else {
+                path = tools.getURLParameter('file');
+                path = !path ? '首页' : decodeURI(path);
+                path = path.replace(/%26/g, '&');
+                //判断 url 路径是否和当前一样，不一样才跳转
+                if (path != curPath) {
+                    //改变导航
+                    changeNav(path);
+                    //改变页面
+                    changePage(path, true, changeScrollByHash);
+                }
+                //相同时不跳转，根据 hash 变化改变位置
+                else {
+                    changeScrollByHash();
+                }
+            }
+        });
     }
+
+    /*
+     回调中转
+     */
 
     //重建缓存
     search.onNeedRebuildStorage = function (callback) {
@@ -329,29 +673,6 @@ $(function () {
             load(item, i);
         }
     };
-
-    //页面基本
-    pageBase();
-    //加载导航
-    loadNav(function (list) {
-        //核对本地存储
-        storage.checkLibChange(list);
-        //首次打开改变导航
-        changeNav(path);
-        //首次打开改变页面
-        changePage(path, true);
-    });
-
-    //history api 浏览器前进后退操作响应
-    if (HISTORY_STATE) {
-        $(window).on('popstate', function (e) {
-            var path = e.originalEvent.state.path;
-            //改变导航
-            changeNav(path);
-            //改变页面
-            changePage(path, true);
-        });
-    }
 
 });
 

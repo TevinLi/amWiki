@@ -1,4 +1,179 @@
-# 版本日志
+# amWiki 版本日志
+
+## [v1.2.1](https://github.com/TevinLi/amWiki/releases/tag/v1.2.1)
+_2017-08-08_
+
+- 改善 Mac 上点号开头的系统文件带来的诸多问题（例如导出报错等）([#32](https://github.com/TevinLi/amWiki/issues/32)、[#67](https://github.com/TevinLi/amWiki/issues/67))
+- 允许在 config 上重新定义 library 路径 ([#47](https://github.com/TevinLi/amWiki/issues/47))
+- 文章篇内目录显示优化 ([#33](https://github.com/TevinLi/amWiki/issues/33))
+- 文章篇内目录序号识别，已有序号不再增加序号 ([#33](https://github.com/TevinLi/amWiki/issues/33))
+- 基础 Markdown 语法扩充，实现文字飘红
+- 统一官网和文档中心网址
+- 修复几处显示细节
+
+## [v1.2.0](https://github.com/TevinLi/amWiki/releases/tag/v1.2.0)
+_2017-07-18_
+
+- 新增本地数据挂载模式，可以直接双击 index 在浏览器中访问整个文库
+    - Atom 平台和 Node-Npm 平台挂载数据操作绑定
+    - 本地页面挂载数据生成与嵌入模块
+    - 页面加载数据，页面打开时立即判断和读取挂载数据
+    - 改进搜索，网络不可用时不再用 worker 而是直接搜索
+    - disable 本地模式状态下的接口测试入口
+    - 隐藏本地模式状态下的重建缓存按钮
+- 基础 Markdown 语法扩充，支持 todo list 复选框 ([#56](https://github.com/TevinLi/amWiki/issues/56))
+- 终端本地服务器命令新增可关闭 amWiki 索引页的可选参数
+- 优化本地服务器容错性
+- 搜索面板结果列表点击不再跳转页面
+- 导航增加文档文件名转义，文档文件名允许使用语法符号`()[]'"`而不再冲突
+- 对带`&`符号的文件名在URL地址上用特殊转义替代，不会再被作为参数截断 ([#64](https://github.com/TevinLi/amWiki/issues/64))
+- 修复服务器文件系统为GBK编码时深目录无法读取的bug
+- 调整大量注释、调整一些变量名，标记私有与公有
+
+## [v1.1.3](https://github.com/TevinLi/amWiki/releases/tag/v1.1.3)
+_2017-06-25_
+
+- 增加大图预览模式第一期 ([#44](https://github.com/TevinLi/amWiki/issues/44))
+- Markdown 基础语法扩充，支持定义图片大小与对齐方式 ([#45](https://github.com/TevinLi/amWiki/issues/45))
+- 允许首页的文件名通过增加 `home-` 前缀来自定义
+- 修复图片拖拽丢失扩展名的问题 ([#58](https://github.com/TevinLi/amWiki/issues/58))
+- 更改 highlight.js 为完整版，支持 176 种语言语法高亮
+- 修复测试面板切换文档时的一个显示问题
+
+## [v1.1.2](https://github.com/TevinLi/amWiki/releases/tag/v1.1.2)
+_2017-06-03_
+
+- 允许在 config.json 上使用 imports 将额外的 css 和 js 文件嵌入页面 ([#43](https://github.com/TevinLi/amWiki/issues/43))
+- 允许本地 server 多开，端口被占用时累加端口号 ([#46](https://github.com/TevinLi/amWiki/issues/46))
+- 新增本地 server 索引页，本地根 url 不再 404
+- 修复创建时取消创建操作的一个问题
+- 调整一些文案
+
+## [v1.1.1](https://github.com/TevinLi/amWiki/releases/tag/v1.1.1)
+_2017-05-21_
+
+- 紧急修复 win 平台 npm 创建报错的问题
+
+## [v1.1.0](https://github.com/TevinLi/amWiki/releases/tag/v1.1.0)
+_2017-05-20_
+
+- 实现无限级导航 ([#5](https://github.com/TevinLi/amWiki/issues/5)、[#30](https://github.com/TevinLi/amWiki/pull/30))
+    - 实现导航水平滚动条，调和水平垂直两滚动条冲突
+    - 实现 PC、Mobi 端导航栏无限级梯度的层级显示
+    - 实现目录无限级深度树形与列表数据读取
+    - 实现无限级导航 Markdown 生成
+    - 实现无限级重复的排序 ID 检查
+    - 实现无限级图片粘贴、文件拖拽
+- 优化工作端查找 library 文件夹
+- 实现拖拽文件文件名汉字转拼音
+- 修复导航初始化时展开的一个问题
+
+---
+
+### v1.0.6
+_2017-05-05_
+
+- 修复未开启测试模块的文库 web 端无内容显示的问题
+- 修复导航未展开目录时显示不全只有一边的问题
+- 修复上一版本 npm 失误的发布造成 Linux 平台命令无效的问题
+- 移动端点击搜索按钮时关闭导航层 ([#40](https://github.com/TevinLi/amWiki/issues/40))
+
+### v1.0.5
+_2017-04-28_
+
+- 导航筛选功能增强
+    - 文件夹匹配
+    - 筛选多个词
+    - 忽略筛选词大小写
+    - 筛选条件非主动删除不消失
+    - 使用递归进行筛选，为无限级做准备 ([#5](https://github.com/TevinLi/amWiki/issues/5))
+- 修复web端在移动端点击导航导航不自动收起的问题 ([#40](https://github.com/TevinLi/amWiki/issues/40))
+- 修复web端测试面板在不关闭的条件下跳转文档后的一个显示问题
+- 菜单栏增加 `从剪切板粘贴截图` 项，调和与其他插件快捷键冲突 ([#41](https://github.com/TevinLi/amWiki/issues/41))
+
+### v1.0.4
+_2017-04-22_
+
+- 紧急修复命令行本地服务器不能启动的问题
+
+### v1.0.3
+_2017-04-22_
+
+- 基础 Markdown 语法扩展，支持 footnote 脚注 ([#37](https://github.com/TevinLi/amWiki/issues/37))
+- 修复 Windows 平台下 gitbash 执行命令结束报错的问题
+- 修复 Linux 平台下 `/usr/bin/env` 解释器调用失败的问题
+- 修复 Linux 平台下 create、version 报错的问题
+- 释放快捷键绑定 Ctrl+D、Ctrl+H ([#38](https://github.com/TevinLi/amWiki/issues/38))
+- 取消 readme 单篇长文介绍，仅保留安装方法，详细介绍引导至文档中心
+
+### v1.0.2
+_2017-04-04_
+
+- 命令行启动服务器允许使用自定义端口参数
+- 截图粘贴增强，QQ聊天、历史记录面板可复制单张图片直接粘入文档
+- 修复命令行板块创建文库操作 $navigation.md 缺失的问题
+- 修复本地 http 服务器 500 页面崩溃的问题
+- 修复 web 端打开带 hash 地址链接时，hash 无效的问题
+- 修复命令行显示版本号报错问题
+
+### v1.0.1
+_2017-03-30_
+
+- 修复 npm 渠道安装失败的问题
+- readme 添加 npm icon
+
+### v1.0.0
+_2017-03-30_
+
+- [ _祝贺 amWiki 项目一周岁_ ]
+- 构建基于 npm 的**命令行板块**，使用命令行可以同样创建维护文库
+- 重构原工作端，分离为**构建板块**与**编辑器板块**
+- 引入 ES6 异步编程，使用 Generator、yield、Thunk，将编辑器板块的 confirm 转为 confirm2，并与命令行板块的 confirm2 调用形式统一化
+- 使用 ES6 异步编程，对构建板块部分回调方法进行重构，优先使用 return 与异步编程而不是 callback
+- 使用 const/let 变量、解构赋值、箭头函数、Class 等 ES6 语法润色原工作端代码
+- 增加命令行、终端界面信息打印着色、帮助菜单、版本显示
+- 规范化部分公共方法注释
+
+---
+
+### v0.8.0
+_2016-12-30_
+
+- Web 端页面左右分栏滚动 ([#26](https://github.com/TevinLi/amWiki/issues/26))
+- 工作端解除部分判断对 F12 造成的限制 ([#27](https://github.com/TevinLi/amWiki/issues/27))
+
+---
+
+### v0.7.7
+_2016-12-19_  
+
+- 全文库搜索，增加大小写忽略 ([#24](https://github.com/TevinLi/amWiki/issues/24))
+- 修复导出后，在 github wiki 页内目录无法跳转的问题 ([#20](https://github.com/TevinLi/amWiki/issues/20#issuecomment-266927563))
+- 修复导出时，html 格式的 img src 相对地址未转换问题 ([#23](https://github.com/TevinLi/amWiki/issues/23))
+- 修复导出时，链接与 a 标签相对地址未转换问题 ([#23](https://github.com/TevinLi/amWiki/issues/23))
+
+### v0.7.6
+_2016-12-11_  
+
+- 增加文库导出模块，可以将文库导出为 Github Wiki 项目 (**[#20](https://github.com/TevinLi/amWiki/issues/20)**)
+- 允许 `.md` 文件文件名带空格 ([#19](https://github.com/TevinLi/amWiki/issues/19))
+- Web 移动端点击页内目录以外的区域将折叠目录 ([#22](https://github.com/TevinLi/amWiki/issues/22))
+- 修复某些情况下跳页面不返回顶部的问题 ([#21](https://github.com/TevinLi/amWiki/issues/21))
+
+### v0.7.5
+_2016-12-03_  
+(none)
+
+### v0.7.4
+_2016-12-03_
+
+- 增加 Web 端右侧目录悬浮窗 ([#15](https://github.com/TevinLi/amWiki/issues/15))
+- 增加对 `[TOC]` 目录生成标签的支持 ([#15](https://github.com/TevinLi/amWiki/issues/15))
+- 修复工作端抽取页内目录含单双引号、圆括号时无法正确解析的问题 ([#16](https://github.com/TevinLi/amWiki/pull/16))
+- 修复工作端抽取页内目录无法跳转的问题 ([#15](https://github.com/TevinLi/amWiki/issues/15))
+- 修复工作端抽取页内目录时内容为空报错的问题 ([#13](https://github.com/TevinLi/amWiki/issues/13), [#14](https://github.com/TevinLi/amWiki/pull/14))
+- 修复 Web 端浏览器后退按钮报错问题
+- Atom 菜单栏添加 “关于amWiki” 按钮
 
 ### v0.7.3
 _2016-10-28_

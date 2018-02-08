@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="amWiki/css/markdownbody.github.css" />
         <link rel="stylesheet" type="text/css" href="amWiki/css/lhjs.github-gist.css" />
         <link rel="stylesheet" type="text/css" href="amWiki/css/amWiki.css" />
+        {{custom.css}}
     </head>
 
     <body>
@@ -21,7 +22,7 @@
                     <b>{{name}}</b>
                     <span>{{version}}</span>
                 </a>
-                <div class="menu_icon">
+                <div class="menu-icon" id="menuIcon">
                     <svg>
                         <use xlink:href="#icon:navStart"></use>
                     </svg>
@@ -29,8 +30,8 @@
             </div>
         </header>
         <!-- 页面 -->
-        <div class="container">
-            <div class="nav">
+        <div class="container" id="container">
+            <div class="nav" id="nav">
                 <div class="menu-filter">
                     <svg>
                         <use xlink:href="#icon:navFilter"></use>
@@ -43,96 +44,142 @@
                         <use xlink:href="#icon:search"></use>
                     </svg>
                 </div>
-                <!--<div class="menu-fold" title="展开/折叠导航栏所有菜单">
-                    <svg>
-                        <use xlink:href="#navFolder1"></use>
-                    </svg>
-                </div>-->
-                <nav class="menubar" id="menuBar"></nav>
+                <nav class="menubar scroller" id="menuBar" data-x-rolling="true">
+                    <div class="scroller-inner">
+                        <div class="scroller-content"></div>
+                    </div>
+                </nav>
             </div>
-            <div class="main" id="main">
-                <article class="markdown-body" id="view"></article>
-                <!-- 上下翻页 -->
-                <div class="main-sibling" id="mainSibling">
-                    <p><span>上一篇：</span>
-                        <a href="#"></a>
-                    </p>
-                    <p><span>下一篇：</span>
-                        <a href="#"></a>
-                    </p>
-                </div>
-                <!-- 全库搜索 -->
-                <div class="search-box" id="searchBox">
-                    <div class="search-update">
-                        <input type="button" id="searchUpdate" value="更新所有缓存" />
-                        <div class="text">
-                            <p>上次完全更新：<time id="cacheLasttime">0000-00-00 00:00:00</time></p>
-                            <p>文档总数：<b id="cacheDocTotal">0</b> / <span>已缓存：<i id="cacheState">0%</i></span></p>
+            <div class="main scroller" id="main">
+                <div class="main-inner scroller-inner">
+                    <!-- 正文 -->
+                    <article class="markdown-body scroller-content" id="view"></article>
+                    <script id="template:footnote" type="text/html">
+                        <sup><a href="#fn:foot{{index}}" name="fn:note{{index}}" title="{{title}}">[{{index}}]</a></sup>
+                        <ol class="footnote"><i>[参考资料]：</i>{{list}}</ol>
+                        <li id="fn:foot{{index}}">{{content}} {{back}}</li>
+                        <li class="footnote-none" data-msg="匹配缺失">{{content}}</li>
+                        <a href="#fn:note{{index}}">
+                            <svg>
+                                <use xlink:href="#icon:footnoteBack"></use>
+                            </svg>
+                        </a>
+                    </script>
+                    <!-- 上下翻页 -->
+                    <div class="main-sibling scroller-content" id="mainSibling">
+                        <p><span>上一篇：</span>
+                            <a href="#"></a>
+                        </p>
+                        <p><span>下一篇：</span>
+                            <a href="#"></a>
+                        </p>
+                    </div>
+                    <!-- 全库搜索 -->
+                    <div class="search-box" id="searchBox">
+                        <div class="search-update">
+                            <input type="button" id="searchUpdate" value="更新所有缓存" />
+                            <div class="text">
+                                <p>上次完全更新：<time id="cacheLasttime">0000-00-00 00:00:00</time></p>
+                                <p>文档总数：<b id="cacheDocTotal">0</b> <i>/</i> <span>已缓存：<i id="cacheState">0%</i></span></p>
+                            </div>
+                        </div>
+                        <h2>全库搜索</h2>
+                        <div class="search-input">
+                            <input type="text" id="searchText" placeholder="请输入搜索内容" />
+                            <input type="button" id="search" value="搜 索" />
+                        </div>
+                        <div class="search-results" id="results">
+                            <div class="search-result-message" id="resultMsg"></div>
+                            <ul class="search-list"></ul>
+                            <div class="search-result-more" id="resultMore">显示更多</div>
+                            <script id="template:searchResult" type="text/html">
+                                <li class="search-item">
+                                    <a href="?file={{path}}">
+                                        <div class="content">
+                                            <strong>{{title}}</strong> {{api}} {{content}}
+                                        </div>
+                                        <div class="bottom">
+                                            <p>位置：<span>{{path}}</span></p>
+                                            <div class="time">最后缓存于
+                                                <time>{{time}}</time>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            </script>
                         </div>
                     </div>
-                    <h2>全库搜索</h2>
-                    <div class="search-input">
-                        <input type="text" id="searchText" placeholder="请输入搜索内容" />
-                        <input type="button" id="search" value="搜 索"/>
-                    </div>
-                    <div class="search-results" id="results">
-                        <div class="search-result-message" id="resultMsg"></div>
-                        <ul class="search-list"></ul>
-                        <div class="search-result-more" id="resultMore">显示更多</div>
-                        <script id="template:searchResult" type="text/html">
-                            <li class="search-item">
-                                <a href="?file={{path}}">
-                                    <div class="content">
-                                        <strong>{{title}}</strong>
-                                        {{api}}
-                                        {{content}}
-                                    </div>
-                                    <div class="bottom">
-                                        <p>位置：<span>{{path}}</span></p>
-                                        <div class="time">最后缓存于
-                                            <time>{{time}}</time>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                        </script>
-                    </div>
+                    <!-- 接口测试 -->
+                    {{amWiki.testing.tpl}}
                 </div>
-                <!-- 接口测试 -->
-                {{amWiki.testing.tpl}}
             </div>
         </div>
-        <!-- 签名 -->
+        <aside>
+            <!-- 侧边目录 -->
+            <div class="contents" id="contents">
+                <div class="btn">
+                    <svg>
+                        <use xlink:href="#icon:contents"></use>
+                    </svg>
+                    <span>目录</span>
+                </div>
+                <div class="contents-list">
+                    <p>
+                        <a id="contentsTitle" href="#客户日志流水接口示例">客户日志流水接口示例</a>
+                    </p>
+                    <div class="markdown-contents"></div>
+                </div>
+            </div>
+            <!-- 返回顶部 -->
+            <div class="back-top" id="backTop">
+                <a class="back-icon" href="#">
+                    <svg>
+                        <use xlink:href="#icon:backTop"></use>
+                    </svg>
+                </a>
+                <a class="back-text" href="#">返回顶部</a>
+            </div>
+        </aside>
+        <!-- 图片预览 -->
+        <section class="imgsv" id="imgsView">
+            <div class="imgsv-background"></div>
+            <div class="imgsv-view" id="imgsViewInner"></div>
+            <ul class="imgsv-panel">
+                <li class="prev off">Prev</li>
+                <li class="next">Next</li>
+                <li class="original">1:1</li>
+                <li class="suit">适合</li>
+            </ul>
+        </section>
         <footer>
+            <!-- 签名 -->
             <div class="signature">Powered by
                 <a href="https://github.com/TevinLi/amWiki" target="_blank">amWiki</a>
             </div>
         </footer>
-        <!-- 返回顶部 -->
-        <aside>
-            <div class="back-top">
-                <a href="#" class="back-icon">
-                    <svg>
-                        <use xlink:href="#backTop"></use>
-                    </svg>
-                </a>
-                <a href="#" class="back-text">返回顶部</a>
-            </div>
-        </aside>
+        <!-- mounts -->
+        <div class="hidden" aw-include="mountLinks">
+            <script>{{config}}</script>
+        </div>
         <!-- js -->
         <div class="hidden">
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>
+            <script type="text/javascript" src="amWiki/js/pinyin.js"></script>
             <script type="text/javascript" src="amWiki/js/jquery-compat-3.1.0.min.js"></script>
             <script type="text/javascript" src="amWiki/js/marked.min.js"></script>
-            <script type="text/javascript" src="amWiki/js/highlight.min.js"></script>
+            <script type="text/javascript" src="amWiki/js/highlight.pack.js"></script>
             <script type="text/javascript" src="amWiki/js/raphael-min.js"></script>
             <script type="text/javascript" src="amWiki/js/flowchart.min.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.tools.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.storage.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.search.js"></script>
+            <script type="text/javascript" src="amWiki/js/amWiki.search.worker.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.docs.js"></script>
             {{amWiki.testing.js}}
+            <script type="text/javascript" src="amWiki/js/amWiki.scrollbar.js"></script>
+            <script type="text/javascript" src="amWiki/js/amWiki.imgsView.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.js"></script>
+            {{custom.js}}
         </div>
         <!-- svg -->
         <div class="hidden" id="svgSymbols"></div>

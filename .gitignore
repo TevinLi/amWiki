@@ -51,3 +51,6 @@ Temporary Items
 
 
 *.project
+*.temp
+*.log
+*.cmd
