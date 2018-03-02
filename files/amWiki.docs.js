@@ -417,6 +417,29 @@
                 that._setJSCommentDisable($elm);
             }
         });
+        
+        // 解析 mermaid
+        this.$e.view.find('pre').each(function (i, element) {
+            var $elm = $(element); // 标记位置
+            var txt = $(element).text();
+
+            if (txt.indexOf('graph') === 0 || txt.indexOf('sequenceDiagram') === 0 || txt.indexOf('gantt') === 0) {
+                $(element).hide();
+
+                // 使用 mermaid api 解析
+                mermaid.initialize({
+                    startOnLoad: true
+                })
+                $(function () {
+                    var graphDefinition = txt;
+                    var cb = function (svgGraph) {
+                        $elm.after(svgGraph);
+                    }
+                    mermaid.render('mermaid-chart' + i, graphDefinition, cb);
+                })
+            }
+        });
+
         //设置网页title
         var title = this.$e.view.find('h1').eq(0).text();
         this.$e.title.text(title);
