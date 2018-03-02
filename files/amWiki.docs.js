@@ -372,6 +372,26 @@
         return url;
     };
 
+    var _escapes = [
+        '\\',
+        '`',
+        '*',
+        '{',
+        '}',
+        '[',
+        ']',
+        '(',
+        ')',
+        '#',
+        '+',
+        '-',
+        '.',
+        '!',
+        '_',
+        '>',
+        '|'  // 表格中有|会让表格变形
+    ];
+
     /**
      * 渲染文档
      * @param {String} content - 需要渲染的文档内容
@@ -383,6 +403,9 @@
         this.cleanView();
         //增加"\"符转义功能
         content = content.replace(/\\(.)/g, function (m, s1) {
+            if (_escapes.indexOf(s1) == -1) {
+                return m;
+            }
             return '&#' + s1.charCodeAt(0) + ';';
         });
         //创建脚注
@@ -417,7 +440,7 @@
                 that._setJSCommentDisable($elm);
             }
         });
-        
+
         // 解析 mermaid
         this.$e.view.find('pre').each(function (i, element) {
             var $elm = $(element); // 标记位置
