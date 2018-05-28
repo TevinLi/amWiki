@@ -175,12 +175,14 @@ co(function*() {
 
     //关闭用户输入
     process.stdin.on('error', (e) => {
-        if (e.code !== 'EPIPE' || e.syscall !== 'shutdown') {
-            throw e;
-        }
+        process.stdin.destroy();
+        // if (e.code !== 'EPIPE' || e.syscall !== 'shutdown') {
+        //     // throw e;
+        // }
     });
     process.stdin.end();
 
 }).catch((e) => {
+    console.log(e);
     console.error(e);
 });
