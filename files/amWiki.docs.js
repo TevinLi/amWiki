@@ -77,6 +77,11 @@
             .replace(/\[/g, '&#91;')  //转义左中括号
             .replace(/\]/g, '&#93;');  //转义右中括号
     };
+	
+	function Base64Encode(str, encoding = 'utf-8') {
+      var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);
+      return base64js.fromByteArray(bytes);
+    }
 
     //设置文档h1、h2、h3描记
     Docs.prototype._setTitlesAnchor = function () {
@@ -94,14 +99,15 @@
             var $this = $(element);
             var text1 = that._tramsformLinkText($this.text());
             var text2 = text1.replace(/&#34;/g, '');  //删除双引号
+			var text3 = Base64Encode(text2);
             //提取目录
             if ($this.is('h2')) {
-                contentsMd += '1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
+                contentsMd += '1. [' + text1 + '](#' + text3 + ' "' + text2 + '")\n';
             } else if ($this.is('h3')) {
-                contentsMd += '\t1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
+                contentsMd += '\t1. [' + text1 + '](#' + text3 + ' "' + text2 + '")\n';
             }
             //设置描记
-            $this.prepend(anchorHtml.replace(/\{title\}/g, text2));
+            $this.prepend(anchorHtml.replace(/\{title\}/g, text3));
             //首次打开页面滚动位置修正
             if (hash == $this.text().replace(/"/g, '')) {
                 if (that.data.pageWidth <= 720) {

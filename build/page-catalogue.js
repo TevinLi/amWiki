@@ -2,6 +2,13 @@
  * @desc amWiki 工作端·提取H2-H3为页内目录模块
  * @author Tevin
  */
+ 
+const base64js = require('./base64js.min');
+
+function Base64Encode(str, encoding = 'utf-8') {
+      var bytes = new (TextEncoder || TextEncoderLite)(encoding).encode(str);
+      return base64js.fromByteArray(bytes);
+}
 
 module.exports = {
     //创建
@@ -56,7 +63,7 @@ module.exports = {
                     text = lines[i].split('## ')[1];
                     if (text != undefined) {
                         lineStr = trimStr(text);
-                        contents += '1. [' + lineStr + '](#' + lineStr.replace(/&#34;/g, '') + ' "' + lineStr + '")\n';
+                        contents += '1. [' + lineStr + '](#' + Base64Encode(lineStr.replace(/&#34;/g, '')) + ' "' + lineStr + '")\n';
                     } else {
                         contents += '1. &#12288;\n';
                     }
@@ -65,7 +72,7 @@ module.exports = {
                     text = lines[i].split('### ')[1];
                     if (text != undefined) {
                         lineStr = trimStr(text);
-                        contents += '\t1. [' + lineStr + '](#' + lineStr.replace(/&#34;/g, '') + ' "' + lineStr + '")\n';
+                        contents += '\t1. [' + lineStr + '](#' + Base64Encode(lineStr.replace(/&#34;/g, '')) + ' "' + lineStr + '")\n';
                     } else {
                         contents += '\t1. &#12288;\n';
                     }

@@ -135,6 +135,7 @@
         </footer>
         <!-- js -->
         <div class="hidden">
+			<script type="text/javascript" src="amWiki/js/base64js.min.js"></script>
             <script type="text/javascript" src="amWiki/js/gbk.js"></script>
             <script type="text/javascript" src="amWiki/js/jquery-compat-3.1.0.min.js"></script>
             <script type="text/javascript" src="amWiki/js/marked.min.js"></script>
