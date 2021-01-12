@@ -161,7 +161,7 @@ const manageWiki = (function () {
             //是否开启接口测试
             config.testing = !!config.testing || false;
             //设置自定义颜色
-            config.colour = typeof config.colour === 'undefined' ? '#4296eb' : config.color + '';
+            config.colour = typeof config.colour === 'undefined' ? '#4296eb' : config.colour + '';
             //本地页面数据挂载
             config.pageMounts = !!(config['page-mounts'] || config.pageMounts) || false;
             delete config['page-mounts'];
