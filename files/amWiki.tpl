@@ -179,6 +179,7 @@
             <script type="text/javascript" src="amWiki/js/amWiki.scrollbar.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.imgsView.js"></script>
             <script type="text/javascript" src="amWiki/js/amWiki.js"></script>
+            <script type="text/javascript" src="amWiki/js/mermaid.min.js"></script>
             {{custom.js}}
         </div>
         <!-- svg -->

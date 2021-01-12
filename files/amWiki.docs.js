@@ -94,7 +94,7 @@
     };
 
     /**
-     * 设置文档h1、h2、h3描记
+     * 设置文档h1、h2、h3、h4描记
      * @returns {string}
      * @private
      */
@@ -108,7 +108,7 @@
         }
         var anchorHtml = '<a class="anchor" href="#{title}" name="{title}">' +
             '<svg><use xlink:href="#icon:linkAnchor"></use></svg></a>';
-        $titles = that.$e.view.find('h1,h2,h3');
+        $titles = that.$e.view.find('h1,h2,h3,h4');
         $titles.each(function (index, element) {
             var $this = $(element);
             var text1 = that._tramsformLinkText($this.text());
@@ -118,6 +118,8 @@
                 contentsMd += '1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
             } else if ($this.is('h3')) {
                 contentsMd += '\t1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
+            } else if ($this.is('h4')) {
+                contentsMd += '\t\t1. [' + text1 + '](#' + text2 + ' "' + text2 + '")\n';
             }
             //设置描记
             $this.prepend(anchorHtml.replace(/{title}/g, text2));
@@ -328,46 +330,6 @@
                 $contents = $contents.add($this);
             }
         });
-        //自带序号的目录，不再额外显示一层序号
-        $contents.find('ol').each(function () {
-            var $this = $(this);
-            var $links = $this.children('li').children('a');
-            var text1 = $links.eq(0).text(),
-                text2 = $links.eq(1).text();
-            var conditions = [
-                //普通数字类型
-                /^[\(（]?(\d+\.?)+[^\d]{2,}/,
-                //汉字序号类型
-                /^[\(（【第]?[一二三四五六七八九十百千万壹贰叁肆伍陆柒捌玖拾佰仟]+/,
-                //英文序号类型
-                /^(chapter)|(section)|(part)|(step)/i,
-                //罗马序号类型
-                /^[ⅠⅡⅢⅣIⅤⅥⅦⅧⅨⅩⅪⅫLCDM]+\.?/
-            ];
-            for (var i = 0, cond; cond = conditions[i]; i++) {
-                if (cond.test(text1) && cond.test(text2)) {
-                    $this.addClass('unindex');
-                    break;
-                }
-            }
-        });
-        //没写序号的目录，创建序号
-        var setIndex = function ($elm, index1) {
-            if ($elm.length == 0) {
-                return;
-            }
-            $elm.children('li').each(function (index2) {
-                var $this = $(this);
-                if (!$elm.hasClass('unindex')) {
-                    var index = typeof index1 == 'number' ? (index1 + 1) + '.' + (index2 + 1): (index2 + 1) + '.';
-                    $this.prepend('<i>' + index + '</i>');
-                }
-                setIndex($this.children('ol'), index2);
-            });
-        };
-        $contents.children('ol').each(function () {
-            setIndex($(this));
-        });
     };
 
     /**
@@ -410,6 +372,26 @@
         return url;
     };
 
+    var _escapes = [
+        '\\',
+        '`',
+        '*',
+        '{',
+        '}',
+        '[',
+        ']',
+        '(',
+        ')',
+        '#',
+        '+',
+        '-',
+        '.',
+        '!',
+        '_',
+        '>',
+        '|'  // 表格中有|会让表格变形
+    ];
+
     /**
      * 渲染文档
      * @param {String} content - 需要渲染的文档内容
@@ -421,6 +403,9 @@
         this.cleanView();
         //增加"\"符转义功能
         content = content.replace(/\\(.)/g, function (m, s1) {
+            if (_escapes.indexOf(s1) == -1) {
+                return m;
+            }
             return '&#' + s1.charCodeAt(0) + ';';
         });
         //创建脚注
@@ -455,6 +440,29 @@
                 that._setJSCommentDisable($elm);
             }
         });
+
+        // 解析 mermaid
+        this.$e.view.find('pre').each(function (i, element) {
+            var $elm = $(element); // 标记位置
+            var txt = $(element).text();
+
+            if (txt.indexOf('graph') === 0 || txt.indexOf('sequenceDiagram') === 0 || txt.indexOf('gantt') === 0) {
+                $(element).hide();
+
+                // 使用 mermaid api 解析
+                mermaid.initialize({
+                    startOnLoad: true
+                })
+                $(function () {
+                    var graphDefinition = txt;
+                    var cb = function (svgGraph) {
+                        $elm.after(svgGraph);
+                    }
+                    mermaid.render('mermaid-chart' + i, graphDefinition, cb);
+                })
+            }
+        });
+
         //设置网页title
         var title = this.$e.view.find('h1').eq(0).text();
         this.$e.title.text(title);

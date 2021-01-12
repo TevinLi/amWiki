@@ -293,7 +293,8 @@ const creator = (function () {
                     ['amWiki.search.worker.js', 'amWiki/js/amWiki.search.worker.js'],
                     ['icons.svg', 'amWiki/images/icons.svg'],
                     ['logo.png', 'amWiki/images/logo.png'],
-                    ['menubar_bg.png', 'amWiki/images/menubar_bg.png']
+                    ['menubar_bg.png', 'amWiki/images/menubar_bg.png'],
+                    ['mermaid.min.js', 'amWiki/js/mermaid.min.js']
                 ];
                 for (let file of fileList) {
                     that._copyFile(options.filesPath + file[0], options.outputPath + file[1]);
